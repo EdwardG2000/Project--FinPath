@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FinPath – Profile</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<!-- Navbar -->
+<div id="nav-root"></div>
+
+<div class="page-layout-full" style="max-width:680px;">
+
+  <!-- Profile header card -->
+  <div class="card" style="margin-bottom:1.25rem;display:flex;align-items:center;gap:1.5rem;padding:2rem;">
+    <div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--green),var(--navy));display:flex;align-items:center;justify-content:center;color:#fff;font-size:2rem;font-weight:800;flex-shrink:0;">E</div>
+    <div>
+      <div style="font-size:1.4rem;font-weight:800;">Eddie</div>
+      <div style="font-size:.85rem;color:var(--muted);margin-top:.2rem;">edward_gereis@icloud.com</div>
+      <div style="margin-top:.75rem;display:flex;gap:.5rem;flex-wrap:wrap;">
+        <span class="pill green">⚡ 340 XP</span>
+        <span class="pill">🔥 7-day streak</span>
+        <span class="pill amber">🏆 Rank #4</span>
+      </div>
+    </div>
+    <button class="btn btn-outline btn-sm" style="margin-left:auto;">Edit Profile</button>
+  </div>
+
+  <!-- Stats grid -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.25rem;">
+    <div class="stat-card">
+      <div class="s-label">Lessons Completed</div>
+      <div class="s-val">12</div>
+      <div class="s-sub">of 50 available</div>
+    </div>
+    <div class="stat-card">
+      <div class="s-label">Time Learning</div>
+      <div class="s-val">3.4h</div>
+      <div class="s-sub">this month</div>
+    </div>
+    <div class="stat-card">
+      <div class="s-label">Modules Started</div>
+      <div class="s-val">2</div>
+      <div class="s-sub">of 5 modules</div>
+    </div>
+    <div class="stat-card">
+      <div class="s-label">Longest Streak</div>
+      <div class="s-val">14🔥</div>
+      <div class="s-sub">personal best</div>
+    </div>
+  </div>
+
+  <!-- Badges -->
+  <div class="card" style="margin-bottom:1rem;">
+    <div class="card-title">Badges Earned</div>
+    <div style="display:flex;gap:.75rem;flex-wrap:wrap;">
+      <div style="text-align:center;width:70px;">
+        <div style="font-size:2rem;">🎓</div>
+        <div style="font-size:.7rem;font-weight:600;color:var(--mid);margin-top:.3rem;">First Lesson</div>
+      </div>
+      <div style="text-align:center;width:70px;">
+        <div style="font-size:2rem;">🔥</div>
+        <div style="font-size:.7rem;font-weight:600;color:var(--mid);margin-top:.3rem;">7-Day Streak</div>
+      </div>
+      <div style="text-align:center;width:70px;">
+        <div style="font-size:2rem;">⚡</div>
+        <div style="font-size:.7rem;font-weight:600;color:var(--mid);margin-top:.3rem;">300+ XP</div>
+      </div>
+      <div style="text-align:center;width:70px;opacity:.3;">
+        <div style="font-size:2rem;">🏆</div>
+        <div style="font-size:.7rem;font-weight:600;color:var(--mid);margin-top:.3rem;">Top 3</div>
+      </div>
+      <div style="text-align:center;width:70px;opacity:.3;">
+        <div style="font-size:2rem;">💎</div>
+        <div style="font-size:.7rem;font-weight:600;color:var(--mid);margin-top:.3rem;">All Modules</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Module progress -->
+  <div class="card" style="margin-bottom:1.25rem;">
+    <div class="card-title">Module Progress</div>
+    <div style="margin-bottom:.75rem;">
+      <div style="display:flex;justify-content:space-between;font-size:.8rem;margin-bottom:.4rem;">
+        <span style="font-weight:600">🐷 Credit Score Basics</span>
+        <span style="color:var(--green-d);font-weight:700">60%</span>
+      </div>
+      <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:60%"></div></div>
+    </div>
+    <div style="margin-bottom:.75rem;">
+      <div style="display:flex;justify-content:space-between;font-size:.8rem;margin-bottom:.4rem;">
+        <span style="font-weight:600">🏦 Budgeting</span>
+        <span style="color:var(--green-d);font-weight:700">40%</span>
+      </div>
+      <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:40%"></div></div>
+    </div>
+    <div>
+      <div style="display:flex;justify-content:space-between;font-size:.8rem;margin-bottom:.4rem;">
+        <span style="font-weight:600">⚖️ Debt &amp; Interest</span>
+        <span style="color:var(--muted);font-weight:700">Locked</span>
+      </div>
+      <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:0%"></div></div>
+    </div>
+  </div>
+
+  <!-- Sign out -->
+  <div style="display:flex;justify-content:flex-end;">
+    <a href="index.html" class="btn btn-outline btn-sm" style="color:var(--muted);">
+      <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+      </svg>
+      Sign out
+    </a>
+  </div>
+
+</div>
+
+<script src="navbar.js"></script>
+  <div class="disclaimer-bar">Disclaimer: FinPath is for educational purposes only. Nothing on this platform constitutes financial advice. Always consult a qualified financial adviser before making investment decisions.</div>
+</body>
+</html>

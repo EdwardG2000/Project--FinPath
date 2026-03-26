@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FinPath – Lesson</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<!-- Navbar -->
+<div id="nav-root"></div>
+
+<!-- Lesson layout -->
+<div class="lesson-layout">
+
+  <!-- Left sidebar: module list -->
+  <div class="lesson-sidebar">
+    <div class="card" style="padding:1rem;">
+      <div class="card-title">Continue Lesson</div>
+      <div style="font-size:.82rem;color:var(--muted);margin-bottom:.75rem;">Lesson 3: Interest Rates</div>
+      <a href="lesson.html" class="btn btn-primary" style="width:100%;display:flex;margin-bottom:.5rem;">Start</a>
+      <div class="progress-bar-wrap" style="margin-top:.5rem;">
+        <div class="progress-bar-fill" style="width:30%"></div>
+      </div>
+    </div>
+
+    <div style="font-size:.75rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);padding:0 .25rem;margin-top:.5rem;">Modules</div>
+
+    <div class="mini-module active">
+      <div class="icon">🐷</div>
+      <div class="text">
+        <div class="name">Credit Score Basics</div>
+        <div class="sub">●●●○○</div>
+      </div>
+      <div class="check">✓</div>
+    </div>
+    <div class="mini-module">
+      <div class="icon">🏦</div>
+      <div class="text">
+        <div class="name">Budgeting</div>
+        <div class="sub">●●○○○</div>
+      </div>
+    </div>
+    <div class="mini-module">
+      <div class="icon">⚖️</div>
+      <div class="text">
+        <div class="name">Debt</div>
+        <div class="sub">○○○○○</div>
+      </div>
+    </div>
+    <div class="mini-module">
+      <div class="icon">📈</div>
+      <div class="text">
+        <div class="name">Saving</div>
+        <div class="sub">○○○○○</div>
+      </div>
+    </div>
+    <div class="mini-module">
+      <div class="icon">💼</div>
+      <div class="text">
+        <div class="name">Investing</div>
+        <div class="sub">○○○○○</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main: lesson content -->
+  <div>
+    <div class="lesson-main-card">
+      <div class="lesson-top-bar">
+        <h2>Lesson 4: APR &amp; Interest</h2>
+        <span class="pill" style="background:rgba(255,255,255,.15);color:#fff;border-color:rgba(255,255,255,.2);">Credit Score Basics</span>
+      </div>
+      <div class="lesson-body">
+        <h3>What is APR?</h3>
+        <p>APR stands for <strong>Annual Percentage Rate</strong>. It's the yearly cost of borrowing money, expressed as a percentage. Unlike a simple interest rate, APR includes fees and other costs associated with a loan or credit card.</p>
+        <div class="callout">
+          💡 <strong>Quick tip:</strong> A lower APR means you pay less in interest over time. Always compare APRs when choosing between financial products.
+        </div>
+        <h3>How is interest calculated?</h3>
+        <p>Interest is calculated as a percentage of your outstanding balance. With <strong>simple interest</strong>, you only pay interest on the principal. With <strong>compound interest</strong>, interest is charged on both the principal and accumulated interest — this can cost you more over time.</p>
+        <p>For example, a £1,000 loan at 5% APR over one year would cost you £50 in interest — that's £1,050 total repaid.</p>
+      </div>
+      <div class="lesson-quiz card" style="margin-top:1rem; padding:1rem;">
+        <div class="card-title">Lesson Quiz</div>
+        <div id="quiz-container"></div>
+      </div>
+      <div class="lesson-footer">
+        <div class="progress-track">
+          <span class="progress-label">Lesson 4 / 10</span>
+          <div class="progress-bar-wrap">
+            <div class="progress-bar-fill" style="width:40%"></div>
+          </div>
+          <span class="progress-label" style="color:var(--green-d);font-weight:700">40%</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:.75rem;margin-left:1.5rem;">
+          <a href="coach.html" class="discuss-btn">
+            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+            </svg>
+            Discuss
+          </a>
+          <button class="btn btn-primary btn-sm" onclick="nextLesson()">Next →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right: progress ring + XP -->
+  <div class="lesson-right">
+    <div class="progress-ring-wrap">
+      <div class="ring-title">Lesson Progress</div>
+      <div class="ring-svg-wrap">
+        <svg viewBox="0 0 80 80">
+          <circle cx="40" cy="40" r="32" stroke="#dde4ef" stroke-width="7" fill="none"/>
+          <circle cx="40" cy="40" r="32" stroke="#2ecc8e" stroke-width="7" fill="none"
+            stroke-dasharray="201.06" stroke-dashoffset="120.6" stroke-linecap="round"/>
+        </svg>
+        <div class="ring-center">
+          <div class="big">3</div>
+          <div class="sm">Completed</div>
+        </div>
+      </div>
+      <div class="reward-row">
+        <span class="pill green">🏅 Reward</span>
+        <span class="pill">⏱ 5 min</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">XP This Session</div>
+      <div style="font-size:2rem;font-weight:900;color:var(--green);margin:.25rem 0;">+60 XP</div>
+      <div style="font-size:.8rem;color:var(--muted);">Complete this lesson to earn 20 more XP</div>
+      <div class="progress-bar-wrap" style="margin-top:.75rem;">
+        <div class="progress-bar-fill" style="width:75%"></div>
+      </div>
+      <div style="font-size:.75rem;color:var(--muted);margin-top:.4rem;">75 / 100 XP to next level</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Up Next</div>
+      <div style="font-size:.85rem;font-weight:700;margin-bottom:.3rem;">Lesson 5: Credit Cards</div>
+      <div style="font-size:.78rem;color:var(--muted);">Learn how credit card interest works and how to avoid paying it.</div>
+      <div style="margin-top:.75rem;display:flex;gap:.5rem;">
+        <span class="pill">⏱ 6 min</span>
+        <span class="pill green">+20 XP</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script src="navbar.js"></script>
+<script>
+  const lessons = [
+    {
+      num: 1, total: 10, title: 'Lesson 1: What is a Credit Score?',
+      module: 'Credit Score Basics',
+      body: `
+        <h3>Understanding Credit Scores</h3>
+        <p>A <strong>credit score</strong> is a number — typically between 300 and 850 — that represents your creditworthiness. Lenders use it to decide whether to approve you for loans, credit cards, or mortgages, and at what interest rate.</p>
+        <div class="callout">💡 <strong>Quick tip:</strong> In the UK, the main credit reference agencies are Experian, Equifax, and TransUnion. Each uses a slightly different scale.</div>
+        <h3>Why does it matter?</h3>
+        <p>A higher score means lenders see you as lower risk, which usually means better interest rates and higher credit limits. A low score can result in rejection or expensive borrowing costs.</p>
+      `,
+      upNextTitle: 'Lesson 2: What Affects Your Score?',
+      upNextDesc: 'Discover the key factors that raise or lower your credit score.',
+      progress: 10,
+      quiz: [
+        {
+          q: 'Which score range is generally viewed as good credit?',
+          options: ['700-850', '300-500', '550-650', '400-600'],
+          answer: 0,
+        },
+      ],
+    },
+    {
+      num: 2, total: 10, title: 'Lesson 2: What Affects Your Score?',
+      module: 'Credit Score Basics',
+      body: `
+        <h3>Key Factors</h3>
+        <p>Your credit score is shaped by several factors: <strong>payment history</strong> (do you pay on time?), <strong>credit utilisation</strong> (how much of your limit you use), <strong>length of credit history</strong>, and the <strong>types of credit</strong> you hold.</p>
+        <div class="callout">💡 <strong>Quick tip:</strong> Payment history is the single biggest factor. Even one missed payment can significantly drop your score.</div>
+        <h3>Credit Utilisation</h3>
+        <p>Aim to use less than 30% of your available credit limit. For example, if your card limit is £1,000, try to keep the balance below £300 at any time.</p>
+      `,
+      upNextTitle: 'Lesson 3: Building Credit from Scratch',
+      upNextDesc: 'Learn how to establish a credit history if you\'re just starting out.',
+      progress: 20,
+      quiz: [
+        {
+          q: 'What is the biggest factor affecting your credit score?',
+          options: ['Payment history', 'Age', 'Type of job', 'Savings amount'],
+          answer: 0,
+        },
+      ],
+    },
+    {
+      num: 3, total: 10, title: 'Lesson 3: Building Credit from Scratch',
+      module: 'Credit Score Basics',
+      body: `
+        <h3>Starting with No Credit History</h3>
+        <p>If you're new to credit, lenders have no history to judge you on — which can be just as problematic as bad credit. The key is to start small and build up a track record of responsible borrowing.</p>
+        <div class="callout">💡 <strong>Quick tip:</strong> A credit-builder card or a secured card are great starting points. Use it for small purchases and pay it off in full each month.</div>
+        <h3>Practical Steps</h3>
+        <p>Register on the electoral roll, open a bank account, set up a small direct debit, and always pay bills on time. These actions all contribute positively to your file over time.</p>
+      `,
+      upNextTitle: 'Lesson 4: APR & Interest',
+      upNextDesc: 'Understand how APR works and what it costs you to borrow.',
+      progress: 30,
+      quiz: [
+        {
+          q: 'For people with no history, which is a good first step?',
+          options: ['Get a credit-builder card', 'Use cash only', 'Open 20 loans', 'Ignore credit'],
+          answer: 0,
+        },
+      ],
+    },
+    {
+      num: 4, total: 10, title: 'Lesson 4: APR & Interest',
+      module: 'Credit Score Basics',
+      body: `
+        <h3>What is APR?</h3>
+        <p>APR stands for <strong>Annual Percentage Rate</strong>. It's the yearly cost of borrowing money, expressed as a percentage. Unlike a simple interest rate, APR includes fees and other costs associated with a loan or credit card.</p>
+        <div class="callout">💡 <strong>Quick tip:</strong> A lower APR means you pay less in interest over time. Always compare APRs when choosing between financial products.</div>
+        <h3>How is interest calculated?</h3>
+        <p>Interest is calculated as a percentage of your outstanding balance. With <strong>simple interest</strong>, you only pay interest on the principal. With <strong>compound interest</strong>, interest is charged on both the principal and accumulated interest — this can cost you more over time.</p>
+        <p>For example, a £1,000 loan at 5% APR over one year would cost you £50 in interest — that's £1,050 total repaid.</p>
+      `,
+      upNextTitle: 'Lesson 5: Credit Cards',
+      upNextDesc: 'Learn how credit card interest works and how to avoid paying it.',
+      progress: 40,
+      quiz: [
+        {
+          q: 'APR includes interest plus what else?',
+          options: ['Fees and costs', 'Taxes only', 'Exchange rates', 'Insurance premiums'],
+          answer: 0,
+        },
+      ],
+    },
+    {
+      num: 5, total: 10, title: 'Lesson 5: Credit Cards',
+      module: 'Credit Score Basics',
+      body: `
+        <h3>How Credit Cards Work</h3>
+        <p>A credit card lets you borrow money up to a set limit and repay it later. If you pay your <strong>full balance</strong> each month, you typically pay zero interest. If you only make the minimum payment, interest accrues on the remaining balance.</p>
+        <div class="callout">💡 <strong>Quick tip:</strong> Set up a direct debit for the full statement balance each month to avoid ever paying interest.</div>
+        <h3>Common Pitfalls</h3>
+        <p>Cash withdrawals on a credit card usually incur an immediate fee and higher interest with no grace period. Avoid using your credit card at ATMs unless absolutely necessary.</p>
+      `,
+      upNextTitle: 'Lesson 6: Managing Debt',
+      upNextDesc: 'Strategies for paying down debt efficiently.',
+      progress: 50,
+      quiz: [
+        {
+          q: 'Paying only the minimum on credit cards causes:',
+          options: ['More interest owed', 'Lower credit limit', 'Improved score instantly', 'No impact'],
+          answer: 0,
+        },
+      ],
+    },
+    {
+      num: 6, total: 10, title: 'Lesson 6: Managing Debt',
+      module: 'Credit Score Basics',
+      body: `
+        <h3>Debt Repayment Strategies</h3>
+        <p>The two most popular methods are the <strong>avalanche</strong> (pay off highest-interest debt first — saves the most money) and the <strong>snowball</strong> (pay off smallest balance first — builds motivation).</p>
+        <div class="callout">💡 <strong>Quick tip:</strong> The avalanche method is mathematically optimal, but the snowball method works better for people who need quick wins to stay motivated.</div>
+        <h3>Consolidation</h3>
+        <p>A debt consolidation loan combines multiple debts into one, ideally at a lower interest rate. This simplifies repayments but only helps if you don't accumulate new debt afterwards.</p>
+      `,
+      upNextTitle: 'Lesson 7: Budgeting Basics',
+      upNextDesc: 'Create a budget that actually works for your lifestyle.',
+      progress: 60,
+      quiz: [
+        {
+          q: 'Which method focuses on highest-interest first?',
+          options: ['Avalanche', 'Snowball', 'Random', 'Equal split'],
+          answer: 0,
+        },
+      ],
+    },
+    {
+      num: 7, total: 10, title: 'Lesson 7: Budgeting Basics',
+      module: 'Budgeting',
+      body: `
+        <h3>Why Budgeting Matters</h3>
+        <p>A budget is simply a plan for your money. Without one, it's easy to spend more than you earn without realising it. A budget helps you make conscious decisions and work towards financial goals.</p>
+        <div class="callout">💡 <strong>Quick tip:</strong> The 50/30/20 rule is a simple starting point: 50% on needs, 30% on wants, and 20% on savings and debt repayment.</div>
+        <h3>Getting Started</h3>
+        <p>List all your income sources, then track every expense for one month. Categorise spending into needs (rent, food, bills) and wants (dining out, subscriptions, entertainment).</p>
+      `,
+      upNextTitle: 'Lesson 8: Emergency Funds',
+      upNextDesc: 'Why every financial plan needs a safety net.',
+      progress: 70,
+      quiz: [
+        {
+          q: 'What is the 50/30/20 rule about?',
+          options: ['Budget allocation', 'Investment return', 'Debt score', 'Tax brackets'],
+          answer: 0,
+        },
+      ],
+    },
+    {
+      num: 8, total: 10, title: 'Lesson 8: Emergency Funds',
+      module: 'Budgeting',
+      body: `
+        <h3>What is an Emergency Fund?</h3>
+        <p>An emergency fund is money set aside for unexpected expenses — a car repair, a medical bill, or sudden job loss. Without one, these events force you into debt.</p>
+        <div class="callout">💡 <strong>Quick tip:</strong> Aim for 3–6 months of essential living expenses. Keep it in an easy-access savings account — not invested.</div>
+        <h3>How to Build One</h3>
+        <p>Start with a goal of £500–£1,000 to cover small emergencies, then gradually build to your 3–6 month target. Automate a transfer to your savings account on payday so you pay yourself first.</p>
+      `,
+      upNextTitle: 'Lesson 9: Introduction to Saving',
+      upNextDesc: 'Savings accounts, ISAs, and making your money grow.',
+      progress: 80,
+      quiz: [
+        {
+          q: 'An emergency fund should ideally cover how much?',
+          options: ['3–6 months expenses', '1 week', '10 years', 'No savings needed'],
+          answer: 0,
+        },
+      ],
+    },
+    {
+      num: 9, total: 10, title: 'Lesson 9: Introduction to Saving',
+      module: 'Saving',
+      body: `
+        <h3>Types of Savings Accounts</h3>
+        <p>In the UK, a <strong>Cash ISA</strong> lets you save up to £20,000 per tax year with no tax on the interest earned. Easy-access accounts offer flexibility, while fixed-rate bonds offer higher interest in exchange for locking your money away.</p>
+        <div class="callout">💡 <strong>Quick tip:</strong> Always compare interest rates. Even a small difference in rate can add up significantly over years of saving.</div>
+        <h3>The Power of Compound Interest</h3>
+        <p>When your interest earns interest, savings grow exponentially over time. Starting early — even with small amounts — makes a huge difference thanks to compounding.</p>
+      `,
+      upNextTitle: 'Lesson 10: Introduction to Investing',
+      upNextDesc: 'Understand the basics of stocks, funds, and long-term growth.',
+      progress: 90,
+      quiz: [
+        {
+          q: 'Compound interest means interest on:',
+          options: ['Interest and principal', 'Principal only', 'Loans only', 'Only after 5 years'],
+          answer: 0,
+        },
+      ],
+    },
+    {
+      num: 10, total: 10, title: 'Lesson 10: Introduction to Investing',
+      module: 'Investing',
+      body: `
+        <h3>What is Investing?</h3>
+        <p>Investing means putting your money to work with the goal of growing it over time. Unlike saving, investing carries risk — but also the potential for higher returns. Common options include stocks, bonds, index funds, and property.</p>
+        <div class="callout">💡 <strong>Quick tip:</strong> A Stocks & Shares ISA lets you invest up to £20,000 per tax year with no capital gains or income tax on returns.</div>
+        <h3>Diversification</h3>
+        <p>Don't put all your eggs in one basket. Spreading investments across different asset classes and sectors reduces risk — if one investment falls, others may hold steady or rise.</p>
+      `,
+      upNextTitle: null,
+      upNextDesc: null,
+      progress: 100,
+      quiz: [
+        {
+          q: 'Diversification in investing lowers risk by:',
+          options: ['Spreading across assets', 'Buying one stock', 'Keeping all in cash', 'Avoiding stocks'],
+          answer: 0,
+        },
+      ],
+    },
+  ];
+
+  let currentLesson = 3; // 0-indexed, starts on lesson 4
+
+  function renderLesson(index) {
+    const l = lessons[index];
+
+    document.querySelector('.lesson-top-bar h2').textContent = l.title;
+    document.querySelector('.lesson-top-bar .pill').textContent = l.module;
+    document.querySelector('.lesson-body').innerHTML = l.body;
+    document.querySelector('.progress-label').textContent = `Lesson ${l.num} / ${l.total}`;
+    document.querySelectorAll('.progress-label')[1].textContent = l.progress + '%';
+    document.querySelector('.lesson-footer .progress-bar-fill').style.width = l.progress + '%';
+
+    // Ring & sidebar progress bar
+    const offset = 201.06 * (1 - (index + 1) / lessons.length);
+    document.querySelector('.ring-svg-wrap circle:last-child').setAttribute('stroke-dashoffset', offset.toFixed(1));
+    document.querySelector('.ring-center .big').textContent = index + 1;
+
+    // Up next card
+    const upNextCard = document.querySelector('.lesson-right .card:last-child');
+    if (l.upNextTitle) {
+      upNextCard.querySelector('.card-title').nextElementSibling
+        ? null : null;
+      upNextCard.innerHTML = `
+        <div class="card-title">Up Next</div>
+        <div style="font-size:.85rem;font-weight:700;margin-bottom:.3rem;">${l.upNextTitle}</div>
+        <div style="font-size:.78rem;color:var(--muted);">${l.upNextDesc}</div>
+        <div style="margin-top:.75rem;display:flex;gap:.5rem;">
+          <span class="pill">⏱ 5 min</span>
+          <span class="pill green">+20 XP</span>
+        </div>
+      `;
+    } else {
+      upNextCard.innerHTML = `
+        <div class="card-title">Course Complete!</div>
+        <div style="font-size:.85rem;font-weight:700;margin-bottom:.3rem;">🎉 You've finished all lessons!</div>
+        <div style="font-size:.78rem;color:var(--muted);">Head back to the learn page to explore more modules.</div>
+        <div style="margin-top:.75rem;">
+          <a href="learn.html" class="btn btn-primary btn-sm">Browse Modules →</a>
+        </div>
+      `;
+    }
+
+    // Hide Next button on last lesson
+    const nextBtn = document.querySelector('.btn-primary.btn-sm');
+    nextBtn.style.display = index >= lessons.length - 1 ? 'none' : '';
+
+    // Scroll content to top
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    renderQuiz(index);
+  }
+
+  function renderQuiz(index) {
+    const quizRoot = document.getElementById('quiz-container');
+    const quizData = lessons[index].quiz;
+    if (!quizData || !quizData.length) {
+      quizRoot.innerHTML = '<p>Quiz not set for this lesson.</p>';
+      return;
+    }
+
+    const form = document.createElement('form');
+    form.innerHTML = '';
+
+    quizData.forEach((item, qi) => {
+      const questionBlock = document.createElement('div');
+      questionBlock.style.marginBottom = '0.8rem';
+      questionBlock.innerHTML = `<div style="font-weight:700;margin-bottom:.3rem;">${qi + 1}. ${item.q}</div>`;
+
+      item.options.forEach((opt, oi) => {
+        const optionId = `quiz-${index}-${qi}-${oi}`;
+        const label = document.createElement('label');
+        label.style.display = 'block';
+        label.style.cursor = 'pointer';
+        label.innerHTML = `<input type="radio" name="quiz-${index}-${qi}" value="${oi}" id="${optionId}" style="margin-right:.4rem;"> ${opt}`;
+        questionBlock.appendChild(label);
+      });
+      form.appendChild(questionBlock);
+    });
+
+    const submit = document.createElement('button');
+    submit.type = 'button';
+    submit.className = 'btn btn-primary btn-sm';
+    submit.textContent = 'Submit Quiz';
+    submit.style.marginTop = '0.5rem';
+    form.appendChild(submit);
+
+    const result = document.createElement('div');
+    result.style.marginTop = '0.8rem';
+    form.appendChild(result);
+
+    submit.addEventListener('click', () => {
+      let correctCount = 0;
+      let answeredCount = 0;
+      quizData.forEach((item, qi) => {
+        const selected = form.querySelector(`input[name="quiz-${index}-${qi}"]:checked`);
+        if (selected) {
+          answeredCount++;
+          if (Number(selected.value) === item.answer) correctCount++;
+        }
+      });
+      if (answeredCount < quizData.length) {
+        result.textContent = 'Please answer every question before submitting.';
+        result.style.color = '#d9534f';
+        return;
+      }
+      const percent = Math.round((correctCount / quizData.length) * 100);
+      result.innerHTML = `<strong>Score:</strong> ${correctCount}/${quizData.length} (${percent}%).`;
+      result.style.color = percent >= 70 ? '#2ecc8e' : '#f39c12';
+      // Optional XP bonus for passing
+      if (percent >= 70) {
+        showXPToast(`🎉 +${10 + percent} XP from quiz!`);
+      }
+    });
+
+    quizRoot.innerHTML = '';
+    quizRoot.appendChild(form);
+  }
+
+  function nextLesson() {
+    if (currentLesson >= lessons.length - 1) return;
+    showXPToast();
+    currentLesson++;
+    renderLesson(currentLesson);
+  }
+
+  function showXPToast(message = '🎉 +20 XP earned!') {
+    const toast = document.createElement('div');
+    toast.textContent = message;
+    Object.assign(toast.style, {
+      position: 'fixed', bottom: '2rem', right: '2rem',
+      background: 'var(--green)', color: '#fff',
+      padding: '.75rem 1.5rem', borderRadius: '12px',
+      fontWeight: '700', fontSize: '.9rem',
+      boxShadow: '0 4px 20px rgba(46,204,142,.4)',
+      zIndex: '9999', opacity: '1', transition: 'opacity .4s',
+    });
+    document.body.appendChild(toast);
+    setTimeout(() => { toast.style.opacity = '0'; }, 1800);
+    setTimeout(() => { toast.remove(); }, 2200);
+  }
+
+  // Initial render for the current lesson at page load
+  renderLesson(currentLesson);
+</script>
+  <div class="disclaimer-bar">Disclaimer: FinPath is for educational purposes only. Nothing on this platform constitutes financial advice. Always consult a qualified financial adviser before making investment decisions.</div>
+</body>
+</html>
