@@ -113,6 +113,75 @@
 </div>
 
 <script src="navbar.js"></script>
+<script src="api.js"></script>
+<script>
+  requireAuth(); // redirects to login if not logged in
+
+  async function loadDashboard() {
+    const [me, progress] = await Promise.all([getMe(), getProgress()]);
+
+    // Username
+    document.querySelector('.welcome-banner h2').textContent =
+      `Welcome back, ${me.username}! 👋`;
+
+    // XP (20 per lesson completed)
+    const xp = progress.completed_lessons * 20;
+    document.querySelector('.xp-big').textContent = xp;
+    document.querySelector('.navbar .xp-badge').textContent = `⚡ ${xp} XP`;
+
+    // Streak
+    document.querySelector('.s-val:nth-of-type(1)') // handled below by stat cards
+
+    // Stat cards — target by position
+    const statCards = document.querySelectorAll('.stat-card');
+    statCards[0].querySelector('.s-val').textContent = xp;
+    statCards[0].querySelector('.trend').textContent =
+      `↑ +${progress.current_streak > 0 ? 20 : 0} today`;
+
+    statCards[1].querySelector('.s-val').textContent =
+      progress.current_streak + '🔥';
+
+    statCards[2].querySelector('.s-val').textContent =
+      progress.completed_lessons;
+    statCards[2].querySelector('.s-sub').textContent =
+      `of ${progress.total_lessons} total`;
+
+    // Module progress bars
+    const modules = progress.modules.slice(0, 2); // show first 2
+    const moduleSection = document.querySelector('.card:last-child');
+    const bars = moduleSection.querySelectorAll('.progress-bar-fill');
+    const labels = moduleSection.querySelectorAll('[style*="font-weight:600"]');
+    const pcts = moduleSection.querySelectorAll('[style*="green-d"]');
+
+    modules.forEach((mod, i) => {
+      if (bars[i]) bars[i].style.width = mod.completion_pct + '%';
+      if (labels[i]) labels[i].textContent = mod.title;
+      if (pcts[i]) pcts[i].textContent = Math.round(mod.completion_pct) + '%';
+    });
+
+    // Continue lesson banner
+    const inProgress = progress.modules.find(m =>
+      m.completed_lessons > 0 && m.completion_pct < 100
+    ) || progress.modules[0];
+
+    if (inProgress) {
+      document.querySelector('.recent-lesson-card .rlc-header h3').textContent =
+        inProgress.title;
+      document.querySelector('.progress-label').textContent =
+        `${inProgress.completed_lessons} / ${inProgress.lesson_count} lessons`;
+      document.querySelector('.rlc-body .rlc-placeholder span:last-child').textContent =
+        inProgress.completion_pct > 0 ? 'Continue where you left off' : 'Start this module';
+      document.querySelector('.progress-bar-fill').style.width =
+        inProgress.completion_pct + '%';
+
+      // Wire "Next" button to the right module
+      document.querySelector('.btn-primary.btn-sm').href =
+        `learn.html?module=${inProgress.id}`;
+    }
+  }
+
+  loadDashboard();
+</script>
   <div class="disclaimer-bar">Disclaimer: FinPath is for educational purposes only. Nothing on this platform constitutes financial advice. Always consult a qualified financial adviser before making investment decisions.</div>
 </body>
 </html>
