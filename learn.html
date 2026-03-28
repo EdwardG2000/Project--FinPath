@@ -1,170 +1,204 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>FinPath – Learn</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
-
 <body>
 
-  <!-- Navbar -->
-  <div id="nav-root"></div>
+<div id="nav-root"></div>
 
-  <!-- Skill Tree -->
-  <div class="page-layout">
+<div class="page-layout">
 
-    <!-- Left: continue lesson + modules -->
-    <div>
-      <div class="card">
-        <div class="card-title">Continue where you left off</div>
-        <div class="lesson-row">
-          <div class="lesson-row-info">
-            <div class="lesson-num">Lesson 3 of 10</div>
-            <div class="lesson-name">Interest Rates</div>
-          </div>
-          <a href="lesson.html" class="btn btn-outline btn-sm">
-            Start
-            <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-              <path d="M5 12h14M12 5l7 7-7 7" />
-            </svg>
-          </a>
+  <!-- Left: continue lesson + modules -->
+  <div>
+
+    <!-- Continue card -->
+    <div class="card" id="continue-card">
+      <div class="card-title">Continue where you left off</div>
+      <div class="lesson-row" id="continue-row">
+        <div class="lesson-row-info">
+          <div class="lesson-num" id="continue-lesson-num">Loading…</div>
+          <div class="lesson-name" id="continue-lesson-name"></div>
         </div>
-        <a href="lesson.html" class="btn btn-primary" style="width:100%;display:flex;">Start →</a>
-      </div>
-
-      <!-- Modules -->
-      <div class="modules-header">
-        <h2>Modules</h2>
-        <span class="tag">5 Topics</span>
-      </div>
-      <div class="modules-grid">
-        <a href="lesson.html" class="module-card active">
-          <div class="module-icon green">🐷</div>
-          <div class="module-name">Credit Score Basics</div>
-          <div class="module-dots">
-            <span></span><span></span><span></span><span class="empty"></span><span class="empty"></span>
-          </div>
+        <a href="#" id="continue-start-btn" class="btn btn-outline btn-sm">
+          Start
+          <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
         </a>
-        <a href="lesson.html" class="module-card">
-          <div class="module-icon blue">🏦</div>
-          <div class="module-name">Budgeting</div>
-          <div class="module-dots">
-            <span></span><span></span><span class="empty"></span><span class="empty"></span><span class="empty"></span>
-          </div>
-        </a>
-        <div class="module-card" style="cursor:default;opacity:.7;">
-          <div class="module-lock">🔒</div>
-          <div class="module-icon amber">⚖️</div>
-          <div class="module-name">Debt &amp; Interest</div>
-          <div class="module-dots">
-            <span class="empty"></span><span class="empty"></span><span class="empty"></span><span
-              class="empty"></span><span class="empty"></span>
-          </div>
-        </div>
-        <div class="module-card" style="cursor:default;opacity:.7;">
-          <div class="module-lock">🔒</div>
-          <div class="module-icon rose">📈</div>
-          <div class="module-name">Saving</div>
-          <div class="module-dots">
-            <span class="empty"></span><span class="empty"></span><span class="empty"></span><span
-              class="empty"></span><span class="empty"></span>
-          </div>
-        </div>
-        <div class="module-card" style="cursor:default;opacity:.7;">
-          <div class="module-lock">🔒</div>
-          <div class="module-icon purple">💼</div>
-          <div class="module-name">Investing</div>
-          <div class="module-dots">
-            <span class="empty"></span><span class="empty"></span><span class="empty"></span><span
-              class="empty"></span><span class="empty"></span>
-          </div>
-        </div>
       </div>
+      <a href="#" id="continue-main-btn" class="btn btn-primary" style="width:100%;display:flex;">Start →</a>
     </div>
 
-    <!-- Right: widgets -->
-    <div class="widget-right">
-
-      <!-- Credit Utilisation -->
-      <div class="card">
-        <div class="card-title">Credit Utilisation</div>
-        <div style="display:flex;align-items:center;gap:1.2rem;">
-          <div class="xp-ring">
-            <svg viewBox="0 0 90 90">
-              <circle cx="45" cy="45" r="38" stroke="#dde4ef" stroke-width="8" fill="none" />
-              <circle cx="45" cy="45" r="38" stroke="#2ecc8e" stroke-width="8" fill="none" stroke-dasharray="238.76"
-                stroke-dashoffset="71.6" stroke-linecap="round" />
-            </svg>
-            <div class="xp-ring-text">+20<small>Today</small></div>
-          </div>
-          <div class="widget-meta">
-            <div class="label">Difficulty</div>
-            <div class="badge-row"><span class="pill amber">⚡ Moderate</span></div>
-            <div class="badge-row">
-              <span class="pill green">+20 XP</span>
-              <span class="pill">⏱ 5 min</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Streak -->
-      <div class="streak-card">
-        <div class="top">🔥 DAILY STREAK</div>
-        <div class="num">7</div>
-        <div class="sub">days in a row — keep it up!</div>
-        <div class="streak-days">
-          <div class="streak-day done">M</div>
-          <div class="streak-day done">T</div>
-          <div class="streak-day done">W</div>
-          <div class="streak-day done">T</div>
-          <div class="streak-day done">F</div>
-          <div class="streak-day done">S</div>
-          <div class="streak-day today">S</div>
-        </div>
-      </div>
-
-      <!-- Progress -->
-      <div class="card">
-        <div class="card-title">Your Progress</div>
-        <div style="margin-bottom:.75rem;">
-          <div style="display:flex;justify-content:space-between;font-size:.8rem;margin-bottom:.4rem;">
-            <span style="font-weight:600">Credit Score Basics</span>
-            <span style="color:var(--green-d);font-weight:700">60%</span>
-          </div>
-          <div class="progress-bar-wrap">
-            <div class="progress-bar-fill" style="width:60%"></div>
-          </div>
-        </div>
-        <div style="margin-bottom:.75rem;">
-          <div style="display:flex;justify-content:space-between;font-size:.8rem;margin-bottom:.4rem;">
-            <span style="font-weight:600">Budgeting</span>
-            <span style="color:var(--green-d);font-weight:700">40%</span>
-          </div>
-          <div class="progress-bar-wrap">
-            <div class="progress-bar-fill" style="width:40%"></div>
-          </div>
-        </div>
-        <div>
-          <div style="display:flex;justify-content:space-between;font-size:.8rem;margin-bottom:.4rem;">
-            <span style="font-weight:600">Overall</span>
-            <span style="color:var(--green-d);font-weight:700">20%</span>
-          </div>
-          <div class="progress-bar-wrap">
-            <div class="progress-bar-fill" style="width:20%"></div>
-          </div>
-        </div>
-      </div>
-
+    <!-- Modules grid -->
+    <div class="modules-header">
+      <h2>Modules</h2>
+      <span class="tag" id="module-count">Loading…</span>
     </div>
+
+    <div class="modules-grid" id="modules-grid">
+      <!-- Injected by JS -->
+      <div style="color:var(--muted);font-size:.85rem;padding:1rem;">Loading modules…</div>
+    </div>
+
   </div>
 
-  <script src="navbar.js"></script>
-  <div class="disclaimer-bar">Disclaimer: FinPath is for educational purposes only. Nothing on this platform constitutes
-    financial advice. Always consult a qualified financial adviser before making investment decisions.</div>
-</body>
+  <!-- Right: widgets -->
+  <div class="widget-right">
 
+    <!-- Overall progress ring -->
+    <div class="card">
+      <div class="card-title">Overall Progress</div>
+      <div style="display:flex;align-items:center;gap:1.2rem;">
+        <div class="xp-ring">
+          <svg viewBox="0 0 90 90">
+            <circle cx="45" cy="45" r="38" stroke="#dde4ef" stroke-width="8" fill="none"/>
+            <circle id="progress-ring-circle" cx="45" cy="45" r="38" stroke="#2ecc8e" stroke-width="8"
+              fill="none" stroke-dasharray="238.76" stroke-dashoffset="238.76" stroke-linecap="round"/>
+          </svg>
+          <div class="xp-ring-text" id="progress-ring-pct">0%<small>done</small></div>
+        </div>
+        <div class="widget-meta">
+          <div class="label">Lessons completed</div>
+          <div id="lessons-done-count" style="font-size:1.4rem;font-weight:800;color:var(--navy);margin:.25rem 0;">0 / 0</div>
+          <div class="badge-row">
+            <span class="pill green" id="xp-pill">⚡ 0 XP</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Streak -->
+    <div class="streak-card">
+      <div class="top">🔥 DAILY STREAK</div>
+      <div class="num" id="streak-num">0</div>
+      <div class="sub" id="streak-sub">Start learning to build your streak!</div>
+      <div class="streak-days" id="streak-days">
+        <div class="streak-day">M</div>
+        <div class="streak-day">T</div>
+        <div class="streak-day">W</div>
+        <div class="streak-day">T</div>
+        <div class="streak-day">F</div>
+        <div class="streak-day">S</div>
+        <div class="streak-day today">S</div>
+      </div>
+    </div>
+
+    <!-- Per-module progress -->
+    <div class="card">
+      <div class="card-title">Your Progress</div>
+      <div id="module-progress-list">
+        <div style="color:var(--muted);font-size:.85rem;">Loading…</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script src="api.js"></script>
+<script src="navbar.js"></script>
+<script>
+  requireAuth();
+
+  const MODULE_ICONS = ['🐷','🏦','⚖️','📈','💼','🎓','💳','🏠'];
+  const MODULE_COLORS = ['green','blue','amber','rose','purple','green','blue','amber'];
+
+  async function loadLearn() {
+    const [progress] = await Promise.all([getProgress()]);
+    const modules = progress.modules;
+
+    // ── Continue card ─────────────────────────────────────
+    const inProgress = modules.find(m => m.completed_lessons > 0 && m.completion_pct < 100)
+      || modules.find(m => m.completed_lessons === 0)
+      || modules[0];
+
+    if (inProgress) {
+      document.getElementById('continue-lesson-num').textContent =
+        `${inProgress.completed_lessons} of ${inProgress.lesson_count} lessons done`;
+      document.getElementById('continue-lesson-name').textContent = inProgress.title;
+      const href = `lesson.html?module=${inProgress.id}`;
+      document.getElementById('continue-start-btn').href = href;
+      document.getElementById('continue-main-btn').href = href;
+      document.getElementById('continue-main-btn').textContent =
+        inProgress.completed_lessons === 0 ? 'Start →' : 'Continue →';
+    }
+
+    // ── Module count tag ──────────────────────────────────
+    document.getElementById('module-count').textContent = `${modules.length} Topics`;
+
+    // ── Modules grid ──────────────────────────────────────
+    const grid = document.getElementById('modules-grid');
+    grid.innerHTML = modules.map((mod, i) => {
+      const icon  = MODULE_ICONS[i % MODULE_ICONS.length];
+      const color = MODULE_COLORS[i % MODULE_COLORS.length];
+      const done  = mod.completed_lessons;
+      const total = mod.lesson_count;
+      const isActive = mod.completion_pct > 0 && mod.completion_pct < 100;
+      const isComplete = mod.completion_pct >= 100;
+
+      // Progress dots (max 5 shown)
+      const dotCount = Math.min(total, 5);
+      const filledDots = Math.round((done / Math.max(total, 1)) * dotCount);
+      const dots = Array.from({ length: dotCount }, (_, di) =>
+        `<span${di >= filledDots ? ' class="empty"' : ''}></span>`
+      ).join('');
+
+      return `
+        <a href="lesson.html?module=${mod.id}" class="module-card${isActive ? ' active' : ''}">
+          ${isComplete ? '<div class="module-lock" style="background:var(--green);color:#fff;">✓</div>' : ''}
+          <div class="module-icon ${color}">${icon}</div>
+          <div class="module-name">${mod.title}</div>
+          <div class="module-dots">${dots}</div>
+        </a>`;
+    }).join('');
+
+    // ── Progress ring ─────────────────────────────────────
+    const pct = Math.round(progress.overall_completion_pct);
+    const circ = 238.76;
+    const offset = circ - (pct / 100) * circ;
+    document.getElementById('progress-ring-circle').setAttribute('stroke-dashoffset', offset.toFixed(1));
+    document.getElementById('progress-ring-pct').innerHTML = `${pct}%<small>done</small>`;
+    document.getElementById('lessons-done-count').textContent =
+      `${progress.completed_lessons} / ${progress.total_lessons}`;
+    document.getElementById('xp-pill').textContent =
+      `⚡ ${progress.completed_lessons * 20} XP`;
+
+    // ── Streak ────────────────────────────────────────────
+    const streak = progress.current_streak;
+    document.getElementById('streak-num').textContent = streak;
+    document.getElementById('streak-sub').textContent =
+      streak > 0 ? `days in a row — keep it up!` : `Complete a lesson to start your streak!`;
+
+    // Colour streak day indicators
+    const days = document.querySelectorAll('.streak-day');
+    days.forEach((d, i) => {
+      if (i < streak % 7) d.classList.add('done');
+    });
+
+    // ── Per-module progress bars ──────────────────────────
+    const list = document.getElementById('module-progress-list');
+    if (!modules.length) {
+      list.innerHTML = '<div style="color:var(--muted);font-size:.85rem;">No modules yet.</div>';
+      return;
+    }
+    list.innerHTML = modules.map(mod => `
+      <div style="margin-bottom:.75rem;">
+        <div style="display:flex;justify-content:space-between;font-size:.8rem;margin-bottom:.4rem;">
+          <span style="font-weight:600">${mod.title}</span>
+          <span style="color:var(--green-d);font-weight:700">${Math.round(mod.completion_pct)}%</span>
+        </div>
+        <div class="progress-bar-wrap">
+          <div class="progress-bar-fill" style="width:${mod.completion_pct}%"></div>
+        </div>
+      </div>`).join('');
+  }
+
+  loadLearn();
+</script>
+
+<div class="disclaimer-bar">Disclaimer: FinPath is for educational purposes only. Nothing on this platform constitutes financial advice. Always consult a qualified financial adviser before making financial decisions.</div>
+</body>
 </html>

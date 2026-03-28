@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>FinPath – Login</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body style="display:flex;align-items:center;justify-content:center;min-height:100vh;">
+<div class="card" style="width:100%;max-width:400px;padding:2.5rem;">
+  <div style="text-align:center;margin-bottom:2rem;">
+    <div style="font-size:1.5rem;font-weight:800;">Fin<span style="color:var(--green);">Path</span></div>
+    <p style="color:var(--muted);font-size:.9rem;margin-top:.5rem;">Sign in to continue</p>
+  </div>
+  <div id="error-msg" style="display:none;background:#fff0f0;border:1px solid #f5c6c6;color:#c0392b;padding:.75rem 1rem;border-radius:8px;font-size:.85rem;margin-bottom:1rem;"></div>
+  <div style="margin-bottom:1rem;">
+    <label style="font-size:.85rem;font-weight:600;display:block;margin-bottom:.4rem;">Email</label>
+    <input type="email" id="email" placeholder="you@example.com" style="width:100%;padding:.7rem 1rem;border:1px solid var(--border);border-radius:8px;font-size:.9rem;outline:none;">
+  </div>
+  <div style="margin-bottom:1.5rem;">
+    <label style="font-size:.85rem;font-weight:600;display:block;margin-bottom:.4rem;">Password</label>
+    <input type="password" id="password" placeholder="••••••••" style="width:100%;padding:.7rem 1rem;border:1px solid var(--border);border-radius:8px;font-size:.9rem;outline:none;">
+  </div>
+  <button onclick="doLogin()" id="login-btn" class="btn btn-primary" style="width:100%;padding:.8rem;">Sign in →</button>
+  <p style="text-align:center;font-size:.82rem;color:var(--muted);margin-top:1rem;">
+    Demo: demo@finpath.co.uk / demo1234
+  </p>
+</div>
+<script src="api.js"></script>
+<script>
+  if (getToken()) window.location.href = 'dashboard.html';
+  async function doLogin() {
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value;
+    const btn = document.getElementById('login-btn');
+    const errMsg = document.getElementById('error-msg');
+    if (!email || !password) { errMsg.textContent = 'Please enter your email and password.'; errMsg.style.display = 'block'; return; }
+    btn.textContent = 'Signing in…';
+    btn.disabled = true;
+    errMsg.style.display = 'none';
+    try {
+      await login(email, password);
+      window.location.href = 'dashboard.html';
+    } catch (err) {
+      errMsg.textContent = err.message || 'Invalid email or password.';
+      errMsg.style.display = 'block';
+      btn.textContent = 'Sign in →';
+      btn.disabled = false;
+    }
+  }
+  document.addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+</script>
+</body>
+</html>

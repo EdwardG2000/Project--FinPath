@@ -8,7 +8,6 @@
 </head>
 <body>
 
-<!-- Navbar -->
 <div id="nav-root"></div>
 
 <div class="page-layout-full" style="max-width:700px;">
@@ -18,60 +17,118 @@
       <h1 style="font-size:1.5rem;font-weight:800;">🏆 Leaderboard</h1>
       <p style="font-size:.85rem;color:var(--muted);margin-top:.25rem;">Top learners this week</p>
     </div>
-    <span class="tag">Week of Mar 23</span>
+    <span class="tag" id="week-tag">This week</span>
   </div>
 
-  <div class="lb-row">
-    <div class="lb-rank gold">🥇</div>
-    <div class="avatar" style="width:36px;height:36px;font-size:.8rem;">S</div>
-    <div class="lb-name">Sarah K.</div>
-    <div class="lb-bar-wrap"><div class="lb-bar" style="width:100%"></div></div>
-    <div class="lb-xp">580 XP</div>
+  <!-- Your rank banner -->
+  <div id="my-rank-banner" style="display:none;background:linear-gradient(135deg,var(--green),var(--navy));
+    border-radius:14px;padding:1.25rem 1.5rem;margin-bottom:1.5rem;
+    display:flex;align-items:center;justify-content:space-between;">
+    <div style="color:#fff;">
+      <div style="font-size:.78rem;opacity:.7;font-weight:600;text-transform:uppercase;letter-spacing:.06em;">Your ranking</div>
+      <div style="font-size:1.6rem;font-weight:800;margin-top:.15rem;" id="my-rank-num">#—</div>
+    </div>
+    <div style="color:#fff;text-align:right;">
+      <div style="font-size:.78rem;opacity:.7;font-weight:600;">XP earned</div>
+      <div style="font-size:1.6rem;font-weight:800;" id="my-xp-num">0 XP</div>
+    </div>
   </div>
 
-  <div class="lb-row">
-    <div class="lb-rank silver">🥈</div>
-    <div class="avatar" style="width:36px;height:36px;font-size:.8rem;background:linear-gradient(135deg,#8898aa,#2c3e60);">J</div>
-    <div class="lb-name">James T.</div>
-    <div class="lb-bar-wrap"><div class="lb-bar" style="width:82%"></div></div>
-    <div class="lb-xp">475 XP</div>
+  <!-- Leaderboard rows -->
+  <div id="leaderboard-list">
+    <div style="color:var(--muted);font-size:.85rem;padding:1rem 0;">Loading leaderboard…</div>
   </div>
 
-  <div class="lb-row">
-    <div class="lb-rank bronze">🥉</div>
-    <div class="avatar" style="width:36px;height:36px;font-size:.8rem;background:linear-gradient(135deg,#e8a87c,#c07a4f);">A</div>
-    <div class="lb-name">Amira D.</div>
-    <div class="lb-bar-wrap"><div class="lb-bar" style="width:70%"></div></div>
-    <div class="lb-xp">406 XP</div>
-  </div>
-
-  <div class="lb-row me">
-    <div class="lb-rank" style="color:var(--green-d);font-weight:800;">#4</div>
-    <div class="avatar" style="width:36px;height:36px;font-size:.8rem;">E</div>
-
-  <div class="lb-row">
-    <div class="lb-rank">#5</div>
-    <div class="avatar" style="width:36px;height:36px;font-size:.8rem;background:linear-gradient(135deg,#a78bfa,#6d28d9);">M</div>
-  </div>
-
-  <div class="lb-row">
-    <div class="lb-rank">#6</div>
-    <div class="avatar" style="width:36px;height:36px;font-size:.8rem;background:linear-gradient(135deg,#f9a8d4,#db2777);">P</div>
-  </div>
-
-  <div class="lb-row">
-    <div class="lb-rank">#7</div>
-    <div class="avatar" style="width:36px;height:36px;font-size:.8rem;background:linear-gradient(135deg,#6ee7b7,#059669);">L</div>
-  </div>
-
-  <div class="lb-row">
-    <div class="lb-rank">#8</div>
-    <div class="avatar" style="width:36px;height:36px;font-size:.8rem;background:linear-gradient(135deg,#fcd34d,#d97706);">N</div>
+  <!-- Note about leaderboard -->
+  <div style="margin-top:1.5rem;padding:1rem;background:var(--bg);border-radius:10px;
+    border:1px solid var(--border);font-size:.8rem;color:var(--muted);">
+    💡 Leaderboard XP is calculated from lessons completed (20 XP each) + quiz scores.
+    Complete more lessons to climb the ranks!
   </div>
 
 </div>
 
+<script src="api.js"></script>
 <script src="navbar.js"></script>
-  <div class="disclaimer-bar">Disclaimer: FinPath is for educational purposes only. Nothing on this platform constitutes financial advice. Always consult a qualified financial adviser before making investment decisions.</div>
+<script>
+  requireAuth();
+
+  // Placeholder friends/community data mixed with real user
+  // In a full build this would come from a /leaderboard API endpoint
+  const DUMMY_USERS = [
+    { username: 'Sarah K.',  xp: 580 },
+    { username: 'James T.',  xp: 475 },
+    { username: 'Amira D.',  xp: 406 },
+    { username: 'Marcus W.', xp: 310 },
+    { username: 'Priya S.',  xp: 295 },
+    { username: 'Liam O.',   xp: 240 },
+    { username: 'Nina R.',   xp: 190 },
+    { username: 'Tom B.',    xp: 140 },
+  ];
+
+  const RANK_MEDALS = ['🥇', '🥈', '🥉'];
+  const RANK_CLASSES = ['gold', 'silver', 'bronze'];
+
+  async function loadLeaderboard() {
+    const [me, progress] = await Promise.all([getMe(), getProgress()]);
+
+    const myXP = progress.completed_lessons * 20;
+    const myUsername = me.username;
+
+    // Insert real user into the dummy list and sort
+    const allUsers = [...DUMMY_USERS, { username: myUsername, xp: myXP, isMe: true }]
+      .sort((a, b) => b.xp - a.xp);
+
+    const myRank = allUsers.findIndex(u => u.isMe) + 1;
+    const topXP = allUsers[0].xp || 1;
+
+    // Show your rank banner
+    const banner = document.getElementById('my-rank-banner');
+    banner.style.display = 'flex';
+    document.getElementById('my-rank-num').textContent = `#${myRank}`;
+    document.getElementById('my-xp-num').textContent = `${myXP} XP`;
+
+    // Week tag
+    const now = new Date();
+    document.getElementById('week-tag').textContent =
+      `Week of ${now.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}`;
+
+    // Render rows
+    const list = document.getElementById('leaderboard-list');
+    list.innerHTML = allUsers.map((user, i) => {
+      const rank = i + 1;
+      const rankDisplay = rank <= 3
+        ? `<div class="lb-rank ${RANK_CLASSES[rank - 1]}">${RANK_MEDALS[rank - 1]}</div>`
+        : `<div class="lb-rank">#${rank}</div>`;
+
+      const initial = user.username[0].toUpperCase();
+      const barWidth = Math.round((user.xp / topXP) * 100);
+
+      const avatarStyle = user.isMe
+        ? 'background:linear-gradient(135deg,var(--green),var(--navy));'
+        : '';
+
+      return `
+        <div class="lb-row${user.isMe ? ' me' : ''}">
+          ${rankDisplay}
+          <div class="avatar" style="width:36px;height:36px;font-size:.8rem;${avatarStyle}">
+            ${initial}
+          </div>
+          <div class="lb-name">
+            ${user.username}
+            ${user.isMe ? '<span style="font-size:.72rem;color:var(--green-d);font-weight:700;margin-left:.4rem;">(you)</span>' : ''}
+          </div>
+          <div class="lb-bar-wrap">
+            <div class="lb-bar" style="width:${barWidth}%"></div>
+          </div>
+          <div class="lb-xp">${user.xp} XP</div>
+        </div>`;
+    }).join('');
+  }
+
+  loadLeaderboard();
+</script>
+
+<div class="disclaimer-bar">Disclaimer: FinPath is for educational purposes only. Nothing on this platform constitutes financial advice. Always consult a qualified financial adviser before making financial decisions.</div>
 </body>
 </html>

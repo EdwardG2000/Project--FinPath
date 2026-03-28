@@ -1,6 +1,4 @@
 // FinPath – shared navbar component
-// Injected into every page via <div id="nav-root"></div>
-
 (function () {
   const NAV_HTML = `
   <nav class="navbar" id="main-nav">
@@ -54,20 +52,20 @@
       </li>
     </ul>
     <div class="navbar-right">
-      <div class="xp-badge">⚡ 340 XP</div>
-      <button class="lang-btn">🌐 EN ▾</button>
-      <a href="profile.html"><div class="avatar" title="Eddie">E</div></a>
+      <div class="xp-badge" id="nav-xp">⚡ 0 XP</div>
+      <a href="profile.html">
+        <div class="avatar" id="nav-avatar" title="Profile">?</div>
+      </a>
     </div>
   </nav>`;
 
-  // Page → nav link ID map
   const PAGE_NAV_MAP = {
-    'dashboard.html': 'nav-home',
-    'learn.html':     'nav-learn',
-    'lesson.html':    'nav-learn',
-    'coach.html':     'nav-coach',
+    'dashboard.html':   'nav-home',
+    'learn.html':       'nav-learn',
+    'lesson.html':      'nav-learn',
+    'coach.html':       'nav-coach',
     'leaderboard.html': 'nav-lb',
-    'profile.html':   'nav-profile',
+    'profile.html':     'nav-profile',
   };
 
   document.addEventListener('DOMContentLoaded', function () {
@@ -76,12 +74,38 @@
 
     root.innerHTML = NAV_HTML;
 
-    // Highlight the active nav link
-    const page = window.location.pathname.split('/').pop() || 'index.html';
+    // Highlight active page
+    const page = window.location.pathname.split('/').pop() || 'dashboard.html';
     const activeId = PAGE_NAV_MAP[page];
     if (activeId) {
       const el = document.getElementById(activeId);
       if (el) el.classList.add('active');
     }
+
+    // Load real user data into navbar
+    const token = localStorage.getItem('fp_token');
+    if (!token) return;
+
+    // Fetch user + progress in parallel
+    Promise.all([
+      fetch('http://localhost:8000/auth/me', {
+        headers: { 'Authorization': 'Bearer ' + token }
+      }).then(r => r.ok ? r.json() : null),
+      fetch('http://localhost:8000/progress/overview', {
+        headers: { 'Authorization': 'Bearer ' + token }
+      }).then(r => r.ok ? r.json() : null),
+    ]).then(([me, progress]) => {
+      if (me) {
+        const initial = (me.username || 'U')[0].toUpperCase();
+        document.getElementById('nav-avatar').textContent = initial;
+        document.getElementById('nav-avatar').title = me.username;
+      }
+      if (progress) {
+        const xp = progress.completed_lessons * 20;
+        document.getElementById('nav-xp').textContent = `⚡ ${xp} XP`;
+      }
+    }).catch(() => {
+      // Silently fail — navbar still works without live data
+    });
   });
 })();

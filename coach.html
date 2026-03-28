@@ -6,56 +6,48 @@
   <title>FinPath – AI Money Coach</title>
   <link rel="stylesheet" href="styles.css" />
   <style>
-    /* Full-height coach layout */
     body { overflow: hidden; }
     .coach-layout { height: calc(100vh - 62px); padding: 1.25rem 1.5rem; }
   </style>
 </head>
 <body>
 
-<!-- Navbar -->
 <div id="nav-root"></div>
 
-<!-- Coach layout -->
 <div class="coach-layout">
 
-  <!-- Sidebar: topics -->
+  <!-- Sidebar -->
   <div class="coach-sidebar">
     <h3>Coach Topics</h3>
-    <div class="topic-item active" onclick="setTopic(this)">
+    <div class="topic-item active" onclick="setTopic(this, 'Build my budget')">
       <input type="checkbox" id="t1" checked>
       <label for="t1">Build my budget</label>
     </div>
-    <div class="topic-item" onclick="setTopic(this)">
+    <div class="topic-item" onclick="setTopic(this, 'Improve my credit score')">
       <input type="checkbox" id="t2">
       <label for="t2">Improve my credit score</label>
     </div>
-    <div class="topic-item" onclick="setTopic(this)">
+    <div class="topic-item" onclick="setTopic(this, 'Explain APR')">
       <input type="checkbox" id="t3">
       <label for="t3">Explain APR</label>
     </div>
-    <div class="topic-item" onclick="setTopic(this)">
+    <div class="topic-item" onclick="setTopic(this, 'Debt payoff plan')">
       <input type="checkbox" id="t4">
       <label for="t4">Debt payoff plan</label>
     </div>
-    <div class="topic-item" onclick="setTopic(this)">
+    <div class="topic-item" onclick="setTopic(this, 'Emergency fund')">
       <input type="checkbox" id="t5">
       <label for="t5">Emergency fund</label>
     </div>
-    <div class="topic-item" onclick="setTopic(this)">
+    <div class="topic-item" onclick="setTopic(this, 'Start investing')">
       <input type="checkbox" id="t6">
       <label for="t6">Start investing</label>
     </div>
 
     <hr style="border:none;border-top:1px solid var(--border);margin:.25rem 0;">
     <h3>Recent Chats</h3>
-    <div class="topic-item">
-      <span style="font-size:1rem;">💬</span>
-      <label style="cursor:pointer;font-size:.85rem;color:var(--mid);">What is compound interest?</label>
-    </div>
-    <div class="topic-item">
-      <span style="font-size:1rem;">💬</span>
-      <label style="cursor:pointer;font-size:.85rem;color:var(--mid);">How to build an emergency fund</label>
+    <div id="recent-chats">
+      <div style="font-size:.8rem;color:var(--muted);padding:.5rem;">No recent chats yet.</div>
     </div>
   </div>
 
@@ -67,52 +59,24 @@
         <div class="name">FinPath AI Coach</div>
         <div class="status"><span class="dot-online"></span> Online now</div>
       </div>
+      <div style="margin-left:auto;font-size:.78rem;color:var(--muted);max-width:260px;text-align:right;line-height:1.4;">
+        ⚠️ Educational only — not financial advice
+      </div>
     </div>
 
     <div class="chat-body" id="chat-body">
-      <div class="chat-msg bot">
-        <div class="chat-msg-avatar">FP</div>
-        <div>
-          <div class="chat-bubble">
-            Hey Eddie! 👋 I'm your FinPath AI Money Coach. I can help you build a budget, understand credit, plan to pay off debt, or answer any finance questions you have. What would you like to work on today?
-          </div>
-          <div class="chat-time">Today, 9:00 AM</div>
-        </div>
-      </div>
-
-      <div class="chat-msg user">
-        <div class="chat-msg-avatar">E</div>
-        <div>
-          <div class="chat-bubble">Can you help me build a simple monthly budget?</div>
-          <div class="chat-time">9:02 AM</div>
-        </div>
-      </div>
-
-      <div class="chat-msg bot">
-        <div class="chat-msg-avatar">FP</div>
-        <div>
-          <div class="chat-bubble">
-            Absolutely! The simplest budgeting framework is the <strong>50/30/20 rule</strong>:<br><br>
-            📌 <strong>50%</strong> of income → Needs (rent, food, utilities)<br>
-            📌 <strong>30%</strong> of income → Wants (dining out, entertainment)<br>
-            📌 <strong>20%</strong> of income → Savings &amp; debt repayment<br><br>
-            Would you like to upload your income details or a CSV so I can create a personalised plan for you?
-          </div>
-          <div class="chat-time">9:03 AM</div>
-        </div>
-      </div>
+      <!-- Welcome message injected by JS after we know the username -->
     </div>
 
-    <!-- Input bar -->
     <div class="chat-input-bar">
-      <button class="file-chip" title="Attach a budget CSV">
+      <button class="file-chip" title="Feature coming soon" onclick="alert('CSV upload coming soon!')">
         <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
           <path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"/>
         </svg>
         BUDGET CSV
       </button>
       <textarea class="chat-input" id="chat-input" rows="1" placeholder="Ask your money coach anything…"></textarea>
-      <button class="send-btn" onclick="sendMessage()">
+      <button class="send-btn" id="send-btn" onclick="sendMessage()">
         <svg width="17" height="17" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
           <path d="M22 2L11 13M22 2L15 22l-4-9-9-4 20-7z"/>
         </svg>
@@ -124,17 +88,94 @@
 
 <script src="navbar.js"></script>
 <script>
-  const BOT_REPLIES = [
-    "Great question! Let me break that down for you in simple terms.",
-    "Based on what you've shared, here's what I'd recommend as a first step.",
-    "That's a really important concept in financial literacy. The key thing to understand is that starting early makes a huge difference thanks to compound interest.",
-    "You're making great progress! Let's tackle this together step by step.",
-    "I'd suggest starting small — even £50/month in savings makes a big difference over time. The key is consistency.",
-    "The 50/30/20 rule is a great starting point. Once you're comfortable with that, we can refine it to your specific situation.",
-  ];
-  let botIdx = 0;
+  const API = 'http://localhost:8000';
 
-  function sendMessage() {
+  // ── Auth helpers ───────────────────────────────────────
+  function getToken() { return localStorage.getItem('fp_token'); }
+
+  function requireAuth() {
+    if (!getToken()) { window.location.href = 'login.html'; }
+  }
+
+  async function apiFetch(path, options = {}) {
+    const token = getToken();
+    const res = await fetch(API + path, {
+      ...options,
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token ? { 'Authorization': 'Bearer ' + token } : {}),
+        ...(options.headers || {}),
+      },
+    });
+    if (res.status === 401) {
+      localStorage.removeItem('fp_token');
+      window.location.href = 'login.html';
+      return;
+    }
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.detail || 'Request failed');
+    }
+    return res.json();
+  }
+
+  // ── State ──────────────────────────────────────────────
+  let conversationId = null;
+  let username = 'there';
+  let isWaiting = false;
+  let recentTopics = JSON.parse(localStorage.getItem('fp_recent_topics') || '[]');
+
+  // ── Init ───────────────────────────────────────────────
+  requireAuth();
+
+  document.addEventListener('DOMContentLoaded', async () => {
+    // Load username
+    try {
+      const me = await apiFetch('/auth/me');
+      username = me.username || 'there';
+    } catch (e) {}
+
+    renderWelcome();
+    renderRecentTopics();
+  });
+
+  function renderWelcome() {
+    const body = document.getElementById('chat-body');
+    const now = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    body.innerHTML = `
+      <div class="chat-msg bot">
+        <div class="chat-msg-avatar">FP</div>
+        <div>
+          <div class="chat-bubble">
+            Hey ${escHtml(username)}! 👋 I'm your FinPath AI Money Coach.<br><br>
+            I can help you understand credit scores, APR, budgeting, debt, and more —
+            all based on your lesson content. What would you like to know?
+          </div>
+          <div class="chat-time">Today, ${now}</div>
+        </div>
+      </div>`;
+  }
+
+  function renderRecentTopics() {
+    const el = document.getElementById('recent-chats');
+    if (!recentTopics.length) return;
+    el.innerHTML = recentTopics.slice(0, 5).map(t => `
+      <div class="topic-item" onclick="prefillInput('${escHtml(t)}')">
+        <span style="font-size:1rem;">💬</span>
+        <label style="cursor:pointer;font-size:.85rem;color:var(--mid);">${escHtml(t)}</label>
+      </div>`).join('');
+  }
+
+  function prefillInput(text) {
+    const input = document.getElementById('chat-input');
+    input.value = text;
+    input.focus();
+  }
+
+  // ── Send message ───────────────────────────────────────
+  async function sendMessage() {
+    if (isWaiting) return;
+
     const input = document.getElementById('chat-input');
     const body  = document.getElementById('chat-body');
     const text  = input.value.trim();
@@ -142,9 +183,10 @@
 
     const now = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
+    // Add user message
     body.innerHTML += `
       <div class="chat-msg user">
-        <div class="chat-msg-avatar">E</div>
+        <div class="chat-msg-avatar">${escHtml(username[0].toUpperCase())}</div>
         <div>
           <div class="chat-bubble">${escHtml(text)}</div>
           <div class="chat-time">${now}</div>
@@ -154,6 +196,14 @@
     input.value = '';
     input.style.height = 'auto';
     body.scrollTop = body.scrollHeight;
+
+    // Save to recent topics
+    if (!recentTopics.includes(text)) {
+      recentTopics.unshift(text);
+      recentTopics = recentTopics.slice(0, 5);
+      localStorage.setItem('fp_recent_topics', JSON.stringify(recentTopics));
+      renderRecentTopics();
+    }
 
     // Typing indicator
     const typingId = 'typing-' + Date.now();
@@ -166,43 +216,89 @@
       </div>`;
     body.scrollTop = body.scrollHeight;
 
-    setTimeout(() => {
+    // Disable send while waiting
+    isWaiting = true;
+    document.getElementById('send-btn').style.opacity = '0.5';
+
+    try {
+      const result = await apiFetch('/ai/coach', {
+        method: 'POST',
+        body: JSON.stringify({
+          message: text,
+          conversation_id: conversationId,
+        }),
+      });
+
+      conversationId = result.conversation_id;
+
       const typing = document.getElementById(typingId);
       if (typing) typing.remove();
 
-      const reply = BOT_REPLIES[botIdx % BOT_REPLIES.length];
-      botIdx++;
       body.innerHTML += `
         <div class="chat-msg bot">
           <div class="chat-msg-avatar">FP</div>
           <div>
-            <div class="chat-bubble">${reply}</div>
+            <div class="chat-bubble">${escHtml(result.response)}</div>
             <div class="chat-time">${now}</div>
           </div>
         </div>`;
-      body.scrollTop = body.scrollHeight;
-    }, 1100);
+
+    } catch (err) {
+      const typing = document.getElementById(typingId);
+      if (typing) typing.remove();
+
+      body.innerHTML += `
+        <div class="chat-msg bot">
+          <div class="chat-msg-avatar">FP</div>
+          <div>
+            <div class="chat-bubble" style="color:#d9534f;">
+              Sorry, I couldn't connect to the coach right now. Please make sure the backend is running and try again.
+            </div>
+            <div class="chat-time">${now}</div>
+          </div>
+        </div>`;
+    }
+
+    isWaiting = false;
+    document.getElementById('send-btn').style.opacity = '1';
+    body.scrollTop = body.scrollHeight;
   }
 
-  function escHtml(s) {
-    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-  }
-
-  function setTopic(el) {
+  // ── Topic click → prefill ──────────────────────────────
+  function setTopic(el, topicText) {
     document.querySelectorAll('.topic-item').forEach(t => t.classList.remove('active'));
     el.classList.add('active');
     const cb = el.querySelector('input[type=checkbox]');
     if (cb) cb.checked = true;
+    if (topicText) prefillInput(topicText);
   }
 
-  document.getElementById('chat-input').addEventListener('keydown', function(e) {
-    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
-  });
-  document.getElementById('chat-input').addEventListener('input', function() {
-    this.style.height = 'auto';
-    this.style.height = Math.min(this.scrollHeight, 100) + 'px';
+  function escHtml(s) {
+    if (!s) return '';
+    return String(s)
+      .replace(/&/g,'&amp;')
+      .replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;')
+      .replace(/"/g,'&quot;');
+  }
+
+  // ── Keyboard shortcuts ─────────────────────────────────
+  document.addEventListener('DOMContentLoaded', () => {
+    const input = document.getElementById('chat-input');
+    input.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+    });
+    input.addEventListener('input', function() {
+      this.style.height = 'auto';
+      this.style.height = Math.min(this.scrollHeight, 100) + 'px';
+    });
   });
 </script>
-  <div class="disclaimer-bar">Disclaimer: FinPath is for educational purposes only. Nothing on this platform constitutes financial advice. Always consult a qualified financial adviser before making investment decisions.</div>
+
+<div class="disclaimer-bar">
+  Disclaimer: FinPath is for educational purposes only. Nothing on this platform constitutes financial advice.
+  Always consult a qualified financial adviser before making financial decisions.
+</div>
+
 </body>
 </html>
