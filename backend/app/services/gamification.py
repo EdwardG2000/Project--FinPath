@@ -15,7 +15,7 @@ async def update_streak(user: User, db: AsyncSession) -> None:
     elif (today - user.last_streak_date).days > 1:
         user.current_streak = 1
     user.last_streak_date = today
-    user.last_activity_at = datetime.now(timezone.utc)
+    user.last_activity_at = datetime.now().replace(tzinfo=None)
     if user.current_streak > user.longest_streak:
         user.longest_streak = user.current_streak
 

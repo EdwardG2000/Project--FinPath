@@ -8,41 +8,39 @@
 </head>
 <body>
 
-<!-- Navbar -->
 <div id="nav-root"></div>
 
-<!-- Dashboard -->
 <div class="dashboard-layout">
 
   <!-- Left: welcome + recent lesson -->
   <div>
     <div class="welcome-banner">
       <div>
-        <h2>Welcome back, Eddie! 👋</h2>
-        <p>You're on a 7-day streak. Keep learning to stay on top!</p>
+        <h2 id="welcome-msg">Welcome back! 👋</h2>
+        <p id="streak-msg">Complete a lesson to start your streak!</p>
       </div>
       <div style="text-align:right;">
-        <div class="xp-big">340</div>
+        <div class="xp-big" id="xp-total">0</div>
         <div style="font-size:.8rem;opacity:.6;">Total XP earned</div>
       </div>
     </div>
 
     <div class="recent-lesson-card">
       <div class="rlc-header">
-        <h3>Lesson 4: APR &amp; Interest</h3>
-        <span class="tag">Credit Score Basics</span>
+        <h3 id="current-module-title">Loading...</h3>
+        <span class="tag" id="current-module-tag"></span>
       </div>
       <div class="rlc-body">
         <div class="rlc-placeholder">
           <span>📖</span>
-          <span>Continue where you left off</span>
+          <span id="module-status">Start this module</span>
         </div>
       </div>
       <div class="rlc-footer">
         <div class="progress-track" style="flex:1;margin-right:1rem;">
-          <span class="progress-label">Lesson 4 / 10</span>
+          <span class="progress-label" id="lesson-progress-label">0 / 0 lessons</span>
           <div class="progress-bar-wrap">
-            <div class="progress-bar-fill" style="width:40%"></div>
+            <div class="progress-bar-fill" id="lesson-progress-bar" style="width:0%"></div>
           </div>
         </div>
         <a href="coach.html" class="discuss-btn">
@@ -51,7 +49,7 @@
           </svg>
           Discuss
         </a>
-        <a href="lesson.html" class="btn btn-primary btn-sm" style="margin-left:.5rem;">Next →</a>
+        <a href="#" id="continue-btn" class="btn btn-primary btn-sm" style="margin-left:.5rem;">Start →</a>
       </div>
     </div>
   </div>
@@ -62,126 +60,119 @@
     <div class="stats-grid">
       <div class="stat-card">
         <div class="s-label">Total XP</div>
-        <div class="s-val">340</div>
-        <div class="trend">↑ +20 today</div>
+        <div class="s-val" id="stat-xp">0</div>
+        <div class="trend" id="stat-xp-today">↑ +0 today</div>
       </div>
       <div class="stat-card">
         <div class="s-label">Streak</div>
-        <div class="s-val">7🔥</div>
+        <div class="s-val" id="stat-streak">0🔥</div>
         <div class="s-sub">days in a row</div>
       </div>
       <div class="stat-card">
         <div class="s-label">Lessons Done</div>
-        <div class="s-val">12</div>
-        <div class="s-sub">of 50 total</div>
+        <div class="s-val" id="stat-lessons">0</div>
+        <div class="s-sub" id="stat-lessons-sub">of 0 total</div>
       </div>
       <div class="stat-card">
-        <div class="s-label">Rank</div>
-        <div class="s-val">#4</div>
-        <div class="s-sub">leaderboard</div>
+        <div class="s-label">Avg Quiz</div>
+        <div class="s-val" id="stat-quiz">—</div>
+        <div class="s-sub">quiz score</div>
       </div>
     </div>
 
     <!-- Next lesson nudge -->
     <div class="card">
       <div class="card-title">Ready to continue?</div>
-      <div style="font-size:.92rem;font-weight:700;margin-bottom:.4rem;">Lesson 5: Credit Cards</div>
-      <div style="font-size:.8rem;color:var(--muted);margin-bottom:1rem;">How interest is charged on credit card balances.</div>
-      <a href="lesson.html" class="btn btn-primary" style="width:100%;display:flex;">Continue Learning →</a>
+      <div id="next-lesson-title" style="font-size:.92rem;font-weight:700;margin-bottom:.4rem;">Loading...</div>
+      <div id="next-lesson-desc" style="font-size:.8rem;color:var(--muted);margin-bottom:1rem;"></div>
+      <a href="#" id="continue-learning-btn" class="btn btn-primary" style="width:100%;display:flex;">Continue Learning →</a>
     </div>
 
     <!-- Module progress -->
     <div class="card">
       <div class="card-title">Module Overview</div>
-      <div style="margin-bottom:.75rem;">
-        <div style="display:flex;justify-content:space-between;font-size:.8rem;margin-bottom:.4rem;">
-          <span style="font-weight:600">🐷 Credit Score</span>
-          <span style="color:var(--green-d);font-weight:700">60%</span>
-        </div>
-        <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:60%"></div></div>
-      </div>
-      <div>
-        <div style="display:flex;justify-content:space-between;font-size:.8rem;margin-bottom:.4rem;">
-          <span style="font-weight:600">🏦 Budgeting</span>
-          <span style="color:var(--green-d);font-weight:700">40%</span>
-        </div>
-        <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:40%"></div></div>
+      <div id="module-overview-list">
+        <div style="color:var(--muted);font-size:.85rem;">Loading...</div>
       </div>
     </div>
 
   </div>
 </div>
 
-<script src="navbar.js"></script>
 <script src="api.js"></script>
+<script src="navbar.js"></script>
 <script>
-  requireAuth(); // redirects to login if not logged in
+  requireAuth();
 
   async function loadDashboard() {
     const [me, progress] = await Promise.all([getMe(), getProgress()]);
 
-    // Username
-    document.querySelector('.welcome-banner h2').textContent =
-      `Welcome back, ${me.username}! 👋`;
+    // Welcome message
+    document.getElementById('welcome-msg').textContent = 'Welcome back, ' + me.username + '! 👋';
+    document.getElementById('streak-msg').textContent = progress.current_streak > 0
+      ? 'You are on a ' + progress.current_streak + '-day streak. Keep it up!'
+      : 'Complete a lesson to start your streak!';
 
-    // XP (20 per lesson completed)
+    // XP
     const xp = progress.completed_lessons * 20;
-    document.querySelector('.xp-big').textContent = xp;
-    document.querySelector('.navbar .xp-badge').textContent = `⚡ ${xp} XP`;
+    document.getElementById('xp-total').textContent = xp;
 
-    // Streak
-    document.querySelector('.s-val:nth-of-type(1)') // handled below by stat cards
+    // Stat cards
+    document.getElementById('stat-xp').textContent = xp;
+    document.getElementById('stat-streak').textContent = progress.current_streak + '🔥';
+    document.getElementById('stat-lessons').textContent = progress.completed_lessons;
+    document.getElementById('stat-lessons-sub').textContent = 'of ' + progress.total_lessons + ' total';
+    document.getElementById('stat-quiz').textContent = progress.average_quiz_score !== null
+      ? Math.round(progress.average_quiz_score) + '%'
+      : '—';
 
-    // Stat cards — target by position
-    const statCards = document.querySelectorAll('.stat-card');
-    statCards[0].querySelector('.s-val').textContent = xp;
-    statCards[0].querySelector('.trend').textContent =
-      `↑ +${progress.current_streak > 0 ? 20 : 0} today`;
-
-    statCards[1].querySelector('.s-val').textContent =
-      progress.current_streak + '🔥';
-
-    statCards[2].querySelector('.s-val').textContent =
-      progress.completed_lessons;
-    statCards[2].querySelector('.s-sub').textContent =
-      `of ${progress.total_lessons} total`;
-
-    // Module progress bars
-    const modules = progress.modules.slice(0, 2); // show first 2
-    const moduleSection = document.querySelector('.card:last-child');
-    const bars = moduleSection.querySelectorAll('.progress-bar-fill');
-    const labels = moduleSection.querySelectorAll('[style*="font-weight:600"]');
-    const pcts = moduleSection.querySelectorAll('[style*="green-d"]');
-
-    modules.forEach((mod, i) => {
-      if (bars[i]) bars[i].style.width = mod.completion_pct + '%';
-      if (labels[i]) labels[i].textContent = mod.title;
-      if (pcts[i]) pcts[i].textContent = Math.round(mod.completion_pct) + '%';
-    });
-
-    // Continue lesson banner
-    const inProgress = progress.modules.find(m =>
-      m.completed_lessons > 0 && m.completion_pct < 100
-    ) || progress.modules[0];
+    // Find module in progress or first one
+    const modules = progress.modules;
+    const inProgress = modules.find(function(m) {
+      return m.completed_lessons > 0 && m.completion_pct < 100;
+    }) || modules[0];
 
     if (inProgress) {
-      document.querySelector('.recent-lesson-card .rlc-header h3').textContent =
-        inProgress.title;
-      document.querySelector('.progress-label').textContent =
-        `${inProgress.completed_lessons} / ${inProgress.lesson_count} lessons`;
-      document.querySelector('.rlc-body .rlc-placeholder span:last-child').textContent =
-        inProgress.completion_pct > 0 ? 'Continue where you left off' : 'Start this module';
-      document.querySelector('.progress-bar-fill').style.width =
-        inProgress.completion_pct + '%';
+      document.getElementById('current-module-title').textContent = inProgress.title;
+      document.getElementById('current-module-tag').textContent = inProgress.title;
+      document.getElementById('lesson-progress-label').textContent =
+        inProgress.completed_lessons + ' / ' + inProgress.lesson_count + ' lessons';
+      document.getElementById('lesson-progress-bar').style.width = inProgress.completion_pct + '%';
+      document.getElementById('module-status').textContent =
+        inProgress.completed_lessons > 0 ? 'Continue where you left off' : 'Start this module';
 
-      // Wire "Next" button to the right module
-      document.querySelector('.btn-primary.btn-sm').href =
-        `learn.html?module=${inProgress.id}`;
+      const href = 'lesson.html?module=' + inProgress.id;
+      document.getElementById('continue-btn').href = href;
+      document.getElementById('continue-btn').textContent =
+        inProgress.completed_lessons > 0 ? 'Continue →' : 'Start →';
+      document.getElementById('continue-learning-btn').href = href;
     }
+
+    // Next lesson nudge
+    const nextModule = modules.find(function(m) { return m.completion_pct < 100; }) || modules[0];
+    if (nextModule) {
+      document.getElementById('next-lesson-title').textContent = nextModule.title;
+      document.getElementById('next-lesson-desc').textContent =
+        nextModule.completed_lessons + ' of ' + nextModule.lesson_count + ' lessons completed';
+      document.getElementById('continue-learning-btn').href = 'lesson.html?module=' + nextModule.id;
+    }
+
+    // Module overview bars
+    const list = document.getElementById('module-overview-list');
+    list.innerHTML = modules.slice(0, 3).map(function(mod) {
+      return '<div style="margin-bottom:.75rem;">' +
+        '<div style="display:flex;justify-content:space-between;font-size:.8rem;margin-bottom:.4rem;">' +
+        '<span style="font-weight:600">' + mod.title + '</span>' +
+        '<span style="color:var(--green-d);font-weight:700">' + Math.round(mod.completion_pct) + '%</span>' +
+        '</div>' +
+        '<div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:' + mod.completion_pct + '%"></div></div>' +
+        '</div>';
+    }).join('');
   }
 
   loadDashboard();
 </script>
-  <div class="disclaimer-bar">Disclaimer: FinPath is for educational purposes only. Nothing on this platform constitutes financial advice. Always consult a qualified financial adviser before making investment decisions.</div>
+
+<div class="disclaimer-bar">Disclaimer: FinPath is for educational purposes only. Nothing on this platform constitutes financial advice. Always consult a qualified financial adviser before making investment decisions.</div>
 </body>
 </html>
