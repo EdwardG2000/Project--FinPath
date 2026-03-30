@@ -4,522 +4,707 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>FinPath – Learn Credit the Smart Way</title>
-  <link rel="stylesheet" href="styles.css" />
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      overflow-x: hidden;
       background: #0a1628;
+      color: #e2e8f0;
+      overflow-x: hidden;
     }
 
     /* ── Animated background ── */
     .bg-canvas {
-      position: fixed;
-      inset: 0;
-      z-index: 0;
+      position: fixed; inset: 0; z-index: 0;
       background: linear-gradient(135deg, #0a1628 0%, #0f2d1f 50%, #0a1628 100%);
       background-size: 400% 400%;
       animation: gradientShift 12s ease infinite;
     }
-
     @keyframes gradientShift {
       0%   { background-position: 0% 50%; }
       50%  { background-position: 100% 50%; }
       100% { background-position: 0% 50%; }
     }
-
-    /* Floating particles */
-    .particles {
-      position: fixed;
-      inset: 0;
-      z-index: 1;
-      pointer-events: none;
-      overflow: hidden;
-    }
-
-    .particle {
-      position: absolute;
-      font-size: 1.5rem;
-      opacity: 0;
-      animation: floatUp linear infinite;
-      user-select: none;
-    }
-
-    @keyframes floatUp {
-      0%   { transform: translateY(100vh) rotate(0deg); opacity: 0; }
-      10%  { opacity: 0.15; }
-      90%  { opacity: 0.15; }
-      100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
-    }
-
-    /* Glowing orbs */
     .orb {
-      position: fixed;
-      border-radius: 50%;
-      filter: blur(80px);
-      opacity: 0.15;
-      z-index: 1;
-      animation: orbPulse ease-in-out infinite;
+      position: fixed; border-radius: 50%; filter: blur(80px);
+      opacity: 0.12; z-index: 1; animation: orbPulse ease-in-out infinite;
+      pointer-events: none;
     }
-
-    .orb-1 {
-      width: 500px; height: 500px;
-      background: #2ecc8e;
-      top: -200px; left: -100px;
-      animation-duration: 8s;
-    }
-
-    .orb-2 {
-      width: 400px; height: 400px;
-      background: #3b82f6;
-      bottom: -150px; right: -100px;
-      animation-duration: 10s;
-      animation-delay: -4s;
-    }
-
-    .orb-3 {
-      width: 300px; height: 300px;
-      background: #a78bfa;
-      top: 50%; left: 40%;
-      animation-duration: 12s;
-      animation-delay: -2s;
-    }
-
+    .orb-1 { width:500px;height:500px;background:#2ecc8e;top:-200px;left:-100px;animation-duration:8s; }
+    .orb-2 { width:400px;height:400px;background:#3b82f6;bottom:-150px;right:-100px;animation-duration:10s;animation-delay:-4s; }
+    .orb-3 { width:300px;height:300px;background:#a78bfa;top:50%;left:40%;animation-duration:12s;animation-delay:-2s; }
     @keyframes orbPulse {
-      0%, 100% { transform: scale(1); opacity: 0.15; }
-      50%       { transform: scale(1.2); opacity: 0.22; }
+      0%,100% { transform:scale(1); opacity:.12; }
+      50%      { transform:scale(1.2); opacity:.18; }
+    }
+    .particles { position:fixed;inset:0;z-index:1;pointer-events:none;overflow:hidden; }
+    .particle {
+      position:absolute;font-size:1.2rem;opacity:0;
+      animation:floatUp linear infinite;user-select:none;
+    }
+    @keyframes floatUp {
+      0%   { transform:translateY(100vh) rotate(0deg);opacity:0; }
+      10%  { opacity:.08; }
+      90%  { opacity:.08; }
+      100% { transform:translateY(-100px) rotate(360deg);opacity:0; }
     }
 
-    /* ── Top bar ── */
-    .top-bar {
-      position: relative;
-      z-index: 10;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 1.25rem 2.5rem;
-      background: rgba(255,255,255,0.05);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-    }
+    /* ── All content above background ── */
+    .page-wrap { position:relative;z-index:10; }
 
-    .brand { font-size: 1.35rem; font-weight: 800; color: #fff; }
-    .brand span { color: #2ecc8e; }
-
-    .top-bar-links { display: flex; align-items: center; gap: 1rem; }
-    .top-bar-links a {
-      font-size: .9rem; font-weight: 600; color: rgba(255,255,255,0.7);
-      text-decoration: none; padding: .45rem .9rem; border-radius: 8px; transition: .15s;
+    /* ── Navbar ── */
+    .navbar {
+      position:sticky;top:0;z-index:100;
+      display:flex;align-items:center;justify-content:space-between;
+      padding:1.1rem 2.5rem;
+      background:rgba(10,22,40,0.85);
+      backdrop-filter:blur(12px);
+      border-bottom:1px solid rgba(255,255,255,0.08);
     }
-    .top-bar-links a:hover { background: rgba(255,255,255,0.1); color: #fff; }
-    .top-bar-links .btn-signup {
-      background: #2ecc8e; color: #fff;
-      padding: .45rem 1.25rem; border-radius: 8px;
+    .brand { font-size:1.35rem;font-weight:800;color:#fff; }
+    .brand span { color:#2ecc8e; }
+    .nav-links { display:flex;align-items:center;gap:1rem; }
+    .nav-links a {
+      font-size:.9rem;font-weight:600;color:rgba(255,255,255,0.65);
+      text-decoration:none;padding:.4rem .85rem;border-radius:8px;transition:.15s;
     }
-    .top-bar-links .btn-signup:hover { background: #1fa870; }
-
-    /* ── Main layout ── */
-    .main {
-      position: relative;
-      z-index: 10;
-      flex: 1;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 4rem 2rem;
-      gap: 4rem;
-      align-items: center;
-      width: 100%;
+    .nav-links a:hover { background:rgba(255,255,255,0.08);color:#fff; }
+    .nav-cta {
+      background:#2ecc8e;color:#fff;padding:.45rem 1.25rem;
+      border-radius:8px;font-weight:700;text-decoration:none;transition:.15s;
     }
+    .nav-cta:hover { background:#1fa870;color:#fff; }
 
-    /* ── Left hero ── */
-    .hero h1 {
-      font-size: 3rem;
-      font-weight: 800;
-      color: #fff;
-      line-height: 1.15;
-      margin-bottom: 1.25rem;
-      animation: slideInLeft 0.8s ease both;
+    /* ── Hero section ── */
+    .hero-section {
+      min-height:100vh;display:grid;
+      grid-template-columns:1fr 1fr;
+      max-width:1100px;margin:0 auto;
+      padding:4rem 2rem;gap:4rem;align-items:center;
     }
-    .hero h1 span { color: #2ecc8e; }
-
-    .hero p {
-      font-size: 1.05rem;
-      color: rgba(255,255,255,0.65);
-      line-height: 1.7;
-      margin-bottom: 2rem;
-      max-width: 440px;
-      animation: slideInLeft 0.8s 0.1s ease both;
+    .hero-text h1 {
+      font-size:3rem;font-weight:800;color:#fff;
+      line-height:1.15;margin-bottom:1.25rem;
+      animation:slideInLeft .8s ease both;
     }
-
+    .hero-text h1 span { color:#2ecc8e; }
+    .hero-text p {
+      font-size:1.05rem;color:rgba(255,255,255,0.65);
+      line-height:1.7;margin-bottom:2rem;max-width:440px;
+      animation:slideInLeft .8s .1s ease both;
+    }
     @keyframes slideInLeft {
-      from { opacity: 0; transform: translateX(-30px); }
-      to   { opacity: 1; transform: translateX(0); }
+      from { opacity:0;transform:translateX(-30px); }
+      to   { opacity:1;transform:translateX(0); }
     }
-
-    .features {
-      display: flex;
-      flex-direction: column;
-      gap: .85rem;
-      margin-bottom: 2.5rem;
+    @keyframes slideInRight {
+      from { opacity:0;transform:translateX(30px); }
+      to   { opacity:1;transform:translateX(0); }
     }
-
-    .feature-item {
-      display: flex;
-      align-items: center;
-      gap: .75rem;
-      font-size: .92rem;
-      color: rgba(255,255,255,0.8);
-      font-weight: 500;
-      animation: slideInLeft 0.8s ease both;
+    .hero-features { display:flex;flex-direction:column;gap:.85rem;margin-bottom:2.5rem; }
+    .hero-feature {
+      display:flex;align-items:center;gap:.75rem;
+      font-size:.92rem;color:rgba(255,255,255,0.8);font-weight:500;
+      animation:slideInLeft .8s ease both;
     }
-
-    .feature-item:nth-child(1) { animation-delay: 0.2s; }
-    .feature-item:nth-child(2) { animation-delay: 0.3s; }
-    .feature-item:nth-child(3) { animation-delay: 0.4s; }
-    .feature-item:nth-child(4) { animation-delay: 0.5s; }
-    .feature-item:nth-child(5) { animation-delay: 0.6s; }
-
-    .feature-icon {
-      width: 36px; height: 36px;
-      background: rgba(46,204,142,0.15);
-      border: 1px solid rgba(46,204,142,0.3);
-      border-radius: 10px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1rem; flex-shrink: 0;
+    .hero-feature:nth-child(1){animation-delay:.2s;}
+    .hero-feature:nth-child(2){animation-delay:.3s;}
+    .hero-feature:nth-child(3){animation-delay:.4s;}
+    .hero-feature:nth-child(4){animation-delay:.5s;}
+    .hero-feature:nth-child(5){animation-delay:.6s;}
+    .feat-icon {
+      width:36px;height:36px;background:rgba(46,204,142,0.15);
+      border:1px solid rgba(46,204,142,0.3);border-radius:10px;
+      display:flex;align-items:center;justify-content:center;
+      font-size:1rem;flex-shrink:0;
     }
-
-    .stats-row {
-      display: flex;
-      gap: 2rem;
-      animation: slideInLeft 0.8s 0.7s ease both;
-    }
-
-    .stat .num {
-      font-size: 1.8rem;
-      font-weight: 800;
-      color: #2ecc8e;
-    }
-
-    .stat .lbl {
-      font-size: .8rem;
-      color: rgba(255,255,255,0.5);
-      margin-top: .1rem;
-    }
+    .hero-stats { display:flex;gap:2rem;animation:slideInLeft .8s .7s ease both; }
+    .hero-stat .num { font-size:1.8rem;font-weight:800;color:#2ecc8e; }
+    .hero-stat .lbl { font-size:.8rem;color:rgba(255,255,255,0.5);margin-top:.1rem; }
 
     /* ── Auth card ── */
     .auth-card {
-      background: rgba(255,255,255,0.95);
-      backdrop-filter: blur(20px);
-      border: 1px solid rgba(255,255,255,0.2);
-      border-radius: 24px;
-      padding: 2.5rem;
-      box-shadow: 0 25px 60px rgba(0,0,0,0.4);
-      width: 100%;
-      max-width: 420px;
-      justify-self: end;
-      animation: slideInRight 0.8s 0.2s ease both;
+      background:rgba(255,255,255,0.95);backdrop-filter:blur(20px);
+      border:1px solid rgba(255,255,255,0.2);border-radius:24px;
+      padding:2.5rem;box-shadow:0 25px 60px rgba(0,0,0,0.4);
+      width:100%;max-width:420px;justify-self:end;
+      animation:slideInRight .8s .2s ease both;
     }
-
-    @keyframes slideInRight {
-      from { opacity: 0; transform: translateX(30px); }
-      to   { opacity: 1; transform: translateX(0); }
-    }
-
-    /* Tabs */
     .auth-tabs {
-      display: flex;
-      background: #f4f7fb;
-      border-radius: 10px;
-      padding: 4px;
-      margin-bottom: 1.75rem;
+      display:flex;background:#f4f7fb;border-radius:10px;padding:4px;margin-bottom:1.75rem;
     }
-
     .auth-tab {
-      flex: 1; text-align: center; padding: .55rem;
-      border-radius: 8px; font-size: .88rem; font-weight: 600;
-      cursor: pointer; color: #8898aa; transition: .15s;
-      border: none; background: transparent; font-family: inherit;
+      flex:1;text-align:center;padding:.55rem;border-radius:8px;
+      font-size:.88rem;font-weight:600;cursor:pointer;color:#8898aa;
+      transition:.15s;border:none;background:transparent;font-family:inherit;
     }
-
-    .auth-tab.active {
-      background: #fff; color: #0f1f3d;
-      box-shadow: 0 1px 4px rgba(15,31,61,.1);
+    .auth-tab.active { background:#fff;color:#0f1f3d;box-shadow:0 1px 4px rgba(15,31,61,.1); }
+    .auth-form { display:none; }
+    .auth-form.active { display:block; }
+    .form-group { margin-bottom:.9rem; }
+    .form-group label { display:block;font-size:.83rem;font-weight:600;color:#2c3e60;margin-bottom:.4rem; }
+    .form-group input {
+      width:100%;padding:.75rem 1rem;border:1.5px solid #dde4ef;border-radius:10px;
+      font-size:.9rem;font-family:inherit;color:#0f1f3d;outline:none;
+      transition:border-color .15s;background:#f9fbfd;
     }
-
-    .auth-form { display: none; }
-    .auth-form.active { display: block; }
-
-    .form-group { margin-bottom: .9rem; }
-    .form-group label {
-      display: block; font-size: .83rem; font-weight: 600;
-      color: #2c3e60; margin-bottom: .4rem;
-    }
-
-    .form-group input, .form-group select {
-      width: 100%; padding: .75rem 1rem;
-      border: 1.5px solid #dde4ef; border-radius: 10px;
-      font-size: .9rem; font-family: inherit; color: #0f1f3d;
-      outline: none; transition: border-color .15s; background: #f9fbfd;
-    }
-
-    .form-group input:focus, .form-group select:focus {
-      border-color: #2ecc8e; background: #fff;
-      box-shadow: 0 0 0 3px rgba(46,204,142,0.1);
-    }
-
-    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; }
-
+    .form-group input:focus { border-color:#2ecc8e;background:#fff;box-shadow:0 0 0 3px rgba(46,204,142,0.1); }
+    .form-row { display:grid;grid-template-columns:1fr 1fr;gap:.75rem; }
     .error-msg {
-      display: none; background: #fff0f0; border: 1px solid #f5c6c6;
-      color: #c0392b; padding: .7rem 1rem; border-radius: 8px;
-      font-size: .83rem; margin-bottom: 1rem;
+      display:none;background:#fff0f0;border:1px solid #f5c6c6;
+      color:#c0392b;padding:.7rem 1rem;border-radius:8px;font-size:.83rem;margin-bottom:1rem;
     }
-
     .submit-btn {
-      width: 100%; padding: .85rem; background: #2ecc8e; color: #fff;
-      border: none; border-radius: 10px; font-size: .95rem; font-weight: 700;
-      cursor: pointer; transition: .18s; margin-top: .5rem; font-family: inherit;
-      position: relative; overflow: hidden;
+      width:100%;padding:.85rem;background:#2ecc8e;color:#fff;border:none;
+      border-radius:10px;font-size:.95rem;font-weight:700;cursor:pointer;
+      transition:.18s;margin-top:.5rem;font-family:inherit;position:relative;overflow:hidden;
     }
-
-    .submit-btn::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-      transform: translateX(-100%);
-      transition: transform 0.5s;
-    }
-
-    .submit-btn:hover::after { transform: translateX(100%); }
-    .submit-btn:hover { background: #1fa870; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(46,204,142,0.4); }
-    .submit-btn:disabled { opacity: .6; cursor: not-allowed; transform: none; }
-
+    .submit-btn:hover { background:#1fa870;transform:translateY(-1px);box-shadow:0 6px 20px rgba(46,204,142,0.4); }
+    .submit-btn:disabled { opacity:.6;cursor:not-allowed;transform:none; }
     .secondary-btn {
-      width: 100%; padding: .85rem; background: #f4f7fb; color: #0f1f3d;
-      border: 1.5px solid #dde4ef; border-radius: 10px; font-size: .9rem;
-      font-weight: 600; cursor: pointer; transition: .15s; font-family: inherit;
+      width:100%;padding:.85rem;background:#f4f7fb;color:#0f1f3d;
+      border:1.5px solid #dde4ef;border-radius:10px;font-size:.9rem;
+      font-weight:600;cursor:pointer;transition:.15s;font-family:inherit;
     }
-    .secondary-btn:hover { border-color: #2ecc8e; color: #1fa870; background: #f0fdf8; }
+    .secondary-btn:hover { border-color:#2ecc8e;color:#1fa870;background:#f0fdf8; }
+    .divider { text-align:center;font-size:.8rem;color:#8898aa;margin:1rem 0;position:relative; }
+    .divider::before,.divider::after { content:'';position:absolute;top:50%;width:38%;height:1px;background:#dde4ef; }
+    .divider::before { left:0; }
+    .divider::after { right:0; }
+    .password-strength { margin-top:.4rem; }
+    .strength-bar { height:4px;border-radius:100px;background:#dde4ef;overflow:hidden; }
+    .strength-fill { height:100%;border-radius:100px;transition:width .3s,background .3s;width:0%; }
+    .strength-label { font-size:.72rem;color:#8898aa;margin-top:.2rem; }
+    .age-note { font-size:.75rem;color:#8898aa;margin-top:.3rem; }
+    .auth-disclaimer { font-size:.75rem;color:#8898aa;text-align:center;margin-top:1rem;line-height:1.5; }
 
-    .divider {
-      text-align: center; font-size: .8rem; color: #8898aa;
-      margin: 1rem 0; position: relative;
+    /* ── Scroll indicator ── */
+    .scroll-hint {
+      text-align:center;padding:2rem;color:rgba(255,255,255,0.4);
+      font-size:.85rem;animation:bounce 2s ease infinite;
     }
-    .divider::before, .divider::after {
-      content: ''; position: absolute; top: 50%;
-      width: 38%; height: 1px; background: #dde4ef;
+    @keyframes bounce {
+      0%,100% { transform:translateY(0); }
+      50%      { transform:translateY(8px); }
     }
-    .divider::before { left: 0; }
-    .divider::after { right: 0; }
 
-    .password-strength { margin-top: .4rem; }
-    .strength-bar { height: 4px; border-radius: 100px; background: #dde4ef; overflow: hidden; }
-    .strength-fill { height: 100%; border-radius: 100px; transition: width .3s, background .3s; width: 0%; }
-    .strength-label { font-size: .72rem; color: #8898aa; margin-top: .2rem; }
+    /* ── Section base ── */
+    .section {
+      max-width:1100px;margin:0 auto;padding:5rem 2rem;
+    }
+    .section-tag {
+      display:inline-flex;align-items:center;gap:.4rem;
+      background:rgba(46,204,142,0.15);border:1px solid rgba(46,204,142,0.3);
+      border-radius:100px;padding:.35rem .9rem;
+      font-size:.75rem;font-weight:700;letter-spacing:.06em;
+      text-transform:uppercase;color:#2ecc8e;margin-bottom:1.25rem;
+    }
+    .section-title {
+      font-size:2.2rem;font-weight:800;color:#fff;
+      line-height:1.2;margin-bottom:1rem;
+    }
+    .section-title span { color:#2ecc8e; }
+    .section-sub {
+      font-size:1rem;color:rgba(255,255,255,0.6);
+      max-width:560px;line-height:1.7;margin-bottom:3rem;
+    }
+    .divider-line {
+      height:1px;background:rgba(255,255,255,0.06);margin:0;
+    }
 
-    .age-note { font-size: .75rem; color: #8898aa; margin-top: .3rem; }
-    .disclaimer { font-size: .75rem; color: #8898aa; text-align: center; margin-top: 1rem; line-height: 1.5; }
+    /* ── How it works ── */
+    .steps-grid {
+      display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;
+    }
+    .step-card {
+      background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);
+      border-radius:20px;padding:2rem;text-align:center;transition:.2s;
+    }
+    .step-card:hover { border-color:rgba(46,204,142,0.4);transform:translateY(-4px); }
+    .step-num {
+      width:48px;height:48px;border-radius:50%;
+      background:linear-gradient(135deg,#2ecc8e,#0f2d1f);
+      display:flex;align-items:center;justify-content:center;
+      font-size:1.1rem;font-weight:800;color:#fff;
+      margin:0 auto 1.25rem;
+    }
+    .step-icon { font-size:2.5rem;margin-bottom:1rem; }
+    .step-card h3 { font-size:1.05rem;font-weight:700;color:#fff;margin-bottom:.6rem; }
+    .step-card p { font-size:.88rem;color:rgba(255,255,255,0.6);line-height:1.65; }
+
+    /* ── Modules showcase ── */
+    .modules-showcase {
+      display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1.25rem;
+    }
+    .module-showcase-card {
+      background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);
+      border-radius:16px;padding:1.5rem;transition:.2s;cursor:default;
+    }
+    .module-showcase-card:hover { border-color:rgba(46,204,142,0.4);transform:translateY(-3px); }
+    .module-showcase-icon { font-size:2rem;margin-bottom:.85rem; }
+    .module-showcase-card h3 { font-size:.95rem;font-weight:700;color:#fff;margin-bottom:.5rem; }
+    .module-showcase-card p { font-size:.82rem;color:rgba(255,255,255,0.55);line-height:1.6; }
+    .module-showcase-pill {
+      display:inline-block;margin-top:.75rem;
+      background:rgba(46,204,142,0.1);border:1px solid rgba(46,204,142,0.2);
+      border-radius:100px;padding:.2rem .6rem;
+      font-size:.72rem;font-weight:600;color:#2ecc8e;
+    }
+
+    /* ── Gamification section ── */
+    .gamification-grid {
+      display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;
+    }
+    .gamification-features { display:flex;flex-direction:column;gap:1.5rem; }
+    .gamif-item { display:flex;gap:1rem;align-items:flex-start; }
+    .gamif-icon {
+      width:44px;height:44px;border-radius:12px;flex-shrink:0;
+      display:flex;align-items:center;justify-content:center;font-size:1.3rem;
+    }
+    .gamif-icon.green  { background:rgba(46,204,142,0.15); }
+    .gamif-icon.amber  { background:rgba(245,166,35,0.15); }
+    .gamif-icon.purple { background:rgba(167,139,250,0.15); }
+    .gamif-icon.blue   { background:rgba(59,130,246,0.15); }
+    .gamif-item h4 { font-size:.97rem;font-weight:700;color:#fff;margin-bottom:.3rem; }
+    .gamif-item p  { font-size:.85rem;color:rgba(255,255,255,0.55);line-height:1.6; }
+
+    .gamification-visual {
+      background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);
+      border-radius:24px;padding:2rem;
+    }
+    .xp-demo {
+      text-align:center;margin-bottom:1.5rem;
+      padding-bottom:1.5rem;border-bottom:1px solid rgba(255,255,255,0.08);
+    }
+    .xp-demo .big { font-size:3rem;font-weight:900;color:#2ecc8e; }
+    .xp-demo .lbl { font-size:.85rem;color:rgba(255,255,255,0.5); }
+    .level-bar-demo { margin-bottom:1rem; }
+    .level-bar-demo .top {
+      display:flex;justify-content:space-between;
+      font-size:.82rem;margin-bottom:.5rem;
+      color:rgba(255,255,255,0.7);font-weight:600;
+    }
+    .bar-track { height:10px;background:rgba(255,255,255,0.1);border-radius:100px;overflow:hidden; }
+    .bar-fill  { height:100%;background:linear-gradient(90deg,#2ecc8e,#f5a623);border-radius:100px; }
+    .badges-demo { display:flex;gap:.75rem;flex-wrap:wrap;margin-top:1rem; }
+    .badge-demo {
+      display:flex;flex-direction:column;align-items:center;gap:.3rem;
+      font-size:.72rem;color:rgba(255,255,255,0.6);
+    }
+    .badge-demo .icon { font-size:1.8rem; }
+
+    /* ── AI Coach section ── */
+    .coach-section-grid {
+      display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;
+    }
+    .coach-demo {
+      background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);
+      border-radius:20px;overflow:hidden;
+    }
+    .coach-demo-header {
+      padding:1rem 1.25rem;border-bottom:1px solid rgba(255,255,255,0.08);
+      display:flex;align-items:center;gap:.75rem;
+    }
+    .coach-demo-avatar {
+      width:36px;height:36px;border-radius:50%;
+      background:linear-gradient(135deg,#2ecc8e,#0f1f3d);
+      display:flex;align-items:center;justify-content:center;font-size:1rem;
+    }
+    .coach-demo-header .name { font-size:.9rem;font-weight:700;color:#fff; }
+    .coach-demo-header .status { font-size:.72rem;color:#2ecc8e; }
+    .coach-demo-body { padding:1.25rem;display:flex;flex-direction:column;gap:.85rem; }
+    .demo-bubble {
+      padding:.75rem 1rem;border-radius:12px;font-size:.85rem;line-height:1.6;max-width:85%;
+    }
+    .demo-bubble.bot {
+      background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.85);
+      border-radius:4px 12px 12px 12px;
+    }
+    .demo-bubble.user {
+      background:#2ecc8e;color:#fff;align-self:flex-end;
+      border-radius:12px 4px 12px 12px;margin-left:auto;
+    }
+    .coach-text h3 { font-size:1.4rem;font-weight:800;color:#fff;margin-bottom:1rem; }
+    .coach-text p  { font-size:.95rem;color:rgba(255,255,255,0.65);line-height:1.7;margin-bottom:1rem; }
+    .coach-points { display:flex;flex-direction:column;gap:.75rem;margin-top:1.5rem; }
+    .coach-point { display:flex;align-items:center;gap:.75rem;font-size:.9rem;color:rgba(255,255,255,0.75); }
+    .coach-point::before { content:'✓';color:#2ecc8e;font-weight:800;flex-shrink:0; }
+
+    /* ── Stats banner ── */
+    .stats-banner {
+      background:rgba(46,204,142,0.08);border:1px solid rgba(46,204,142,0.2);
+      border-radius:20px;padding:3rem 2rem;
+      display:grid;grid-template-columns:repeat(4,1fr);gap:2rem;text-align:center;
+    }
+    .banner-stat .num { font-size:2.5rem;font-weight:900;color:#2ecc8e;margin-bottom:.3rem; }
+    .banner-stat .lbl { font-size:.88rem;color:rgba(255,255,255,0.55); }
+
+    /* ── Bottom CTA / sign up ── */
+    .cta-section {
+      max-width:900px;margin:0 auto;padding:5rem 2rem;text-align:center;
+    }
+    .cta-section h2 { font-size:2.5rem;font-weight:800;color:#fff;margin-bottom:1rem; }
+    .cta-section h2 span { color:#2ecc8e; }
+    .cta-section p { font-size:1.05rem;color:rgba(255,255,255,0.6);margin-bottom:3rem;line-height:1.7; }
+    .cta-auth-card {
+      background:rgba(255,255,255,0.97);border-radius:24px;
+      padding:2.5rem;max-width:480px;margin:0 auto;
+      box-shadow:0 30px 80px rgba(0,0,0,0.5);
+    }
 
     /* ── Footer ── */
     .footer {
-      position: relative; z-index: 10;
-      text-align: center; padding: 1.25rem;
-      font-size: .78rem; color: rgba(255,255,255,0.3);
-      border-top: 1px solid rgba(255,255,255,0.08);
+      text-align:center;padding:2rem;
+      font-size:.78rem;color:rgba(255,255,255,0.25);
+      border-top:1px solid rgba(255,255,255,0.06);
     }
 
-    @media (max-width: 800px) {
-      .main { grid-template-columns: 1fr; padding: 2rem 1.25rem; gap: 2rem; }
-      .auth-card { justify-self: center; }
-      .hero h1 { font-size: 2rem; }
-      .form-row { grid-template-columns: 1fr; }
-      .stats-row { gap: 1.25rem; }
+    @media (max-width:900px) {
+      .hero-section { grid-template-columns:1fr;padding:3rem 1.5rem; }
+      .auth-card { justify-self:center;max-width:100%; }
+      .hero-text h1 { font-size:2rem; }
+      .steps-grid { grid-template-columns:1fr; }
+      .gamification-grid { grid-template-columns:1fr; }
+      .coach-section-grid { grid-template-columns:1fr; }
+      .stats-banner { grid-template-columns:1fr 1fr; }
+      .form-row { grid-template-columns:1fr; }
     }
   </style>
 </head>
 <body>
 
-<!-- Animated background -->
 <div class="bg-canvas"></div>
 <div class="orb orb-1"></div>
 <div class="orb orb-2"></div>
 <div class="orb orb-3"></div>
-
-<!-- Floating particles -->
 <div class="particles" id="particles"></div>
 
-<!-- Top bar -->
-<div class="top-bar">
-  <div class="brand">Fin<span>Path</span></div>
-  <div class="top-bar-links">
-    <a href="#features">Features</a>
-    <a href="#" onclick="switchTab('login')">Sign in</a>
-    <a href="#" class="btn-signup" onclick="switchTab('register')">Get started free</a>
-  </div>
-</div>
+<div class="page-wrap">
 
-<!-- Main -->
-<div class="main">
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="brand">Fin<span>Path</span></div>
+    <div class="nav-links">
+      <a href="#how-it-works">How it works</a>
+      <a href="#modules">Modules</a>
+      <a href="#features">Features</a>
+      <a href="#" onclick="switchTab('login');scrollToHero()">Sign in</a>
+      <a href="#signup" class="nav-cta">Get started free</a>
+    </div>
+  </nav>
 
-  <!-- Left hero -->
-  <div class="hero" id="features">
-    <h1>Learn credit<br>the <span>smart way</span></h1>
-    <p>FinPath teaches UK financial literacy through bite-sized lessons, instant quizzes, and an AI Money Coach — designed for 18-25 year olds.</p>
-
-    <div class="features">
-      <div class="feature-item">
-        <div class="feature-icon">📊</div>
-        <span>Understand credit scores and how to improve them</span>
+  <!-- Hero -->
+  <section class="hero-section" id="hero">
+    <div class="hero-text">
+      <div class="section-tag">🇬🇧 UK Financial Literacy</div>
+      <h1>Learn credit<br>the <span>smart way</span></h1>
+      <p>FinPath teaches UK financial literacy through bite-sized lessons, instant quizzes, and an AI Money Coach — designed for 18-25 year olds.</p>
+      <div class="hero-features">
+        <div class="hero-feature"><div class="feat-icon">📊</div><span>Understand credit scores and how to improve them</span></div>
+        <div class="hero-feature"><div class="feat-icon">💰</div><span>Learn how APR, interest, and debt really work</span></div>
+        <div class="hero-feature"><div class="feat-icon">🤖</div><span>Ask your AI Money Coach anything, anytime</span></div>
+        <div class="hero-feature"><div class="feat-icon">🏆</div><span>Earn XP, badges and build daily streaks</span></div>
+        <div class="hero-feature"><div class="feat-icon">🆓</div><span>Completely free, always</span></div>
       </div>
-      <div class="feature-item">
-        <div class="feature-icon">💰</div>
-        <span>Learn how APR, interest, and debt really work</span>
-      </div>
-      <div class="feature-item">
-        <div class="feature-icon">🤖</div>
-        <span>Ask your AI Money Coach anything, anytime</span>
-      </div>
-      <div class="feature-item">
-        <div class="feature-icon">🏆</div>
-        <span>Earn badges and build streaks like Duolingo</span>
-      </div>
-      <div class="feature-item">
-        <div class="feature-icon">🇬🇧</div>
-        <span>100% focused on UK financial products and law</span>
+      <div class="hero-stats">
+        <div class="hero-stat"><div class="num">5</div><div class="lbl">Modules</div></div>
+        <div class="hero-stat"><div class="num">11+</div><div class="lbl">Lessons</div></div>
+        <div class="hero-stat"><div class="num">AI</div><div class="lbl">Coach</div></div>
+        <div class="hero-stat"><div class="num">Free</div><div class="lbl">Always</div></div>
       </div>
     </div>
 
-    <div class="stats-row">
-      <div class="stat"><div class="num">5</div><div class="lbl">Learning modules</div></div>
-      <div class="stat"><div class="num">11+</div><div class="lbl">Lessons</div></div>
-      <div class="stat"><div class="num">Free</div><div class="lbl">Always</div></div>
-    </div>
-  </div>
-
-  <!-- Auth card -->
-  <div class="auth-card">
-    <div class="auth-tabs">
-      <button class="auth-tab active" id="tab-login" onclick="switchTab('login')">Sign in</button>
-      <button class="auth-tab" id="tab-register" onclick="switchTab('register')">Create account</button>
-    </div>
-
-    <!-- Login -->
-    <div class="auth-form active" id="form-login">
-      <div class="error-msg" id="login-error"></div>
-      <div class="form-group">
-        <label>Email address</label>
-        <input type="email" id="login-email" placeholder="you@example.com" autocomplete="email" />
+    <!-- Auth card -->
+    <div class="auth-card" id="auth-card-hero">
+      <div class="auth-tabs">
+        <button class="auth-tab active" id="tab-login" onclick="switchTab('login')">Sign in</button>
+        <button class="auth-tab" id="tab-register" onclick="switchTab('register')">Create account</button>
       </div>
-      <div class="form-group">
-        <label>Password</label>
-        <input type="password" id="login-password" placeholder="••••••••" autocomplete="current-password" />
+      <div class="auth-form active" id="form-login">
+        <div class="error-msg" id="login-error"></div>
+        <div class="form-group"><label>Email address</label><input type="email" id="login-email" placeholder="you@example.com" autocomplete="email" /></div>
+        <div class="form-group"><label>Password</label><input type="password" id="login-password" placeholder="••••••••" autocomplete="current-password" /></div>
+        <button class="submit-btn" id="login-btn" onclick="doLogin()">Sign in →</button>
+        <div class="divider">new here?</div>
+        <button class="secondary-btn" onclick="switchTab('register')">Create a free account</button>
+        <div class="auth-disclaimer">⚠️ Educational only — not financial advice</div>
       </div>
-      <button class="submit-btn" id="login-btn" onclick="doLogin()">Sign in →</button>
-      <div class="divider">new here?</div>
-      <button class="secondary-btn" onclick="switchTab('register')">Create a free account</button>
-      <div class="disclaimer">⚠️ Educational only — not financial advice</div>
-    </div>
-
-    <!-- Register -->
-    <div class="auth-form" id="form-register">
-      <div class="error-msg" id="register-error"></div>
-
-      <div class="form-row">
+      <div class="auth-form" id="form-register">
+        <div class="error-msg" id="register-error"></div>
+        <div class="form-row">
+          <div class="form-group"><label>First name</label><input type="text" id="reg-firstname" placeholder="Eddie" autocomplete="given-name" /></div>
+          <div class="form-group"><label>Last name</label><input type="text" id="reg-lastname" placeholder="Smith" autocomplete="family-name" /></div>
+        </div>
+        <div class="form-group"><label>Date of birth</label><input type="date" id="reg-dob" /><div class="age-note">You must be 18 or over to use FinPath</div></div>
+        <div class="form-group"><label>Username</label><input type="text" id="reg-username" placeholder="creditwhiz123" autocomplete="username" /></div>
+        <div class="form-group"><label>Email address</label><input type="email" id="reg-email" placeholder="you@example.com" autocomplete="email" /></div>
         <div class="form-group">
-          <label>First name</label>
-          <input type="text" id="reg-firstname" placeholder="Eddie" autocomplete="given-name" />
+          <label>Password</label>
+          <input type="password" id="reg-password" placeholder="At least 8 characters" autocomplete="new-password" oninput="checkPasswordStrength(this.value)" />
+          <div class="password-strength"><div class="strength-bar"><div class="strength-fill" id="strength-fill"></div></div><div class="strength-label" id="strength-label"></div></div>
         </div>
-        <div class="form-group">
-          <label>Last name</label>
-          <input type="text" id="reg-lastname" placeholder="Smith" autocomplete="family-name" />
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label>Date of birth</label>
-        <input type="date" id="reg-dob" />
-        <div class="age-note" id="age-note">You must be 18 or over to use FinPath</div>
-      </div>
-
-      <div class="form-group">
-        <label>Username</label>
-        <input type="text" id="reg-username" placeholder="creditwhiz123" autocomplete="username" />
-      </div>
-
-      <div class="form-group">
-        <label>Email address</label>
-        <input type="email" id="reg-email" placeholder="you@example.com" autocomplete="email" />
-      </div>
-
-      <div class="form-group">
-        <label>Password</label>
-        <input type="password" id="reg-password" placeholder="At least 8 characters"
-          autocomplete="new-password" oninput="checkPasswordStrength(this.value)" />
-        <div class="password-strength">
-          <div class="strength-bar"><div class="strength-fill" id="strength-fill"></div></div>
-          <div class="strength-label" id="strength-label"></div>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label>Confirm password</label>
-        <input type="password" id="reg-password2" placeholder="Re-enter your password" autocomplete="new-password" />
-      </div>
-
-      <button class="submit-btn" id="register-btn" onclick="doRegister()">Create account →</button>
-      <div class="divider">already have an account?</div>
-      <button class="secondary-btn" onclick="switchTab('login')">Sign in instead</button>
-      <div class="disclaimer">
-        By creating an account you confirm you are 18 or over.<br>
-        FinPath is for educational purposes only — not financial advice.
+        <div class="form-group"><label>Confirm password</label><input type="password" id="reg-password2" placeholder="Re-enter your password" autocomplete="new-password" /></div>
+        <button class="submit-btn" id="register-btn" onclick="doRegister()">Create account →</button>
+        <div class="divider">already have an account?</div>
+        <button class="secondary-btn" onclick="switchTab('login')">Sign in instead</button>
+        <div class="auth-disclaimer">By signing up you confirm you are 18+.<br>FinPath is for educational purposes only.</div>
       </div>
     </div>
-  </div>
-</div>
+  </section>
 
-<div class="footer">
-  © 2025 FinPath · UK Financial Literacy · Educational content only · Not financial advice
+  <div class="scroll-hint">↓ Scroll to learn more</div>
+  <div class="divider-line"></div>
+
+  <!-- How it works -->
+  <section class="section" id="how-it-works">
+    <div class="section-tag">🗺️ How it works</div>
+    <h2 class="section-title">Three steps to <span>financial confidence</span></h2>
+    <p class="section-sub">FinPath makes learning about money as easy and engaging as learning a language on Duolingo.</p>
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-icon">📝</div>
+        <div class="step-num">1</div>
+        <h3>Create your free account</h3>
+        <p>Sign up in under a minute. No credit card required. Just your email and you're ready to go.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-icon">📚</div>
+        <div class="step-num">2</div>
+        <h3>Complete bite-sized lessons</h3>
+        <p>Work through modules at your own pace. Each lesson takes 5-10 minutes and ends with a quiz to test your knowledge.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-icon">🏆</div>
+        <div class="step-num">3</div>
+        <h3>Earn XP and build streaks</h3>
+        <p>Gain experience points, unlock badges, and climb the leaderboard as you master each topic.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider-line"></div>
+
+  <!-- Modules -->
+  <section class="section" id="modules">
+    <div class="section-tag">📚 What you'll learn</div>
+    <h2 class="section-title">Five modules covering <span>everything</span></h2>
+    <p class="section-sub">All content is tailored specifically to UK financial products, laws, and credit reference agencies.</p>
+    <div class="modules-showcase">
+      <div class="module-showcase-card">
+        <div class="module-showcase-icon">📊</div>
+        <h3>Credit Score Basics</h3>
+        <p>Understand what a credit score is, how Experian, Equifax and TransUnion calculate it, and how to check yours for free.</p>
+        <span class="module-showcase-pill">3 lessons</span>
+      </div>
+      <div class="module-showcase-card">
+        <div class="module-showcase-icon">💳</div>
+        <h3>Understanding APR & Interest</h3>
+        <p>Learn how Annual Percentage Rate works, how compound interest grows debt, and how to compare credit products.</p>
+        <span class="module-showcase-pill">2 lessons</span>
+      </div>
+      <div class="module-showcase-card">
+        <div class="module-showcase-icon">🌱</div>
+        <h3>Building Credit from Scratch</h3>
+        <p>Practical strategies for young adults with thin credit files — credit builder cards, electoral roll, Experian Boost.</p>
+        <span class="module-showcase-pill">2 lessons</span>
+      </div>
+      <div class="module-showcase-card">
+        <div class="module-showcase-icon">⚖️</div>
+        <h3>Debt Management</h3>
+        <p>Understand priority vs non-priority debts, CCJs, the avalanche and snowball methods, and free UK debt advice.</p>
+        <span class="module-showcase-pill">2 lessons</span>
+      </div>
+      <div class="module-showcase-card">
+        <div class="module-showcase-icon">🛍️</div>
+        <h3>Buy Now Pay Later</h3>
+        <p>How Klarna and Clearpay really work, the hidden risks, and how BNPL affects your credit file under new FCA rules.</p>
+        <span class="module-showcase-pill">2 lessons</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider-line"></div>
+
+  <!-- Gamification -->
+  <section class="section" id="features">
+    <div class="gamification-grid">
+      <div class="gamification-features">
+        <div class="section-tag">🎮 Gamification</div>
+        <h2 class="section-title">Learning that feels like <span>a game</span></h2>
+        <p class="section-sub">We've borrowed the best ideas from Duolingo and applied them to financial education.</p>
+        <div class="gamif-item">
+          <div class="gamif-icon green">⚡</div>
+          <div><h4>XP & Level System</h4><p>Earn 20 XP per lesson. Progress from Beginner → Bronze → Silver → Gold → Platinum → Diamond.</p></div>
+        </div>
+        <div class="gamif-item">
+          <div class="gamif-icon amber">🔥</div>
+          <div><h4>Daily Streaks</h4><p>Complete at least one lesson every day to build your streak. The longer your streak, the more motivated you stay.</p></div>
+        </div>
+        <div class="gamif-item">
+          <div class="gamif-icon purple">🏅</div>
+          <div><h4>Badges & Achievements</h4><p>Unlock badges for completing your first lesson, scoring 80%+ on a quiz, maintaining a 7-day streak and more.</p></div>
+        </div>
+        <div class="gamif-item">
+          <div class="gamif-icon blue">🎯</div>
+          <div><h4>Daily XP Goal</h4><p>Set a daily target of 60 XP and track your progress throughout the day with a live goal bar.</p></div>
+        </div>
+      </div>
+      <div class="gamification-visual">
+        <div class="xp-demo">
+          <div class="big">340 XP</div>
+          <div class="lbl">Total earned</div>
+        </div>
+        <div class="level-bar-demo">
+          <div class="top"><span>🥈 Silver</span><span>→ Gold at 600 XP</span></div>
+          <div class="bar-track"><div class="bar-fill" style="width:57%"></div></div>
+        </div>
+        <div class="level-bar-demo" style="margin-top:1rem;">
+          <div class="top"><span>🎯 Daily goal</span><span>40 / 60 XP</span></div>
+          <div class="bar-track"><div class="bar-fill" style="width:67%;background:linear-gradient(90deg,#3b82f6,#a78bfa)"></div></div>
+        </div>
+        <div class="badges-demo">
+          <div class="badge-demo"><div class="icon">🎯</div><div>First Steps</div></div>
+          <div class="badge-demo"><div class="icon">📝</div><div>Quiz Taker</div></div>
+          <div class="badge-demo"><div class="icon">🔥</div><div>On Fire</div></div>
+          <div class="badge-demo"><div class="icon">🏆</div><div>High Scorer</div></div>
+          <div class="badge-demo"><div class="icon">🎓</div><div>Module Master</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider-line"></div>
+
+  <!-- AI Coach -->
+  <section class="section">
+    <div class="coach-section-grid">
+      <div class="coach-demo">
+        <div class="coach-demo-header">
+          <div class="coach-demo-avatar">🤖</div>
+          <div>
+            <div class="name">FinPath AI Coach</div>
+            <div class="status">● Online now</div>
+          </div>
+        </div>
+        <div class="coach-demo-body">
+          <div class="demo-bubble bot">Hey! 👋 I'm your FinPath AI Money Coach. What would you like to learn about today?</div>
+          <div class="demo-bubble user">What is a CCJ and how does it affect my credit score?</div>
+          <div class="demo-bubble bot">A County Court Judgement (CCJ) is a court order issued when you fail to repay a debt. It stays on your credit file for <strong>6 years</strong> and can make it very hard to get credit, rent a flat, or sometimes even get a job. The best way to avoid one is to always contact your creditor before missing payments.</div>
+          <div class="demo-bubble user">How do I remove it?</div>
+          <div class="demo-bubble bot">You can apply to have a CCJ set aside if you have a valid legal reason. If you pay the full amount within one month of the judgement, you can apply to have it marked as "satisfied" which looks better to lenders.</div>
+        </div>
+      </div>
+      <div class="coach-text">
+        <div class="section-tag">🤖 AI Money Coach</div>
+        <h3>Your personal finance tutor, available 24/7</h3>
+        <p>Powered by GPT-4, the FinPath AI Coach answers your financial questions based on your lesson content — keeping advice relevant, accurate, and grounded in what you've learned.</p>
+        <div class="coach-points">
+          <div class="coach-point">Answers questions based on your lesson content</div>
+          <div class="coach-point">UK-focused — understands Experian, Klarna, CCJs</div>
+          <div class="coach-point">Educational only — never gives personal financial advice</div>
+          <div class="coach-point">Rate limited to keep usage fair for all users</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider-line"></div>
+
+  <!-- Stats banner -->
+  <section class="section">
+    <div class="stats-banner">
+      <div class="banner-stat"><div class="num">5</div><div class="lbl">Learning modules</div></div>
+      <div class="banner-stat"><div class="num">11+</div><div class="lbl">Bite-sized lessons</div></div>
+      <div class="banner-stat"><div class="num">6</div><div class="lbl">Badge types to earn</div></div>
+      <div class="banner-stat"><div class="num">Free</div><div class="lbl">Forever</div></div>
+    </div>
+  </section>
+
+  <div class="divider-line"></div>
+
+  <!-- Bottom sign up CTA -->
+  <section class="cta-section" id="signup">
+    <div class="section-tag">🚀 Get started</div>
+    <h2>Ready to take control of your <span>financial future?</span></h2>
+    <p>Join FinPath today — it's completely free and takes less than a minute to sign up.</p>
+
+    <div class="cta-auth-card">
+      <div class="auth-tabs">
+        <button class="auth-tab active" id="tab-login-2" onclick="switchTab2('login')">Sign in</button>
+        <button class="auth-tab" id="tab-register-2" onclick="switchTab2('register')">Create account</button>
+      </div>
+      <div class="auth-form active" id="form-login-2">
+        <div class="error-msg" id="login-error-2"></div>
+        <div class="form-group"><label>Email address</label><input type="email" id="login-email-2" placeholder="you@example.com" /></div>
+        <div class="form-group"><label>Password</label><input type="password" id="login-password-2" placeholder="••••••••" /></div>
+        <button class="submit-btn" id="login-btn-2" onclick="doLogin2()">Sign in →</button>
+        <div class="divider">new here?</div>
+        <button class="secondary-btn" onclick="switchTab2('register')">Create a free account</button>
+      </div>
+      <div class="auth-form" id="form-register-2">
+        <div class="error-msg" id="register-error-2"></div>
+        <div class="form-row">
+          <div class="form-group"><label>First name</label><input type="text" id="reg-firstname-2" placeholder="Eddie" /></div>
+          <div class="form-group"><label>Last name</label><input type="text" id="reg-lastname-2" placeholder="Smith" /></div>
+        </div>
+        <div class="form-group"><label>Date of birth</label><input type="date" id="reg-dob-2" /><div class="age-note">Must be 18 or over</div></div>
+        <div class="form-group"><label>Username</label><input type="text" id="reg-username-2" placeholder="creditwhiz123" /></div>
+        <div class="form-group"><label>Email</label><input type="email" id="reg-email-2" placeholder="you@example.com" /></div>
+        <div class="form-group"><label>Password</label><input type="password" id="reg-password-2b" placeholder="At least 8 characters" oninput="checkStrength2(this.value)" /><div class="password-strength"><div class="strength-bar"><div class="strength-fill" id="strength-fill-2"></div></div><div class="strength-label" id="strength-label-2"></div></div></div>
+        <div class="form-group"><label>Confirm password</label><input type="password" id="reg-password2-2" placeholder="Re-enter your password" /></div>
+        <button class="submit-btn" id="register-btn-2" onclick="doRegister2()">Create account →</button>
+        <div class="divider">already have an account?</div>
+        <button class="secondary-btn" onclick="switchTab2('login')">Sign in instead</button>
+      </div>
+      <div style="font-size:.75rem;color:#8898aa;text-align:center;margin-top:1rem;">
+        ⚠️ Educational only — not financial advice
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    © 2025 FinPath · UK Financial Literacy Platform · Educational content only · Not financial advice
+  </footer>
+
 </div>
 
 <script src="api.js"></script>
 <script>
   if (getToken()) window.location.href = 'dashboard.html';
 
-  // Set max DOB to 18 years ago
+  // Set max DOB
   const maxDob = new Date();
   maxDob.setFullYear(maxDob.getFullYear() - 18);
-  document.getElementById('reg-dob').max = maxDob.toISOString().split('T')[0];
+  const maxDobStr = maxDob.toISOString().split('T')[0];
+  document.getElementById('reg-dob').max = maxDobStr;
+  document.getElementById('reg-dob-2').max = maxDobStr;
 
+  // URL tab param
   const urlParams = new URLSearchParams(window.location.search);
   if (urlParams.get('tab') === 'register') switchTab('register');
 
-  // ── Floating particles ──────────────────────────────────
+  // Particles
   const EMOJIS = ['💳','💰','📊','🏦','📈','💎','🎯','⚡','🔥','🏆','📱','💡'];
-  const container = document.getElementById('particles');
-
-  function createParticle() {
+  const pContainer = document.getElementById('particles');
+  for (let i = 0; i < 15; i++) {
     const el = document.createElement('div');
     el.className = 'particle';
     el.textContent = EMOJIS[Math.floor(Math.random() * EMOJIS.length)];
     el.style.left = Math.random() * 100 + 'vw';
     el.style.fontSize = (Math.random() * 1.2 + 0.8) + 'rem';
-    const duration = Math.random() * 15 + 12;
+    const dur = Math.random() * 15 + 12;
     const delay = Math.random() * 10;
-    el.style.animation = `floatUp ${duration}s ${delay}s linear infinite`;
-    container.appendChild(el);
+    el.style.animation = `floatUp ${dur}s ${delay}s linear infinite`;
+    pContainer.appendChild(el);
   }
 
-  for (let i = 0; i < 18; i++) createParticle();
+  function scrollToHero() {
+    document.getElementById('hero').scrollIntoView({ behavior: 'smooth' });
+  }
 
-  // ── Tab switching ───────────────────────────────────────
+  // Hero tabs
   function switchTab(tab) {
     document.getElementById('tab-login').classList.toggle('active', tab === 'login');
     document.getElementById('tab-register').classList.toggle('active', tab === 'register');
@@ -527,51 +712,69 @@
     document.getElementById('form-register').classList.toggle('active', tab === 'register');
   }
 
-  // ── Password strength ───────────────────────────────────
+  // Bottom tabs
+  function switchTab2(tab) {
+    document.getElementById('tab-login-2').classList.toggle('active', tab === 'login');
+    document.getElementById('tab-register-2').classList.toggle('active', tab === 'register');
+    document.getElementById('form-login-2').classList.toggle('active', tab === 'login');
+    document.getElementById('form-register-2').classList.toggle('active', tab === 'register');
+  }
+
   function checkPasswordStrength(password) {
-    const fill  = document.getElementById('strength-fill');
-    const label = document.getElementById('strength-label');
-    let strength = 0;
-    if (password.length >= 8) strength++;
-    if (/[A-Z]/.test(password)) strength++;
-    if (/[0-9]/.test(password)) strength++;
-    if (/[^A-Za-z0-9]/.test(password)) strength++;
+    updateStrength(password, 'strength-fill', 'strength-label');
+  }
+  function checkStrength2(password) {
+    updateStrength(password, 'strength-fill-2', 'strength-label-2');
+  }
+  function updateStrength(password, fillId, labelId) {
+    let s = 0;
+    if (password.length >= 8) s++;
+    if (/[A-Z]/.test(password)) s++;
+    if (/[0-9]/.test(password)) s++;
+    if (/[^A-Za-z0-9]/.test(password)) s++;
     const levels = [
-      { w: '0%',   color: '#dde4ef', text: '' },
-      { w: '25%',  color: '#e74c3c', text: 'Weak' },
-      { w: '50%',  color: '#f39c12', text: 'Fair' },
-      { w: '75%',  color: '#2ecc8e', text: 'Good' },
-      { w: '100%', color: '#1fa870', text: 'Strong' },
+      {w:'0%',color:'#dde4ef',text:''},
+      {w:'25%',color:'#e74c3c',text:'Weak'},
+      {w:'50%',color:'#f39c12',text:'Fair'},
+      {w:'75%',color:'#2ecc8e',text:'Good'},
+      {w:'100%',color:'#1fa870',text:'Strong'},
     ];
-    const l = levels[strength];
-    fill.style.width = l.w;
-    fill.style.background = l.color;
-    label.textContent = l.text;
-    label.style.color = l.color;
+    const l = levels[s];
+    document.getElementById(fillId).style.width = l.w;
+    document.getElementById(fillId).style.background = l.color;
+    document.getElementById(labelId).textContent = l.text;
+    document.getElementById(labelId).style.color = l.color;
   }
 
   function getAge(dob) {
-    const today = new Date();
-    const birth = new Date(dob);
+    const today = new Date(), birth = new Date(dob);
     let age = today.getFullYear() - birth.getFullYear();
     const m = today.getMonth() - birth.getMonth();
     if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) age--;
     return age;
   }
 
-  // ── Login ───────────────────────────────────────────────
   async function doLogin() {
-    const email    = document.getElementById('login-email').value.trim();
-    const password = document.getElementById('login-password').value;
-    const btn      = document.getElementById('login-btn');
-    const errMsg   = document.getElementById('login-error');
+    await performLogin(
+      document.getElementById('login-email').value.trim(),
+      document.getElementById('login-password').value,
+      document.getElementById('login-btn'),
+      document.getElementById('login-error')
+    );
+  }
 
-    if (!email || !password) {
-      errMsg.textContent = 'Please enter your email and password.';
-      errMsg.style.display = 'block'; return;
-    }
-    btn.textContent = 'Signing in…'; btn.disabled = true;
-    errMsg.style.display = 'none';
+  async function doLogin2() {
+    await performLogin(
+      document.getElementById('login-email-2').value.trim(),
+      document.getElementById('login-password-2').value,
+      document.getElementById('login-btn-2'),
+      document.getElementById('login-error-2')
+    );
+  }
+
+  async function performLogin(email, password, btn, errMsg) {
+    if (!email || !password) { errMsg.textContent = 'Please enter your email and password.'; errMsg.style.display = 'block'; return; }
+    btn.textContent = 'Signing in…'; btn.disabled = true; errMsg.style.display = 'none';
     try {
       await login(email, password);
       window.location.href = 'dashboard.html';
@@ -582,52 +785,53 @@
     }
   }
 
-  // ── Register ────────────────────────────────────────────
   async function doRegister() {
-    const firstname = document.getElementById('reg-firstname').value.trim();
-    const lastname  = document.getElementById('reg-lastname').value.trim();
-    const dob       = document.getElementById('reg-dob').value;
-    const username  = document.getElementById('reg-username').value.trim();
-    const email     = document.getElementById('reg-email').value.trim();
-    const password  = document.getElementById('reg-password').value;
-    const password2 = document.getElementById('reg-password2').value;
-    const btn       = document.getElementById('register-btn');
-    const errMsg    = document.getElementById('register-error');
+    await performRegister(
+      document.getElementById('reg-firstname').value.trim(),
+      document.getElementById('reg-lastname').value.trim(),
+      document.getElementById('reg-dob').value,
+      document.getElementById('reg-username').value.trim(),
+      document.getElementById('reg-email').value.trim(),
+      document.getElementById('reg-password').value,
+      document.getElementById('reg-password2').value,
+      document.getElementById('register-btn'),
+      document.getElementById('register-error')
+    );
+  }
 
+  async function doRegister2() {
+    await performRegister(
+      document.getElementById('reg-firstname-2').value.trim(),
+      document.getElementById('reg-lastname-2').value.trim(),
+      document.getElementById('reg-dob-2').value,
+      document.getElementById('reg-username-2').value.trim(),
+      document.getElementById('reg-email-2').value.trim(),
+      document.getElementById('reg-password-2b').value,
+      document.getElementById('reg-password2-2').value,
+      document.getElementById('register-btn-2'),
+      document.getElementById('register-error-2')
+    );
+  }
+
+  async function performRegister(firstname, lastname, dob, username, email, password, password2, btn, errMsg) {
     errMsg.style.display = 'none';
-
-    if (!firstname || !lastname || !dob || !username || !email || !password || !password2) {
-      errMsg.textContent = 'Please fill in all fields.'; errMsg.style.display = 'block'; return;
-    }
-    if (getAge(dob) < 18) {
-      errMsg.textContent = 'You must be 18 or over to use FinPath.'; errMsg.style.display = 'block'; return;
-    }
-    if (username.length < 3) {
-      errMsg.textContent = 'Username must be at least 3 characters.'; errMsg.style.display = 'block'; return;
-    }
-    if (password.length < 8) {
-      errMsg.textContent = 'Password must be at least 8 characters.'; errMsg.style.display = 'block'; return;
-    }
-    if (password !== password2) {
-      errMsg.textContent = 'Passwords do not match.'; errMsg.style.display = 'block'; return;
-    }
-
+    if (!firstname || !lastname || !dob || !username || !email || !password || !password2) { errMsg.textContent = 'Please fill in all fields.'; errMsg.style.display = 'block'; return; }
+    if (getAge(dob) < 18) { errMsg.textContent = 'You must be 18 or over to use FinPath.'; errMsg.style.display = 'block'; return; }
+    if (username.length < 3) { errMsg.textContent = 'Username must be at least 3 characters.'; errMsg.style.display = 'block'; return; }
+    if (password.length < 8) { errMsg.textContent = 'Password must be at least 8 characters.'; errMsg.style.display = 'block'; return; }
+    if (password !== password2) { errMsg.textContent = 'Passwords do not match.'; errMsg.style.display = 'block'; return; }
     btn.textContent = 'Creating account…'; btn.disabled = true;
     try {
       const res = await fetch('http://localhost:8000/auth/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, email, password }),
       });
-      if (!res.ok) {
-        const e = await res.json();
-        throw new Error(e.detail || 'Registration failed');
-      }
+      if (!res.ok) { const e = await res.json(); throw new Error(e.detail || 'Registration failed'); }
       const data = await res.json();
       saveToken(data.access_token);
       window.location.href = 'dashboard.html';
     } catch (err) {
-      errMsg.textContent = err.message || 'Registration failed. Please try again.';
+      errMsg.textContent = err.message || 'Registration failed.';
       errMsg.style.display = 'block';
       btn.textContent = 'Create account →'; btn.disabled = false;
     }
@@ -636,9 +840,7 @@
   document.addEventListener('keydown', function(e) {
     if (e.key !== 'Enter') return;
     if (document.getElementById('form-login').classList.contains('active')) doLogin();
-    else doRegister();
   });
 </script>
-<script src="background.js"></script>
 </body>
 </html>
