@@ -822,7 +822,7 @@
     if (password !== password2) { errMsg.textContent = 'Passwords do not match.'; errMsg.style.display = 'block'; return; }
     btn.textContent = 'Creating account…'; btn.disabled = true;
     try {
-      const res = await fetch('http://localhost:8000/auth/register', {
+      const res = await fetch('https://project-finpath-production.up.railway.app/auth/register', {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, email, password }),
       });
