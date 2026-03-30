@@ -1,53 +1,395 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>FinPath – Login</title>
-  <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FinPath – Learn Credit the Smart Way</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+      background: #f4f7fb;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.25rem 2.5rem;
+      background: #fff;
+      border-bottom: 1px solid #dde4ef;
+    }
+    .brand { font-size: 1.35rem; font-weight: 800; color: #0f1f3d; }
+    .brand span { color: #2ecc8e; }
+    .top-bar-links { display: flex; align-items: center; gap: 1rem; }
+    .top-bar-links a {
+      font-size: .9rem; font-weight: 600; color: #5b6a85;
+      text-decoration: none; padding: .45rem .9rem; border-radius: 8px; transition: .15s;
+    }
+    .top-bar-links a:hover { background: #f4f7fb; color: #0f1f3d; }
+    .top-bar-links .btn-signup { background: #2ecc8e; color: #fff; padding: .45rem 1.25rem; border-radius: 8px; }
+    .top-bar-links .btn-signup:hover { background: #1fa870; color: #fff; }
+    .main {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 4rem 2rem;
+      gap: 4rem;
+      align-items: center;
+      width: 100%;
+    }
+    .hero h1 { font-size: 2.8rem; font-weight: 800; color: #0f1f3d; line-height: 1.15; margin-bottom: 1.25rem; }
+    .hero h1 span { color: #2ecc8e; }
+    .hero p { font-size: 1.05rem; color: #5b6a85; line-height: 1.7; margin-bottom: 2rem; max-width: 440px; }
+    .features { display: flex; flex-direction: column; gap: .85rem; margin-bottom: 2.5rem; }
+    .feature-item { display: flex; align-items: center; gap: .75rem; font-size: .92rem; color: #2c3e60; font-weight: 500; }
+    .feature-icon { width: 32px; height: 32px; background: #e6f9f1; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0; }
+    .stats-row { display: flex; gap: 2rem; }
+    .stat .num { font-size: 1.6rem; font-weight: 800; color: #0f1f3d; }
+    .stat .lbl { font-size: .8rem; color: #8898aa; margin-top: .1rem; }
+    .auth-card {
+      background: #fff; border: 1px solid #dde4ef; border-radius: 20px;
+      padding: 2.5rem; box-shadow: 0 4px 24px rgba(15,31,61,.08);
+      width: 100%; max-width: 420px; justify-self: end;
+    }
+    .auth-tabs { display: flex; background: #f4f7fb; border-radius: 10px; padding: 4px; margin-bottom: 1.75rem; }
+    .auth-tab {
+      flex: 1; text-align: center; padding: .55rem; border-radius: 8px;
+      font-size: .88rem; font-weight: 600; cursor: pointer; color: #8898aa;
+      transition: .15s; border: none; background: transparent; font-family: inherit;
+    }
+    .auth-tab.active { background: #fff; color: #0f1f3d; box-shadow: 0 1px 4px rgba(15,31,61,.1); }
+    .auth-form { display: none; }
+    .auth-form.active { display: block; }
+    .form-group { margin-bottom: .9rem; }
+    .form-group label { display: block; font-size: .83rem; font-weight: 600; color: #2c3e60; margin-bottom: .4rem; }
+    .form-group input, .form-group select {
+      width: 100%; padding: .75rem 1rem; border: 1.5px solid #dde4ef;
+      border-radius: 10px; font-size: .9rem; font-family: inherit;
+      color: #0f1f3d; outline: none; transition: border-color .15s; background: #f9fbfd;
+    }
+    .form-group input:focus, .form-group select:focus { border-color: #2ecc8e; background: #fff; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; }
+    .error-msg {
+      display: none; background: #fff0f0; border: 1px solid #f5c6c6;
+      color: #c0392b; padding: .7rem 1rem; border-radius: 8px;
+      font-size: .83rem; margin-bottom: 1rem;
+    }
+    .success-msg {
+      display: none; background: #f0fdf8; border: 1px solid #a8f0d0;
+      color: #1fa870; padding: .7rem 1rem; border-radius: 8px;
+      font-size: .83rem; margin-bottom: 1rem;
+    }
+    .submit-btn {
+      width: 100%; padding: .85rem; background: #2ecc8e; color: #fff;
+      border: none; border-radius: 10px; font-size: .95rem; font-weight: 700;
+      cursor: pointer; transition: .18s; margin-top: .5rem; font-family: inherit;
+    }
+    .submit-btn:hover { background: #1fa870; transform: translateY(-1px); box-shadow: 0 4px 14px rgba(46,204,142,.35); }
+    .submit-btn:disabled { opacity: .6; cursor: not-allowed; transform: none; }
+    .secondary-btn {
+      width: 100%; padding: .85rem; background: #f4f7fb; color: #0f1f3d;
+      border: 1.5px solid #dde4ef; border-radius: 10px; font-size: .9rem;
+      font-weight: 600; cursor: pointer; transition: .15s; font-family: inherit;
+    }
+    .secondary-btn:hover { border-color: #2ecc8e; color: #1fa870; }
+    .divider {
+      text-align: center; font-size: .8rem; color: #8898aa; margin: 1rem 0; position: relative;
+    }
+    .divider::before, .divider::after {
+      content: ''; position: absolute; top: 50%; width: 42%; height: 1px; background: #dde4ef;
+    }
+    .divider::before { left: 0; }
+    .divider::after { right: 0; }
+    .age-note {
+      font-size: .75rem; color: #8898aa; margin-top: .3rem;
+    }
+    .age-error { color: #c0392b; }
+    .disclaimer { font-size: .75rem; color: #8898aa; text-align: center; margin-top: 1rem; line-height: 1.5; }
+    .footer {
+      text-align: center; padding: 1.5rem; font-size: .78rem;
+      color: #8898aa; border-top: 1px solid #dde4ef; background: #fff;
+    }
+    .password-strength { margin-top: .4rem; }
+    .strength-bar { height: 4px; border-radius: 100px; background: #dde4ef; overflow: hidden; }
+    .strength-fill { height: 100%; border-radius: 100px; transition: width .3s, background .3s; width: 0%; }
+    .strength-label { font-size: .72rem; color: #8898aa; margin-top: .2rem; }
+    @media (max-width: 800px) {
+      .main { grid-template-columns: 1fr; padding: 2rem 1.25rem; gap: 2rem; }
+      .auth-card { justify-self: center; }
+      .hero h1 { font-size: 2rem; }
+      .form-row { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
-<body style="display:flex;align-items:center;justify-content:center;min-height:100vh;">
-<div class="card" style="width:100%;max-width:400px;padding:2.5rem;">
-  <div style="text-align:center;margin-bottom:2rem;">
-    <div style="font-size:1.5rem;font-weight:800;">Fin<span style="color:var(--green);">Path</span></div>
-    <p style="color:var(--muted);font-size:.9rem;margin-top:.5rem;">Sign in to continue</p>
+<body>
+
+<div class="top-bar">
+  <div class="brand">Fin<span>Path</span></div>
+  <div class="top-bar-links">
+    <a href="#features">Features</a>
+    <a href="#" onclick="switchTab('login')">Sign in</a>
+    <a href="#" class="btn-signup" onclick="switchTab('register')">Get started free</a>
   </div>
-  <div id="error-msg" style="display:none;background:#fff0f0;border:1px solid #f5c6c6;color:#c0392b;padding:.75rem 1rem;border-radius:8px;font-size:.85rem;margin-bottom:1rem;"></div>
-  <div style="margin-bottom:1rem;">
-    <label style="font-size:.85rem;font-weight:600;display:block;margin-bottom:.4rem;">Email</label>
-    <input type="email" id="email" placeholder="you@example.com" style="width:100%;padding:.7rem 1rem;border:1px solid var(--border);border-radius:8px;font-size:.9rem;outline:none;">
-  </div>
-  <div style="margin-bottom:1.5rem;">
-    <label style="font-size:.85rem;font-weight:600;display:block;margin-bottom:.4rem;">Password</label>
-    <input type="password" id="password" placeholder="••••••••" style="width:100%;padding:.7rem 1rem;border:1px solid var(--border);border-radius:8px;font-size:.9rem;outline:none;">
-  </div>
-  <button onclick="doLogin()" id="login-btn" class="btn btn-primary" style="width:100%;padding:.8rem;">Sign in →</button>
-  <p style="text-align:center;font-size:.82rem;color:var(--muted);margin-top:1rem;">
-    Demo: demo@finpath.co.uk / demo1234
-  </p>
 </div>
+
+<div class="main">
+
+  <!-- Left hero -->
+  <div class="hero" id="features">
+    <h1>Learn credit<br>the <span>smart way</span></h1>
+    <p>FinPath teaches UK financial literacy through bite-sized lessons, instant quizzes, and an AI Money Coach — designed for 18-25 year olds.</p>
+    <div class="features">
+      <div class="feature-item">
+        <div class="feature-icon">📊</div>
+        <span>Understand credit scores and how to improve them</span>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">💰</div>
+        <span>Learn how APR, interest, and debt really work</span>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">🤖</div>
+        <span>Ask your AI Money Coach anything, anytime</span>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">🏆</div>
+        <span>Earn badges and build streaks </span>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">🇬🇧</div>
+        <span>100% focused on UK financial products and law</span>
+      </div>
+    </div>
+    <div class="stats-row">
+      <div class="stat"><div class="num">5</div><div class="lbl">Learning modules</div></div>
+      <div class="stat"><div class="num">11+</div><div class="lbl">Lessons</div></div>
+      <div class="stat"><div class="num">Free</div><div class="lbl">Always</div></div>
+    </div>
+  </div>
+
+  <!-- Auth card -->
+  <div class="auth-card">
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="tab-login" onclick="switchTab('login')">Sign in</button>
+      <button class="auth-tab" id="tab-register" onclick="switchTab('register')">Create account</button>
+    </div>
+
+    <!-- Login form -->
+    <div class="auth-form active" id="form-login">
+      <div class="error-msg" id="login-error"></div>
+      <div class="form-group">
+        <label>Email address</label>
+        <input type="email" id="login-email" placeholder="you@example.com" autocomplete="email" />
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="login-password" placeholder="••••••••" autocomplete="current-password" />
+      </div>
+      <button class="submit-btn" id="login-btn" onclick="doLogin()">Sign in →</button>
+      <div class="divider">new here?</div>
+      <button class="secondary-btn" onclick="switchTab('register')">Create a free account</button>
+      <div class="disclaimer">⚠️ Educational only — not financial advice</div>
+    </div>
+
+    <!-- Register form -->
+    <div class="auth-form" id="form-register">
+      <div class="error-msg" id="register-error"></div>
+      <div class="success-msg" id="register-success"></div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>First name</label>
+          <input type="text" id="reg-firstname" placeholder="Eddie" autocomplete="given-name" />
+        </div>
+        <div class="form-group">
+          <label>Last name</label>
+          <input type="text" id="reg-lastname" placeholder="Smith" autocomplete="family-name" />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Date of birth</label>
+        <input type="date" id="reg-dob" max="" />
+        <div class="age-note" id="age-note">You must be 18 or over to use FinPath</div>
+      </div>
+
+      <div class="form-group">
+        <label>Username</label>
+        <input type="text" id="reg-username" placeholder="creditwhiz123" autocomplete="username" />
+      </div>
+
+      <div class="form-group">
+        <label>Email address</label>
+        <input type="email" id="reg-email" placeholder="you@example.com" autocomplete="email" />
+      </div>
+
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="reg-password" placeholder="At least 8 characters"
+          autocomplete="new-password" oninput="checkPasswordStrength(this.value)" />
+        <div class="password-strength">
+          <div class="strength-bar"><div class="strength-fill" id="strength-fill"></div></div>
+          <div class="strength-label" id="strength-label"></div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Confirm password</label>
+        <input type="password" id="reg-password2" placeholder="Re-enter your password" autocomplete="new-password" />
+      </div>
+
+      <button class="submit-btn" id="register-btn" onclick="doRegister()">Create account →</button>
+      <div class="divider">already have an account?</div>
+      <button class="secondary-btn" onclick="switchTab('login')">Sign in instead</button>
+      <div class="disclaimer">
+        By creating an account you confirm you are 18 or over.<br>
+        FinPath is for educational purposes only — not financial advice.
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="footer">
+  © 2025 FinPath · UK Financial Literacy · Educational content only · Not financial advice
+</div>
+
 <script src="api.js"></script>
 <script>
   if (getToken()) window.location.href = 'dashboard.html';
+
+  // Set max date of birth to 18 years ago
+  const maxDob = new Date();
+  maxDob.setFullYear(maxDob.getFullYear() - 18);
+  document.getElementById('reg-dob').max = maxDob.toISOString().split('T')[0];
+
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('tab') === 'register') switchTab('register');
+
+  function switchTab(tab) {
+    document.getElementById('tab-login').classList.toggle('active', tab === 'login');
+    document.getElementById('tab-register').classList.toggle('active', tab === 'register');
+    document.getElementById('form-login').classList.toggle('active', tab === 'login');
+    document.getElementById('form-register').classList.toggle('active', tab === 'register');
+  }
+
+  function checkPasswordStrength(password) {
+    const fill  = document.getElementById('strength-fill');
+    const label = document.getElementById('strength-label');
+    let strength = 0;
+    if (password.length >= 8) strength++;
+    if (/[A-Z]/.test(password)) strength++;
+    if (/[0-9]/.test(password)) strength++;
+    if (/[^A-Za-z0-9]/.test(password)) strength++;
+
+    const levels = [
+      { w: '0%',   color: '#dde4ef', text: '' },
+      { w: '25%',  color: '#e74c3c', text: 'Weak' },
+      { w: '50%',  color: '#f39c12', text: 'Fair' },
+      { w: '75%',  color: '#2ecc8e', text: 'Good' },
+      { w: '100%', color: '#1fa870', text: 'Strong' },
+    ];
+    const l = levels[strength];
+    fill.style.width    = l.w;
+    fill.style.background = l.color;
+    label.textContent   = l.text;
+    label.style.color   = l.color;
+  }
+
+  function getAge(dob) {
+    const today = new Date();
+    const birth = new Date(dob);
+    let age = today.getFullYear() - birth.getFullYear();
+    const m = today.getMonth() - birth.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) age--;
+    return age;
+  }
+
   async function doLogin() {
-    const email = document.getElementById('email').value.trim();
-    const password = document.getElementById('password').value;
-    const btn = document.getElementById('login-btn');
-    const errMsg = document.getElementById('error-msg');
-    if (!email || !password) { errMsg.textContent = 'Please enter your email and password.'; errMsg.style.display = 'block'; return; }
-    btn.textContent = 'Signing in…';
-    btn.disabled = true;
+    const email    = document.getElementById('login-email').value.trim();
+    const password = document.getElementById('login-password').value;
+    const btn      = document.getElementById('login-btn');
+    const errMsg   = document.getElementById('login-error');
+
+    if (!email || !password) {
+      errMsg.textContent = 'Please enter your email and password.';
+      errMsg.style.display = 'block'; return;
+    }
+    btn.textContent = 'Signing in…'; btn.disabled = true;
     errMsg.style.display = 'none';
+
     try {
       await login(email, password);
       window.location.href = 'dashboard.html';
     } catch (err) {
       errMsg.textContent = err.message || 'Invalid email or password.';
       errMsg.style.display = 'block';
-      btn.textContent = 'Sign in →';
-      btn.disabled = false;
+      btn.textContent = 'Sign in →'; btn.disabled = false;
     }
   }
-  document.addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+
+  async function doRegister() {
+    const firstname = document.getElementById('reg-firstname').value.trim();
+    const lastname  = document.getElementById('reg-lastname').value.trim();
+    const dob       = document.getElementById('reg-dob').value;
+    const username  = document.getElementById('reg-username').value.trim();
+    const email     = document.getElementById('reg-email').value.trim();
+    const password  = document.getElementById('reg-password').value;
+    const password2 = document.getElementById('reg-password2').value;
+    const btn       = document.getElementById('register-btn');
+    const errMsg    = document.getElementById('register-error');
+
+    errMsg.style.display = 'none';
+
+    if (!firstname || !lastname || !dob || !username || !email || !password || !password2) {
+      errMsg.textContent = 'Please fill in all fields.'; errMsg.style.display = 'block'; return;
+    }
+    if (getAge(dob) < 18) {
+      errMsg.textContent = 'You must be 18 or over to use FinPath.'; errMsg.style.display = 'block'; return;
+    }
+    if (username.length < 3) {
+      errMsg.textContent = 'Username must be at least 3 characters.'; errMsg.style.display = 'block'; return;
+    }
+    if (password.length < 8) {
+      errMsg.textContent = 'Password must be at least 8 characters.'; errMsg.style.display = 'block'; return;
+    }
+    if (password !== password2) {
+      errMsg.textContent = 'Passwords do not match.'; errMsg.style.display = 'block'; return;
+    }
+
+    btn.textContent = 'Creating account…'; btn.disabled = true;
+
+    try {
+      const res = await fetch('http://localhost:8000/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, email, password }),
+      });
+      if (!res.ok) {
+        const e = await res.json();
+        throw new Error(e.detail || 'Registration failed');
+      }
+      const data = await res.json();
+      saveToken(data.access_token);
+      window.location.href = 'dashboard.html';
+    } catch (err) {
+      errMsg.textContent = err.message || 'Registration failed. Please try again.';
+      errMsg.style.display = 'block';
+      btn.textContent = 'Create account →'; btn.disabled = false;
+    }
+  }
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key !== 'Enter') return;
+    if (document.getElementById('form-login').classList.contains('active')) doLogin();
+    else doRegister();
+  });
 </script>
 </body>
 </html>
