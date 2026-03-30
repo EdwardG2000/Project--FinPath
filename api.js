@@ -1,4 +1,4 @@
-const API = 'http://localhost:8000';
+const API = 'https://project-finpath-production.up.railway.app';
 
 function getToken() { return localStorage.getItem('fp_token'); }
 function saveToken(t) { localStorage.setItem('fp_token', t); }
