@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>FinPath – Learn</title>
+  <title>FinPath</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -107,6 +107,7 @@
   const MODULE_COLORS = ['green','blue','amber','rose','purple','green','blue','amber'];
 
   async function loadLearn() {
+    document.getElementById('modules-grid').innerHTML = '<div style="color:var(--muted);font-size:.85rem;padding:1rem;">Loading modules…</div>';
     const [progress] = await Promise.all([getProgress()]);
     const modules = progress.modules;
 
@@ -197,6 +198,9 @@
   }
 
   loadLearn();
+  window.addEventListener('pageshow', function(e) {
+    if (e.persisted) loadLearn();
+  });
 </script>
 
 <div class="disclaimer-bar">Disclaimer: FinPath is for educational purposes only. Nothing on this platform constitutes financial advice. Always consult a qualified financial adviser before making financial decisions.</div>
