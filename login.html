@@ -14,7 +14,6 @@
       overflow-x: hidden;
     }
 
-    /* ── Animated background ── */
     .bg-canvas {
       position: fixed; inset: 0; z-index: 0;
       background: linear-gradient(135deg, #0a1628 0%, #0f2d1f 50%, #0a1628 100%);
@@ -50,7 +49,6 @@
       100% { transform:translateY(-100px) rotate(360deg);opacity:0; }
     }
 
-    /* ── All content above background ── */
     .page-wrap { position:relative;z-index:10; }
 
     /* ── Navbar ── */
@@ -58,11 +56,11 @@
       position:sticky;top:0;z-index:100;
       display:flex;align-items:center;justify-content:space-between;
       padding:1.1rem 2.5rem;
-      background:rgba(10,22,40,0.85);
+      background:rgba(10,22,40,0.92);
       backdrop-filter:blur(12px);
       border-bottom:1px solid rgba(255,255,255,0.08);
     }
-    .brand { font-size:1.35rem;font-weight:800;color:#fff; }
+    .brand { font-size:1.35rem;font-weight:800;color:#fff;text-decoration:none; }
     .brand span { color:#2ecc8e; }
     .nav-links { display:flex;align-items:center;gap:1rem; }
     .nav-links a {
@@ -71,10 +69,46 @@
     }
     .nav-links a:hover { background:rgba(255,255,255,0.08);color:#fff; }
     .nav-cta {
-      background:#2ecc8e;color:#fff;padding:.45rem 1.25rem;
+      background:#2ecc8e !important;color:#fff !important;padding:.45rem 1.25rem !important;
       border-radius:8px;font-weight:700;text-decoration:none;transition:.15s;
     }
-    .nav-cta:hover { background:#1fa870;color:#fff; }
+    .nav-cta:hover { background:#1fa870 !important; }
+    .nav-hamburger {
+      display:none;flex-direction:column;gap:5px;
+      background:none;border:none;cursor:pointer;padding:.5rem;
+    }
+    .nav-hamburger span {
+      display:block;width:24px;height:2px;
+      background:rgba(255,255,255,0.8);border-radius:2px;transition:.2s;
+    }
+    .nav-mobile {
+      display:none;flex-direction:column;
+      background:rgba(10,22,40,0.97);
+      border-bottom:1px solid rgba(255,255,255,0.08);
+      position:sticky;top:63px;z-index:99;
+    }
+    .nav-mobile a {
+      padding:1rem 2rem;color:rgba(255,255,255,0.75);
+      text-decoration:none;font-size:.95rem;font-weight:500;
+      border-bottom:1px solid rgba(255,255,255,0.05);transition:.15s;
+    }
+    .nav-mobile a:hover { background:rgba(255,255,255,0.05);color:#fff; }
+    .nav-mobile.open { display:flex; }
+
+    @media(max-width:768px) {
+      .navbar { padding:1rem 1.25rem; }
+      .nav-links { display:none; }
+      .nav-hamburger { display:flex; }
+      .hero-section { grid-template-columns:1fr !important;gap:2rem;padding:2rem 1.25rem !important;min-height:auto !important; }
+      .hero-text h1 { font-size:2rem; }
+      .auth-card { justify-self:center;max-width:100%; }
+      .steps-grid { grid-template-columns:1fr !important; }
+      .gamification-grid { grid-template-columns:1fr !important; }
+      .coach-section-grid { grid-template-columns:1fr !important; }
+      .stats-banner { grid-template-columns:1fr 1fr !important; }
+      .form-row { grid-template-columns:1fr !important; }
+      .section { padding:3rem 1.25rem !important; }
+    }
 
     /* ── Hero section ── */
     .hero-section {
@@ -179,7 +213,6 @@
     .age-note { font-size:.75rem;color:#8898aa;margin-top:.3rem; }
     .auth-disclaimer { font-size:.75rem;color:#8898aa;text-align:center;margin-top:1rem;line-height:1.5; }
 
-    /* ── Scroll indicator ── */
     .scroll-hint {
       text-align:center;padding:2rem;color:rgba(255,255,255,0.4);
       font-size:.85rem;animation:bounce 2s ease infinite;
@@ -189,10 +222,7 @@
       50%      { transform:translateY(8px); }
     }
 
-    /* ── Section base ── */
-    .section {
-      max-width:1100px;margin:0 auto;padding:5rem 2rem;
-    }
+    .section { max-width:1100px;margin:0 auto;padding:5rem 2rem; }
     .section-tag {
       display:inline-flex;align-items:center;gap:.4rem;
       background:rgba(46,204,142,0.15);border:1px solid rgba(46,204,142,0.3);
@@ -200,23 +230,12 @@
       font-size:.75rem;font-weight:700;letter-spacing:.06em;
       text-transform:uppercase;color:#2ecc8e;margin-bottom:1.25rem;
     }
-    .section-title {
-      font-size:2.2rem;font-weight:800;color:#fff;
-      line-height:1.2;margin-bottom:1rem;
-    }
+    .section-title { font-size:2.2rem;font-weight:800;color:#fff;line-height:1.2;margin-bottom:1rem; }
     .section-title span { color:#2ecc8e; }
-    .section-sub {
-      font-size:1rem;color:rgba(255,255,255,0.6);
-      max-width:560px;line-height:1.7;margin-bottom:3rem;
-    }
-    .divider-line {
-      height:1px;background:rgba(255,255,255,0.06);margin:0;
-    }
+    .section-sub { font-size:1rem;color:rgba(255,255,255,0.6);max-width:560px;line-height:1.7;margin-bottom:3rem; }
+    .divider-line { height:1px;background:rgba(255,255,255,0.06);margin:0; }
 
-    /* ── How it works ── */
-    .steps-grid {
-      display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;
-    }
+    .steps-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:2rem; }
     .step-card {
       background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);
       border-radius:20px;padding:2rem;text-align:center;transition:.2s;
@@ -226,20 +245,16 @@
       width:48px;height:48px;border-radius:50%;
       background:linear-gradient(135deg,#2ecc8e,#0f2d1f);
       display:flex;align-items:center;justify-content:center;
-      font-size:1.1rem;font-weight:800;color:#fff;
-      margin:0 auto 1.25rem;
+      font-size:1.1rem;font-weight:800;color:#fff;margin:0 auto 1.25rem;
     }
     .step-icon { font-size:2.5rem;margin-bottom:1rem; }
     .step-card h3 { font-size:1.05rem;font-weight:700;color:#fff;margin-bottom:.6rem; }
     .step-card p { font-size:.88rem;color:rgba(255,255,255,0.6);line-height:1.65; }
 
-    /* ── Modules showcase ── */
-    .modules-showcase {
-      display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1.25rem;
-    }
+    .modules-showcase { display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1.25rem; }
     .module-showcase-card {
       background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);
-      border-radius:16px;padding:1.5rem;transition:.2s;cursor:default;
+      border-radius:16px;padding:1.5rem;transition:.2s;
     }
     .module-showcase-card:hover { border-color:rgba(46,204,142,0.4);transform:translateY(-3px); }
     .module-showcase-icon { font-size:2rem;margin-bottom:.85rem; }
@@ -248,14 +263,10 @@
     .module-showcase-pill {
       display:inline-block;margin-top:.75rem;
       background:rgba(46,204,142,0.1);border:1px solid rgba(46,204,142,0.2);
-      border-radius:100px;padding:.2rem .6rem;
-      font-size:.72rem;font-weight:600;color:#2ecc8e;
+      border-radius:100px;padding:.2rem .6rem;font-size:.72rem;font-weight:600;color:#2ecc8e;
     }
 
-    /* ── Gamification section ── */
-    .gamification-grid {
-      display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;
-    }
+    .gamification-grid { display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center; }
     .gamification-features { display:flex;flex-direction:column;gap:1.5rem; }
     .gamif-item { display:flex;gap:1rem;align-items:flex-start; }
     .gamif-icon {
@@ -268,70 +279,37 @@
     .gamif-icon.blue   { background:rgba(59,130,246,0.15); }
     .gamif-item h4 { font-size:.97rem;font-weight:700;color:#fff;margin-bottom:.3rem; }
     .gamif-item p  { font-size:.85rem;color:rgba(255,255,255,0.55);line-height:1.6; }
-
     .gamification-visual {
       background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);
       border-radius:24px;padding:2rem;
     }
-    .xp-demo {
-      text-align:center;margin-bottom:1.5rem;
-      padding-bottom:1.5rem;border-bottom:1px solid rgba(255,255,255,0.08);
-    }
+    .xp-demo { text-align:center;margin-bottom:1.5rem;padding-bottom:1.5rem;border-bottom:1px solid rgba(255,255,255,0.08); }
     .xp-demo .big { font-size:3rem;font-weight:900;color:#2ecc8e; }
     .xp-demo .lbl { font-size:.85rem;color:rgba(255,255,255,0.5); }
     .level-bar-demo { margin-bottom:1rem; }
-    .level-bar-demo .top {
-      display:flex;justify-content:space-between;
-      font-size:.82rem;margin-bottom:.5rem;
-      color:rgba(255,255,255,0.7);font-weight:600;
-    }
+    .level-bar-demo .top { display:flex;justify-content:space-between;font-size:.82rem;margin-bottom:.5rem;color:rgba(255,255,255,0.7);font-weight:600; }
     .bar-track { height:10px;background:rgba(255,255,255,0.1);border-radius:100px;overflow:hidden; }
     .bar-fill  { height:100%;background:linear-gradient(90deg,#2ecc8e,#f5a623);border-radius:100px; }
     .badges-demo { display:flex;gap:.75rem;flex-wrap:wrap;margin-top:1rem; }
-    .badge-demo {
-      display:flex;flex-direction:column;align-items:center;gap:.3rem;
-      font-size:.72rem;color:rgba(255,255,255,0.6);
-    }
+    .badge-demo { display:flex;flex-direction:column;align-items:center;gap:.3rem;font-size:.72rem;color:rgba(255,255,255,0.6); }
     .badge-demo .icon { font-size:1.8rem; }
 
-    /* ── AI Coach section ── */
-    .coach-section-grid {
-      display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;
-    }
-    .coach-demo {
-      background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);
-      border-radius:20px;overflow:hidden;
-    }
-    .coach-demo-header {
-      padding:1rem 1.25rem;border-bottom:1px solid rgba(255,255,255,0.08);
-      display:flex;align-items:center;gap:.75rem;
-    }
-    .coach-demo-avatar {
-      width:36px;height:36px;border-radius:50%;
-      background:linear-gradient(135deg,#2ecc8e,#0f1f3d);
-      display:flex;align-items:center;justify-content:center;font-size:1rem;
-    }
+    .coach-section-grid { display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center; }
+    .coach-demo { background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:20px;overflow:hidden; }
+    .coach-demo-header { padding:1rem 1.25rem;border-bottom:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;gap:.75rem; }
+    .coach-demo-avatar { width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#2ecc8e,#0f1f3d);display:flex;align-items:center;justify-content:center;font-size:1rem; }
     .coach-demo-header .name { font-size:.9rem;font-weight:700;color:#fff; }
     .coach-demo-header .status { font-size:.72rem;color:#2ecc8e; }
     .coach-demo-body { padding:1.25rem;display:flex;flex-direction:column;gap:.85rem; }
-    .demo-bubble {
-      padding:.75rem 1rem;border-radius:12px;font-size:.85rem;line-height:1.6;max-width:85%;
-    }
-    .demo-bubble.bot {
-      background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.85);
-      border-radius:4px 12px 12px 12px;
-    }
-    .demo-bubble.user {
-      background:#2ecc8e;color:#fff;align-self:flex-end;
-      border-radius:12px 4px 12px 12px;margin-left:auto;
-    }
+    .demo-bubble { padding:.75rem 1rem;border-radius:12px;font-size:.85rem;line-height:1.6;max-width:85%; }
+    .demo-bubble.bot { background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.85);border-radius:4px 12px 12px 12px; }
+    .demo-bubble.user { background:#2ecc8e;color:#fff;align-self:flex-end;border-radius:12px 4px 12px 12px;margin-left:auto; }
     .coach-text h3 { font-size:1.4rem;font-weight:800;color:#fff;margin-bottom:1rem; }
     .coach-text p  { font-size:.95rem;color:rgba(255,255,255,0.65);line-height:1.7;margin-bottom:1rem; }
     .coach-points { display:flex;flex-direction:column;gap:.75rem;margin-top:1.5rem; }
     .coach-point { display:flex;align-items:center;gap:.75rem;font-size:.9rem;color:rgba(255,255,255,0.75); }
     .coach-point::before { content:'✓';color:#2ecc8e;font-weight:800;flex-shrink:0; }
 
-    /* ── Stats banner ── */
     .stats-banner {
       background:rgba(46,204,142,0.08);border:1px solid rgba(46,204,142,0.2);
       border-radius:20px;padding:3rem 2rem;
@@ -340,36 +318,13 @@
     .banner-stat .num { font-size:2.5rem;font-weight:900;color:#2ecc8e;margin-bottom:.3rem; }
     .banner-stat .lbl { font-size:.88rem;color:rgba(255,255,255,0.55); }
 
-    /* ── Bottom CTA / sign up ── */
-    .cta-section {
-      max-width:900px;margin:0 auto;padding:5rem 2rem;text-align:center;
-    }
+    .cta-section { max-width:900px;margin:0 auto;padding:5rem 2rem;text-align:center; }
     .cta-section h2 { font-size:2.5rem;font-weight:800;color:#fff;margin-bottom:1rem; }
     .cta-section h2 span { color:#2ecc8e; }
     .cta-section p { font-size:1.05rem;color:rgba(255,255,255,0.6);margin-bottom:3rem;line-height:1.7; }
-    .cta-auth-card {
-      background:rgba(255,255,255,0.97);border-radius:24px;
-      padding:2.5rem;max-width:480px;margin:0 auto;
-      box-shadow:0 30px 80px rgba(0,0,0,0.5);
-    }
+    .cta-auth-card { background:rgba(255,255,255,0.97);border-radius:24px;padding:2.5rem;max-width:480px;margin:0 auto;box-shadow:0 30px 80px rgba(0,0,0,0.5); }
 
-    /* ── Footer ── */
-    .footer {
-      text-align:center;padding:2rem;
-      font-size:.78rem;color:rgba(255,255,255,0.25);
-      border-top:1px solid rgba(255,255,255,0.06);
-    }
-
-    @media (max-width:900px) {
-      .hero-section { grid-template-columns:1fr;padding:3rem 1.5rem; }
-      .auth-card { justify-self:center;max-width:100%; }
-      .hero-text h1 { font-size:2rem; }
-      .steps-grid { grid-template-columns:1fr; }
-      .gamification-grid { grid-template-columns:1fr; }
-      .coach-section-grid { grid-template-columns:1fr; }
-      .stats-banner { grid-template-columns:1fr 1fr; }
-      .form-row { grid-template-columns:1fr; }
-    }
+    .footer { text-align:center;padding:2rem;font-size:.78rem;color:rgba(255,255,255,0.25);border-top:1px solid rgba(255,255,255,0.06); }
   </style>
 </head>
 <body>
@@ -392,7 +347,17 @@
       <a href="#" onclick="switchTab('login');scrollToHero()">Sign in</a>
       <a href="#signup" class="nav-cta">Get started free</a>
     </div>
+    <button class="nav-hamburger" onclick="document.getElementById('nav-mobile').classList.toggle('open')" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
   </nav>
+  <div class="nav-mobile" id="nav-mobile">
+    <a href="#how-it-works" onclick="document.getElementById('nav-mobile').classList.remove('open')">How it works</a>
+    <a href="#modules" onclick="document.getElementById('nav-mobile').classList.remove('open')">Modules</a>
+    <a href="#features" onclick="document.getElementById('nav-mobile').classList.remove('open')">Features</a>
+    <a href="#" onclick="switchTab('login');scrollToHero();document.getElementById('nav-mobile').classList.remove('open')">Sign in</a>
+    <a href="#signup" onclick="document.getElementById('nav-mobile').classList.remove('open')" style="color:#2ecc8e;font-weight:700;">Get started free</a>
+  </div>
 
   <!-- Hero -->
   <section class="hero-section" id="hero">
@@ -409,7 +374,7 @@
       </div>
       <div class="hero-stats">
         <div class="hero-stat"><div class="num">5</div><div class="lbl">Modules</div></div>
-        <div class="hero-stat"><div class="num">11+</div><div class="lbl">Lessons</div></div>
+        <div class="hero-stat"><div class="num">21</div><div class="lbl">Lessons</div></div>
         <div class="hero-stat"><div class="num">AI</div><div class="lbl">Coach</div></div>
         <div class="hero-stat"><div class="num">Free</div><div class="lbl">Always</div></div>
       </div>
@@ -491,36 +456,11 @@
     <h2 class="section-title">Five modules covering <span>everything</span></h2>
     <p class="section-sub">All content is tailored specifically to UK financial products, laws, and credit reference agencies.</p>
     <div class="modules-showcase">
-      <div class="module-showcase-card">
-        <div class="module-showcase-icon">📊</div>
-        <h3>Credit Score Basics</h3>
-        <p>Understand what a credit score is, how Experian, Equifax and TransUnion calculate it, and how to check yours for free.</p>
-        <span class="module-showcase-pill">3 lessons</span>
-      </div>
-      <div class="module-showcase-card">
-        <div class="module-showcase-icon">💳</div>
-        <h3>Understanding APR & Interest</h3>
-        <p>Learn how Annual Percentage Rate works, how compound interest grows debt, and how to compare credit products.</p>
-        <span class="module-showcase-pill">2 lessons</span>
-      </div>
-      <div class="module-showcase-card">
-        <div class="module-showcase-icon">🌱</div>
-        <h3>Building Credit from Scratch</h3>
-        <p>Practical strategies for young adults with thin credit files — credit builder cards, electoral roll, Experian Boost.</p>
-        <span class="module-showcase-pill">2 lessons</span>
-      </div>
-      <div class="module-showcase-card">
-        <div class="module-showcase-icon">⚖️</div>
-        <h3>Debt Management</h3>
-        <p>Understand priority vs non-priority debts, CCJs, the avalanche and snowball methods, and free UK debt advice.</p>
-        <span class="module-showcase-pill">2 lessons</span>
-      </div>
-      <div class="module-showcase-card">
-        <div class="module-showcase-icon">🛍️</div>
-        <h3>Buy Now Pay Later</h3>
-        <p>How Klarna and Clearpay really work, the hidden risks, and how BNPL affects your credit file under new FCA rules.</p>
-        <span class="module-showcase-pill">2 lessons</span>
-      </div>
+      <div class="module-showcase-card"><div class="module-showcase-icon">📊</div><h3>Credit Score Basics</h3><p>Understand what a credit score is, how Experian, Equifax and TransUnion calculate it, and how to check yours for free.</p><span class="module-showcase-pill">5 lessons</span></div>
+      <div class="module-showcase-card"><div class="module-showcase-icon">💳</div><h3>Understanding APR & Interest</h3><p>Learn how Annual Percentage Rate works, how compound interest grows debt, and how to compare credit products.</p><span class="module-showcase-pill">4 lessons</span></div>
+      <div class="module-showcase-card"><div class="module-showcase-icon">🌱</div><h3>Building Credit from Scratch</h3><p>Practical strategies for young adults with thin credit files — credit builder cards, electoral roll, Experian Boost.</p><span class="module-showcase-pill">4 lessons</span></div>
+      <div class="module-showcase-card"><div class="module-showcase-icon">⚖️</div><h3>Debt Management</h3><p>Understand priority vs non-priority debts, CCJs, the avalanche and snowball methods, and free UK debt advice.</p><span class="module-showcase-pill">4 lessons</span></div>
+      <div class="module-showcase-card"><div class="module-showcase-icon">🛍️</div><h3>Buy Now Pay Later</h3><p>How Klarna and Clearpay really work, the hidden risks, and how BNPL affects your credit file under new FCA rules.</p><span class="module-showcase-pill">4 lessons</span></div>
     </div>
   </section>
 
@@ -533,36 +473,15 @@
         <div class="section-tag">🎮 Gamification</div>
         <h2 class="section-title">Learning that feels like <span>a game</span></h2>
         <p class="section-sub">We've borrowed the best ideas from Duolingo and applied them to financial education.</p>
-        <div class="gamif-item">
-          <div class="gamif-icon green">⚡</div>
-          <div><h4>XP & Level System</h4><p>Earn 20 XP per lesson. Progress from Beginner → Bronze → Silver → Gold → Platinum → Diamond.</p></div>
-        </div>
-        <div class="gamif-item">
-          <div class="gamif-icon amber">🔥</div>
-          <div><h4>Daily Streaks</h4><p>Complete at least one lesson every day to build your streak. The longer your streak, the more motivated you stay.</p></div>
-        </div>
-        <div class="gamif-item">
-          <div class="gamif-icon purple">🏅</div>
-          <div><h4>Badges & Achievements</h4><p>Unlock badges for completing your first lesson, scoring 80%+ on a quiz, maintaining a 7-day streak and more.</p></div>
-        </div>
-        <div class="gamif-item">
-          <div class="gamif-icon blue">🎯</div>
-          <div><h4>Daily XP Goal</h4><p>Set a daily target of 60 XP and track your progress throughout the day with a live goal bar.</p></div>
-        </div>
+        <div class="gamif-item"><div class="gamif-icon green">⚡</div><div><h4>XP & Level System</h4><p>Earn 20 XP per lesson. Progress from Beginner → Bronze → Silver → Gold → Platinum → Diamond.</p></div></div>
+        <div class="gamif-item"><div class="gamif-icon amber">🔥</div><div><h4>Daily Streaks</h4><p>Complete at least one lesson every day to build your streak. The longer your streak, the more motivated you stay.</p></div></div>
+        <div class="gamif-item"><div class="gamif-icon purple">🏅</div><div><h4>Badges & Achievements</h4><p>Unlock badges for completing your first lesson, scoring 80%+ on a quiz, maintaining a 7-day streak and more.</p></div></div>
+        <div class="gamif-item"><div class="gamif-icon blue">🎯</div><div><h4>Daily XP Goal</h4><p>Set a daily target of 60 XP and track your progress throughout the day with a live goal bar.</p></div></div>
       </div>
       <div class="gamification-visual">
-        <div class="xp-demo">
-          <div class="big">340 XP</div>
-          <div class="lbl">Total earned</div>
-        </div>
-        <div class="level-bar-demo">
-          <div class="top"><span>🥈 Silver</span><span>→ Gold at 600 XP</span></div>
-          <div class="bar-track"><div class="bar-fill" style="width:57%"></div></div>
-        </div>
-        <div class="level-bar-demo" style="margin-top:1rem;">
-          <div class="top"><span>🎯 Daily goal</span><span>40 / 60 XP</span></div>
-          <div class="bar-track"><div class="bar-fill" style="width:67%;background:linear-gradient(90deg,#3b82f6,#a78bfa)"></div></div>
-        </div>
+        <div class="xp-demo"><div class="big">340 XP</div><div class="lbl">Total earned</div></div>
+        <div class="level-bar-demo"><div class="top"><span>🥈 Silver</span><span>→ Gold at 600 XP</span></div><div class="bar-track"><div class="bar-fill" style="width:57%"></div></div></div>
+        <div class="level-bar-demo" style="margin-top:1rem;"><div class="top"><span>🎯 Daily goal</span><span>40 / 60 XP</span></div><div class="bar-track"><div class="bar-fill" style="width:67%;background:linear-gradient(90deg,#3b82f6,#a78bfa)"></div></div></div>
         <div class="badges-demo">
           <div class="badge-demo"><div class="icon">🎯</div><div>First Steps</div></div>
           <div class="badge-demo"><div class="icon">📝</div><div>Quiz Taker</div></div>
@@ -580,17 +499,11 @@
   <section class="section">
     <div class="coach-section-grid">
       <div class="coach-demo">
-        <div class="coach-demo-header">
-          <div class="coach-demo-avatar">🤖</div>
-          <div>
-            <div class="name">FinPath AI Coach</div>
-            <div class="status">● Online now</div>
-          </div>
-        </div>
+        <div class="coach-demo-header"><div class="coach-demo-avatar">🤖</div><div><div class="name">FinPath AI Coach</div><div class="status">● Online now</div></div></div>
         <div class="coach-demo-body">
           <div class="demo-bubble bot">Hey! 👋 I'm your FinPath AI Money Coach. What would you like to learn about today?</div>
           <div class="demo-bubble user">What is a CCJ and how does it affect my credit score?</div>
-          <div class="demo-bubble bot">A County Court Judgement (CCJ) is a court order issued when you fail to repay a debt. It stays on your credit file for <strong>6 years</strong> and can make it very hard to get credit, rent a flat, or sometimes even get a job. The best way to avoid one is to always contact your creditor before missing payments.</div>
+          <div class="demo-bubble bot">A County Court Judgement (CCJ) is a court order issued when you fail to repay a debt. It stays on your credit file for <strong>6 years</strong> and can make it very hard to get credit, rent a flat, or sometimes even get a job.</div>
           <div class="demo-bubble user">How do I remove it?</div>
           <div class="demo-bubble bot">You can apply to have a CCJ set aside if you have a valid legal reason. If you pay the full amount within one month of the judgement, you can apply to have it marked as "satisfied" which looks better to lenders.</div>
         </div>
@@ -611,11 +524,10 @@
 
   <div class="divider-line"></div>
 
-  <!-- Stats banner -->
   <section class="section">
     <div class="stats-banner">
       <div class="banner-stat"><div class="num">5</div><div class="lbl">Learning modules</div></div>
-      <div class="banner-stat"><div class="num">11+</div><div class="lbl">Bite-sized lessons</div></div>
+      <div class="banner-stat"><div class="num">21</div><div class="lbl">Bite-sized lessons</div></div>
       <div class="banner-stat"><div class="num">6</div><div class="lbl">Badge types to earn</div></div>
       <div class="banner-stat"><div class="num">Free</div><div class="lbl">Forever</div></div>
     </div>
@@ -623,12 +535,11 @@
 
   <div class="divider-line"></div>
 
-  <!-- Bottom sign up CTA -->
+  <!-- Bottom CTA -->
   <section class="cta-section" id="signup">
     <div class="section-tag">🚀 Get started</div>
     <h2>Ready to take control of your <span>financial future?</span></h2>
     <p>Join FinPath today — it's completely free and takes less than a minute to sign up.</p>
-
     <div class="cta-auth-card">
       <div class="auth-tabs">
         <button class="auth-tab active" id="tab-login-2" onclick="switchTab2('login')">Sign in</button>
@@ -657,16 +568,11 @@
         <div class="divider">already have an account?</div>
         <button class="secondary-btn" onclick="switchTab2('login')">Sign in instead</button>
       </div>
-      <div style="font-size:.75rem;color:#8898aa;text-align:center;margin-top:1rem;">
-        ⚠️ Educational only — not financial advice
-      </div>
+      <div style="font-size:.75rem;color:#8898aa;text-align:center;margin-top:1rem;">⚠️ Educational only — not financial advice</div>
     </div>
   </section>
 
-  <!-- Footer -->
-  <footer class="footer">
-    © 2025 FinPath · UK Financial Literacy Platform · Educational content only · Not financial advice
-  </footer>
+  <footer class="footer">© 2025 FinPath · UK Financial Literacy Platform · Educational content only · Not financial advice</footer>
 
 </div>
 
@@ -674,18 +580,15 @@
 <script>
   if (getToken()) window.location.href = 'dashboard.html';
 
-  // Set max DOB
   const maxDob = new Date();
   maxDob.setFullYear(maxDob.getFullYear() - 18);
   const maxDobStr = maxDob.toISOString().split('T')[0];
   document.getElementById('reg-dob').max = maxDobStr;
   document.getElementById('reg-dob-2').max = maxDobStr;
 
-  // URL tab param
   const urlParams = new URLSearchParams(window.location.search);
   if (urlParams.get('tab') === 'register') switchTab('register');
 
-  // Particles
   const EMOJIS = ['💳','💰','📊','🏦','📈','💎','🎯','⚡','🔥','🏆','📱','💡'];
   const pContainer = document.getElementById('particles');
   for (let i = 0; i < 15; i++) {
@@ -695,7 +598,7 @@
     el.style.left = Math.random() * 100 + 'vw';
     el.style.fontSize = (Math.random() * 1.2 + 0.8) + 'rem';
     const dur = Math.random() * 15 + 12;
-    const delay = Math.random() * 10;
+    const delay = -(Math.random() * dur);
     el.style.animation = `floatUp ${dur}s ${delay}s linear infinite`;
     pContainer.appendChild(el);
   }
@@ -704,7 +607,6 @@
     document.getElementById('hero').scrollIntoView({ behavior: 'smooth' });
   }
 
-  // Hero tabs
   function switchTab(tab) {
     document.getElementById('tab-login').classList.toggle('active', tab === 'login');
     document.getElementById('tab-register').classList.toggle('active', tab === 'register');
@@ -712,7 +614,6 @@
     document.getElementById('form-register').classList.toggle('active', tab === 'register');
   }
 
-  // Bottom tabs
   function switchTab2(tab) {
     document.getElementById('tab-login-2').classList.toggle('active', tab === 'login');
     document.getElementById('tab-register-2').classList.toggle('active', tab === 'register');
@@ -720,25 +621,15 @@
     document.getElementById('form-register-2').classList.toggle('active', tab === 'register');
   }
 
-  function checkPasswordStrength(password) {
-    updateStrength(password, 'strength-fill', 'strength-label');
-  }
-  function checkStrength2(password) {
-    updateStrength(password, 'strength-fill-2', 'strength-label-2');
-  }
+  function checkPasswordStrength(password) { updateStrength(password, 'strength-fill', 'strength-label'); }
+  function checkStrength2(password) { updateStrength(password, 'strength-fill-2', 'strength-label-2'); }
   function updateStrength(password, fillId, labelId) {
     let s = 0;
     if (password.length >= 8) s++;
     if (/[A-Z]/.test(password)) s++;
     if (/[0-9]/.test(password)) s++;
     if (/[^A-Za-z0-9]/.test(password)) s++;
-    const levels = [
-      {w:'0%',color:'#dde4ef',text:''},
-      {w:'25%',color:'#e74c3c',text:'Weak'},
-      {w:'50%',color:'#f39c12',text:'Fair'},
-      {w:'75%',color:'#2ecc8e',text:'Good'},
-      {w:'100%',color:'#1fa870',text:'Strong'},
-    ];
+    const levels = [{w:'0%',color:'#dde4ef',text:''},{w:'25%',color:'#e74c3c',text:'Weak'},{w:'50%',color:'#f39c12',text:'Fair'},{w:'75%',color:'#2ecc8e',text:'Good'},{w:'100%',color:'#1fa870',text:'Strong'}];
     const l = levels[s];
     document.getElementById(fillId).style.width = l.w;
     document.getElementById(fillId).style.background = l.color;
@@ -755,23 +646,11 @@
   }
 
   async function doLogin() {
-    await performLogin(
-      document.getElementById('login-email').value.trim(),
-      document.getElementById('login-password').value,
-      document.getElementById('login-btn'),
-      document.getElementById('login-error')
-    );
+    await performLogin(document.getElementById('login-email').value.trim(), document.getElementById('login-password').value, document.getElementById('login-btn'), document.getElementById('login-error'));
   }
-
   async function doLogin2() {
-    await performLogin(
-      document.getElementById('login-email-2').value.trim(),
-      document.getElementById('login-password-2').value,
-      document.getElementById('login-btn-2'),
-      document.getElementById('login-error-2')
-    );
+    await performLogin(document.getElementById('login-email-2').value.trim(), document.getElementById('login-password-2').value, document.getElementById('login-btn-2'), document.getElementById('login-error-2'));
   }
-
   async function performLogin(email, password, btn, errMsg) {
     if (!email || !password) { errMsg.textContent = 'Please enter your email and password.'; errMsg.style.display = 'block'; return; }
     btn.textContent = 'Signing in…'; btn.disabled = true; errMsg.style.display = 'none';
@@ -786,33 +665,11 @@
   }
 
   async function doRegister() {
-    await performRegister(
-      document.getElementById('reg-firstname').value.trim(),
-      document.getElementById('reg-lastname').value.trim(),
-      document.getElementById('reg-dob').value,
-      document.getElementById('reg-username').value.trim(),
-      document.getElementById('reg-email').value.trim(),
-      document.getElementById('reg-password').value,
-      document.getElementById('reg-password2').value,
-      document.getElementById('register-btn'),
-      document.getElementById('register-error')
-    );
+    await performRegister(document.getElementById('reg-firstname').value.trim(), document.getElementById('reg-lastname').value.trim(), document.getElementById('reg-dob').value, document.getElementById('reg-username').value.trim(), document.getElementById('reg-email').value.trim(), document.getElementById('reg-password').value, document.getElementById('reg-password2').value, document.getElementById('register-btn'), document.getElementById('register-error'));
   }
-
   async function doRegister2() {
-    await performRegister(
-      document.getElementById('reg-firstname-2').value.trim(),
-      document.getElementById('reg-lastname-2').value.trim(),
-      document.getElementById('reg-dob-2').value,
-      document.getElementById('reg-username-2').value.trim(),
-      document.getElementById('reg-email-2').value.trim(),
-      document.getElementById('reg-password-2b').value,
-      document.getElementById('reg-password2-2').value,
-      document.getElementById('register-btn-2'),
-      document.getElementById('register-error-2')
-    );
+    await performRegister(document.getElementById('reg-firstname-2').value.trim(), document.getElementById('reg-lastname-2').value.trim(), document.getElementById('reg-dob-2').value, document.getElementById('reg-username-2').value.trim(), document.getElementById('reg-email-2').value.trim(), document.getElementById('reg-password-2b').value, document.getElementById('reg-password2-2').value, document.getElementById('register-btn-2'), document.getElementById('register-error-2'));
   }
-
   async function performRegister(firstname, lastname, dob, username, email, password, password2, btn, errMsg) {
     errMsg.style.display = 'none';
     if (!firstname || !lastname || !dob || !username || !email || !password || !password2) { errMsg.textContent = 'Please fill in all fields.'; errMsg.style.display = 'block'; return; }
