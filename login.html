@@ -7,32 +7,126 @@
   <link rel="stylesheet" href="styles.css" />
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
+
     body {
       font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
-      background: #f4f7fb;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
+      overflow-x: hidden;
+      background: #0a1628;
     }
+
+    /* ── Animated background ── */
+    .bg-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      background: linear-gradient(135deg, #0a1628 0%, #0f2d1f 50%, #0a1628 100%);
+      background-size: 400% 400%;
+      animation: gradientShift 12s ease infinite;
+    }
+
+    @keyframes gradientShift {
+      0%   { background-position: 0% 50%; }
+      50%  { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* Floating particles */
+    .particles {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .particle {
+      position: absolute;
+      font-size: 1.5rem;
+      opacity: 0;
+      animation: floatUp linear infinite;
+      user-select: none;
+    }
+
+    @keyframes floatUp {
+      0%   { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+      10%  { opacity: 0.15; }
+      90%  { opacity: 0.15; }
+      100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+    }
+
+    /* Glowing orbs */
+    .orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.15;
+      z-index: 1;
+      animation: orbPulse ease-in-out infinite;
+    }
+
+    .orb-1 {
+      width: 500px; height: 500px;
+      background: #2ecc8e;
+      top: -200px; left: -100px;
+      animation-duration: 8s;
+    }
+
+    .orb-2 {
+      width: 400px; height: 400px;
+      background: #3b82f6;
+      bottom: -150px; right: -100px;
+      animation-duration: 10s;
+      animation-delay: -4s;
+    }
+
+    .orb-3 {
+      width: 300px; height: 300px;
+      background: #a78bfa;
+      top: 50%; left: 40%;
+      animation-duration: 12s;
+      animation-delay: -2s;
+    }
+
+    @keyframes orbPulse {
+      0%, 100% { transform: scale(1); opacity: 0.15; }
+      50%       { transform: scale(1.2); opacity: 0.22; }
+    }
+
+    /* ── Top bar ── */
     .top-bar {
+      position: relative;
+      z-index: 10;
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding: 1.25rem 2.5rem;
-      background: #fff;
-      border-bottom: 1px solid #dde4ef;
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
     }
-    .brand { font-size: 1.35rem; font-weight: 800; color: #0f1f3d; }
+
+    .brand { font-size: 1.35rem; font-weight: 800; color: #fff; }
     .brand span { color: #2ecc8e; }
+
     .top-bar-links { display: flex; align-items: center; gap: 1rem; }
     .top-bar-links a {
-      font-size: .9rem; font-weight: 600; color: #5b6a85;
+      font-size: .9rem; font-weight: 600; color: rgba(255,255,255,0.7);
       text-decoration: none; padding: .45rem .9rem; border-radius: 8px; transition: .15s;
     }
-    .top-bar-links a:hover { background: #f4f7fb; color: #0f1f3d; }
-    .top-bar-links .btn-signup { background: #2ecc8e; color: #fff; padding: .45rem 1.25rem; border-radius: 8px; }
-    .top-bar-links .btn-signup:hover { background: #1fa870; color: #fff; }
+    .top-bar-links a:hover { background: rgba(255,255,255,0.1); color: #fff; }
+    .top-bar-links .btn-signup {
+      background: #2ecc8e; color: #fff;
+      padding: .45rem 1.25rem; border-radius: 8px;
+    }
+    .top-bar-links .btn-signup:hover { background: #1fa870; }
+
+    /* ── Main layout ── */
     .main {
+      position: relative;
+      z-index: 10;
       flex: 1;
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -43,92 +137,226 @@
       align-items: center;
       width: 100%;
     }
-    .hero h1 { font-size: 2.8rem; font-weight: 800; color: #0f1f3d; line-height: 1.15; margin-bottom: 1.25rem; }
+
+    /* ── Left hero ── */
+    .hero h1 {
+      font-size: 3rem;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.15;
+      margin-bottom: 1.25rem;
+      animation: slideInLeft 0.8s ease both;
+    }
     .hero h1 span { color: #2ecc8e; }
-    .hero p { font-size: 1.05rem; color: #5b6a85; line-height: 1.7; margin-bottom: 2rem; max-width: 440px; }
-    .features { display: flex; flex-direction: column; gap: .85rem; margin-bottom: 2.5rem; }
-    .feature-item { display: flex; align-items: center; gap: .75rem; font-size: .92rem; color: #2c3e60; font-weight: 500; }
-    .feature-icon { width: 32px; height: 32px; background: #e6f9f1; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0; }
-    .stats-row { display: flex; gap: 2rem; }
-    .stat .num { font-size: 1.6rem; font-weight: 800; color: #0f1f3d; }
-    .stat .lbl { font-size: .8rem; color: #8898aa; margin-top: .1rem; }
+
+    .hero p {
+      font-size: 1.05rem;
+      color: rgba(255,255,255,0.65);
+      line-height: 1.7;
+      margin-bottom: 2rem;
+      max-width: 440px;
+      animation: slideInLeft 0.8s 0.1s ease both;
+    }
+
+    @keyframes slideInLeft {
+      from { opacity: 0; transform: translateX(-30px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+
+    .features {
+      display: flex;
+      flex-direction: column;
+      gap: .85rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .feature-item {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      font-size: .92rem;
+      color: rgba(255,255,255,0.8);
+      font-weight: 500;
+      animation: slideInLeft 0.8s ease both;
+    }
+
+    .feature-item:nth-child(1) { animation-delay: 0.2s; }
+    .feature-item:nth-child(2) { animation-delay: 0.3s; }
+    .feature-item:nth-child(3) { animation-delay: 0.4s; }
+    .feature-item:nth-child(4) { animation-delay: 0.5s; }
+    .feature-item:nth-child(5) { animation-delay: 0.6s; }
+
+    .feature-icon {
+      width: 36px; height: 36px;
+      background: rgba(46,204,142,0.15);
+      border: 1px solid rgba(46,204,142,0.3);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; flex-shrink: 0;
+    }
+
+    .stats-row {
+      display: flex;
+      gap: 2rem;
+      animation: slideInLeft 0.8s 0.7s ease both;
+    }
+
+    .stat .num {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: #2ecc8e;
+    }
+
+    .stat .lbl {
+      font-size: .8rem;
+      color: rgba(255,255,255,0.5);
+      margin-top: .1rem;
+    }
+
+    /* ── Auth card ── */
     .auth-card {
-      background: #fff; border: 1px solid #dde4ef; border-radius: 20px;
-      padding: 2.5rem; box-shadow: 0 4px 24px rgba(15,31,61,.08);
-      width: 100%; max-width: 420px; justify-self: end;
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 24px;
+      padding: 2.5rem;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.4);
+      width: 100%;
+      max-width: 420px;
+      justify-self: end;
+      animation: slideInRight 0.8s 0.2s ease both;
     }
-    .auth-tabs { display: flex; background: #f4f7fb; border-radius: 10px; padding: 4px; margin-bottom: 1.75rem; }
+
+    @keyframes slideInRight {
+      from { opacity: 0; transform: translateX(30px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+
+    /* Tabs */
+    .auth-tabs {
+      display: flex;
+      background: #f4f7fb;
+      border-radius: 10px;
+      padding: 4px;
+      margin-bottom: 1.75rem;
+    }
+
     .auth-tab {
-      flex: 1; text-align: center; padding: .55rem; border-radius: 8px;
-      font-size: .88rem; font-weight: 600; cursor: pointer; color: #8898aa;
-      transition: .15s; border: none; background: transparent; font-family: inherit;
+      flex: 1; text-align: center; padding: .55rem;
+      border-radius: 8px; font-size: .88rem; font-weight: 600;
+      cursor: pointer; color: #8898aa; transition: .15s;
+      border: none; background: transparent; font-family: inherit;
     }
-    .auth-tab.active { background: #fff; color: #0f1f3d; box-shadow: 0 1px 4px rgba(15,31,61,.1); }
+
+    .auth-tab.active {
+      background: #fff; color: #0f1f3d;
+      box-shadow: 0 1px 4px rgba(15,31,61,.1);
+    }
+
     .auth-form { display: none; }
     .auth-form.active { display: block; }
+
     .form-group { margin-bottom: .9rem; }
-    .form-group label { display: block; font-size: .83rem; font-weight: 600; color: #2c3e60; margin-bottom: .4rem; }
-    .form-group input, .form-group select {
-      width: 100%; padding: .75rem 1rem; border: 1.5px solid #dde4ef;
-      border-radius: 10px; font-size: .9rem; font-family: inherit;
-      color: #0f1f3d; outline: none; transition: border-color .15s; background: #f9fbfd;
+    .form-group label {
+      display: block; font-size: .83rem; font-weight: 600;
+      color: #2c3e60; margin-bottom: .4rem;
     }
-    .form-group input:focus, .form-group select:focus { border-color: #2ecc8e; background: #fff; }
+
+    .form-group input, .form-group select {
+      width: 100%; padding: .75rem 1rem;
+      border: 1.5px solid #dde4ef; border-radius: 10px;
+      font-size: .9rem; font-family: inherit; color: #0f1f3d;
+      outline: none; transition: border-color .15s; background: #f9fbfd;
+    }
+
+    .form-group input:focus, .form-group select:focus {
+      border-color: #2ecc8e; background: #fff;
+      box-shadow: 0 0 0 3px rgba(46,204,142,0.1);
+    }
+
     .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; }
+
     .error-msg {
       display: none; background: #fff0f0; border: 1px solid #f5c6c6;
       color: #c0392b; padding: .7rem 1rem; border-radius: 8px;
       font-size: .83rem; margin-bottom: 1rem;
     }
-    .success-msg {
-      display: none; background: #f0fdf8; border: 1px solid #a8f0d0;
-      color: #1fa870; padding: .7rem 1rem; border-radius: 8px;
-      font-size: .83rem; margin-bottom: 1rem;
-    }
+
     .submit-btn {
       width: 100%; padding: .85rem; background: #2ecc8e; color: #fff;
       border: none; border-radius: 10px; font-size: .95rem; font-weight: 700;
       cursor: pointer; transition: .18s; margin-top: .5rem; font-family: inherit;
+      position: relative; overflow: hidden;
     }
-    .submit-btn:hover { background: #1fa870; transform: translateY(-1px); box-shadow: 0 4px 14px rgba(46,204,142,.35); }
+
+    .submit-btn::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transform: translateX(-100%);
+      transition: transform 0.5s;
+    }
+
+    .submit-btn:hover::after { transform: translateX(100%); }
+    .submit-btn:hover { background: #1fa870; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(46,204,142,0.4); }
     .submit-btn:disabled { opacity: .6; cursor: not-allowed; transform: none; }
+
     .secondary-btn {
       width: 100%; padding: .85rem; background: #f4f7fb; color: #0f1f3d;
       border: 1.5px solid #dde4ef; border-radius: 10px; font-size: .9rem;
       font-weight: 600; cursor: pointer; transition: .15s; font-family: inherit;
     }
-    .secondary-btn:hover { border-color: #2ecc8e; color: #1fa870; }
+    .secondary-btn:hover { border-color: #2ecc8e; color: #1fa870; background: #f0fdf8; }
+
     .divider {
-      text-align: center; font-size: .8rem; color: #8898aa; margin: 1rem 0; position: relative;
+      text-align: center; font-size: .8rem; color: #8898aa;
+      margin: 1rem 0; position: relative;
     }
     .divider::before, .divider::after {
-      content: ''; position: absolute; top: 50%; width: 42%; height: 1px; background: #dde4ef;
+      content: ''; position: absolute; top: 50%;
+      width: 38%; height: 1px; background: #dde4ef;
     }
     .divider::before { left: 0; }
     .divider::after { right: 0; }
-    .age-note {
-      font-size: .75rem; color: #8898aa; margin-top: .3rem;
-    }
-    .age-error { color: #c0392b; }
-    .disclaimer { font-size: .75rem; color: #8898aa; text-align: center; margin-top: 1rem; line-height: 1.5; }
-    .footer {
-      text-align: center; padding: 1.5rem; font-size: .78rem;
-      color: #8898aa; border-top: 1px solid #dde4ef; background: #fff;
-    }
+
     .password-strength { margin-top: .4rem; }
     .strength-bar { height: 4px; border-radius: 100px; background: #dde4ef; overflow: hidden; }
     .strength-fill { height: 100%; border-radius: 100px; transition: width .3s, background .3s; width: 0%; }
     .strength-label { font-size: .72rem; color: #8898aa; margin-top: .2rem; }
+
+    .age-note { font-size: .75rem; color: #8898aa; margin-top: .3rem; }
+    .disclaimer { font-size: .75rem; color: #8898aa; text-align: center; margin-top: 1rem; line-height: 1.5; }
+
+    /* ── Footer ── */
+    .footer {
+      position: relative; z-index: 10;
+      text-align: center; padding: 1.25rem;
+      font-size: .78rem; color: rgba(255,255,255,0.3);
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+
     @media (max-width: 800px) {
       .main { grid-template-columns: 1fr; padding: 2rem 1.25rem; gap: 2rem; }
       .auth-card { justify-self: center; }
       .hero h1 { font-size: 2rem; }
       .form-row { grid-template-columns: 1fr; }
+      .stats-row { gap: 1.25rem; }
     }
   </style>
 </head>
 <body>
 
+<!-- Animated background -->
+<div class="bg-canvas"></div>
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="orb orb-3"></div>
+
+<!-- Floating particles -->
+<div class="particles" id="particles"></div>
+
+<!-- Top bar -->
 <div class="top-bar">
   <div class="brand">Fin<span>Path</span></div>
   <div class="top-bar-links">
@@ -138,12 +366,14 @@
   </div>
 </div>
 
+<!-- Main -->
 <div class="main">
 
   <!-- Left hero -->
   <div class="hero" id="features">
     <h1>Learn credit<br>the <span>smart way</span></h1>
     <p>FinPath teaches UK financial literacy through bite-sized lessons, instant quizzes, and an AI Money Coach — designed for 18-25 year olds.</p>
+
     <div class="features">
       <div class="feature-item">
         <div class="feature-icon">📊</div>
@@ -159,13 +389,14 @@
       </div>
       <div class="feature-item">
         <div class="feature-icon">🏆</div>
-        <span>Earn badges and build streaks </span>
+        <span>Earn badges and build streaks like Duolingo</span>
       </div>
       <div class="feature-item">
         <div class="feature-icon">🇬🇧</div>
         <span>100% focused on UK financial products and law</span>
       </div>
     </div>
+
     <div class="stats-row">
       <div class="stat"><div class="num">5</div><div class="lbl">Learning modules</div></div>
       <div class="stat"><div class="num">11+</div><div class="lbl">Lessons</div></div>
@@ -180,7 +411,7 @@
       <button class="auth-tab" id="tab-register" onclick="switchTab('register')">Create account</button>
     </div>
 
-    <!-- Login form -->
+    <!-- Login -->
     <div class="auth-form active" id="form-login">
       <div class="error-msg" id="login-error"></div>
       <div class="form-group">
@@ -197,10 +428,9 @@
       <div class="disclaimer">⚠️ Educational only — not financial advice</div>
     </div>
 
-    <!-- Register form -->
+    <!-- Register -->
     <div class="auth-form" id="form-register">
       <div class="error-msg" id="register-error"></div>
-      <div class="success-msg" id="register-success"></div>
 
       <div class="form-row">
         <div class="form-group">
@@ -215,7 +445,7 @@
 
       <div class="form-group">
         <label>Date of birth</label>
-        <input type="date" id="reg-dob" max="" />
+        <input type="date" id="reg-dob" />
         <div class="age-note" id="age-note">You must be 18 or over to use FinPath</div>
       </div>
 
@@ -252,7 +482,6 @@
         FinPath is for educational purposes only — not financial advice.
       </div>
     </div>
-
   </div>
 </div>
 
@@ -264,7 +493,7 @@
 <script>
   if (getToken()) window.location.href = 'dashboard.html';
 
-  // Set max date of birth to 18 years ago
+  // Set max DOB to 18 years ago
   const maxDob = new Date();
   maxDob.setFullYear(maxDob.getFullYear() - 18);
   document.getElementById('reg-dob').max = maxDob.toISOString().split('T')[0];
@@ -272,6 +501,25 @@
   const urlParams = new URLSearchParams(window.location.search);
   if (urlParams.get('tab') === 'register') switchTab('register');
 
+  // ── Floating particles ──────────────────────────────────
+  const EMOJIS = ['💳','💰','📊','🏦','📈','💎','🎯','⚡','🔥','🏆','📱','💡'];
+  const container = document.getElementById('particles');
+
+  function createParticle() {
+    const el = document.createElement('div');
+    el.className = 'particle';
+    el.textContent = EMOJIS[Math.floor(Math.random() * EMOJIS.length)];
+    el.style.left = Math.random() * 100 + 'vw';
+    el.style.fontSize = (Math.random() * 1.2 + 0.8) + 'rem';
+    const duration = Math.random() * 15 + 12;
+    const delay = Math.random() * 10;
+    el.style.animation = `floatUp ${duration}s ${delay}s linear infinite`;
+    container.appendChild(el);
+  }
+
+  for (let i = 0; i < 18; i++) createParticle();
+
+  // ── Tab switching ───────────────────────────────────────
   function switchTab(tab) {
     document.getElementById('tab-login').classList.toggle('active', tab === 'login');
     document.getElementById('tab-register').classList.toggle('active', tab === 'register');
@@ -279,6 +527,7 @@
     document.getElementById('form-register').classList.toggle('active', tab === 'register');
   }
 
+  // ── Password strength ───────────────────────────────────
   function checkPasswordStrength(password) {
     const fill  = document.getElementById('strength-fill');
     const label = document.getElementById('strength-label');
@@ -287,7 +536,6 @@
     if (/[A-Z]/.test(password)) strength++;
     if (/[0-9]/.test(password)) strength++;
     if (/[^A-Za-z0-9]/.test(password)) strength++;
-
     const levels = [
       { w: '0%',   color: '#dde4ef', text: '' },
       { w: '25%',  color: '#e74c3c', text: 'Weak' },
@@ -296,10 +544,10 @@
       { w: '100%', color: '#1fa870', text: 'Strong' },
     ];
     const l = levels[strength];
-    fill.style.width    = l.w;
+    fill.style.width = l.w;
     fill.style.background = l.color;
-    label.textContent   = l.text;
-    label.style.color   = l.color;
+    label.textContent = l.text;
+    label.style.color = l.color;
   }
 
   function getAge(dob) {
@@ -311,6 +559,7 @@
     return age;
   }
 
+  // ── Login ───────────────────────────────────────────────
   async function doLogin() {
     const email    = document.getElementById('login-email').value.trim();
     const password = document.getElementById('login-password').value;
@@ -323,7 +572,6 @@
     }
     btn.textContent = 'Signing in…'; btn.disabled = true;
     errMsg.style.display = 'none';
-
     try {
       await login(email, password);
       window.location.href = 'dashboard.html';
@@ -334,6 +582,7 @@
     }
   }
 
+  // ── Register ────────────────────────────────────────────
   async function doRegister() {
     const firstname = document.getElementById('reg-firstname').value.trim();
     const lastname  = document.getElementById('reg-lastname').value.trim();
@@ -364,7 +613,6 @@
     }
 
     btn.textContent = 'Creating account…'; btn.disabled = true;
-
     try {
       const res = await fetch('http://localhost:8000/auth/register', {
         method: 'POST',
@@ -391,5 +639,6 @@
     else doRegister();
   });
 </script>
+<script src="background.js"></script>
 </body>
 </html>

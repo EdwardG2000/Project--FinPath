@@ -5,6 +5,7 @@
   <title>FinPath – Sign In</title>
   <link rel="stylesheet" href="styles.css" />
   <script src="api.js"></script>
+  <link rel="stylesheet" href="theme.css" />
 </head>
 <body style="display:flex;align-items:center;justify-content:center;min-height:100vh;">
 
@@ -19,7 +20,7 @@
     <!-- Demo hint -->
     <div style="background:#e6f9f1;border:1px solid #a8f0d0;border-radius:10px;
                 padding:.75rem 1rem;font-size:.8rem;color:var(--green-d);margin-bottom:1.5rem;">
-      <strong>Demo:</strong> demo@creditwise.co.uk / demo1234
+
     </div>
 
     <div id="error-msg" style="display:none;color:#d9534f;font-size:.85rem;
@@ -77,5 +78,6 @@
     if (e.key === 'Enter') handleLogin();
   });
 </script>
+<script src="background.js"></script>
 </body>
 </html>

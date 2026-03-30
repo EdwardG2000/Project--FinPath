@@ -5,6 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>FinPath – Profile</title>
   <link rel="stylesheet" href="styles.css" />
+  <style>
+    .bg-canvas { position:fixed;inset:0;z-index:0;background:linear-gradient(135deg,#0a1628 0%,#0f2d1f 50%,#0a1628 100%);background-size:400% 400%;animation:gradientShift 12s ease infinite; }
+    @keyframes gradientShift { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
+    .orb { position:fixed;border-radius:50%;filter:blur(80px);opacity:.12;z-index:1;animation:orbPulse ease-in-out infinite;pointer-events:none; }
+    .orb-1 { width:500px;height:500px;background:#2ecc8e;top:-200px;left:-100px;animation-duration:8s; }
+    .orb-2 { width:400px;height:400px;background:#3b82f6;bottom:-150px;right:-100px;animation-duration:10s;animation-delay:-4s; }
+    .orb-3 { width:300px;height:300px;background:#a78bfa;top:50%;left:40%;animation-duration:12s;animation-delay:-2s; }
+    @keyframes orbPulse { 0%,100%{transform:scale(1);opacity:.12} 50%{transform:scale(1.2);opacity:.18} }
+    .particle { position:fixed;font-size:1.2rem;opacity:0;animation:floatUp linear infinite;pointer-events:none;z-index:1; }
+    @keyframes floatUp { 0%{transform:translateY(100vh) rotate(0deg);opacity:0} 10%{opacity:.08} 90%{opacity:.08} 100%{transform:translateY(-100px) rotate(360deg);opacity:0} }
+    #nav-root,.dashboard-layout,.page-layout,.lesson-layout,.coach-layout,.page-layout-full { position:relative;z-index:10; }
+    .disclaimer-bar { position:relative;z-index:10; }
+  </style>
+  
 </head>
 <body>
 
@@ -182,5 +196,6 @@
 </script>
 
 <div class="disclaimer-bar">Disclaimer: FinPath is for educational purposes only. Nothing on this platform constitutes financial advice. Always consult a qualified financial adviser before making financial decisions.</div>
+<script src="background.js"></script>
 </body>
 </html>
