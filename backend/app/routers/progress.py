@@ -3,7 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, func
 from typing import Optional
 from app.database import get_db
-from app.models import User, Module, Lesson, LessonCompletion, QuizAttempt, UserBadge
+from app.models import User, Module, Lesson, LessonCompletion, QuizAttempt, UserBadge, UserRole
 from app.schemas import ProgressOverview, ModuleWithProgress, BadgeOut
 from app.services.auth import get_current_user
 
@@ -46,3 +46,43 @@ async def get_progress_overview(db: AsyncSession = Depends(get_db), current_user
         longest_streak=current_user.longest_streak,
         badges=badges, modules=module_progress,
     )
+
+@router.get("/leaderboard")
+async def get_leaderboard(db: AsyncSession = Depends(get_db), current_user: User = Depends(get_current_user)):
+    from sqlalchemy import select, func
+    from app.models import LessonCompletion, QuizAttempt
+    
+    # Get all users
+    users_result = await db.execute(select(User).where(User.role == UserRole.user))
+    users = users_result.scalars().all()
+    
+    leaderboard = []
+    for user in users:
+        # Get completed lessons count
+        lessons_result = await db.execute(
+            select(func.count()).where(LessonCompletion.user_id == user.id)
+        )
+        lessons_done = lessons_result.scalar() or 0
+        
+        # Get best quiz scores total
+        quiz_result = await db.execute(
+            select(func.sum(QuizAttempt.score)).where(QuizAttempt.user_id == user.id)
+        )
+        quiz_total = quiz_result.scalar() or 0
+        
+        xp = (lessons_done * 20) + int(quiz_total / 10)
+        
+        leaderboard.append({
+            "user_id": user.id,
+            "username": user.username,
+            "xp": xp,
+            "lessons_done": lessons_done,
+            "is_me": user.id == current_user.id
+        })
+    
+    leaderboard.sort(key=lambda x: x["xp"], reverse=True)
+    
+    for i, entry in enumerate(leaderboard):
+        entry["rank"] = i + 1
+    
+    return leaderboard

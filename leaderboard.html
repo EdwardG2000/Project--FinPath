@@ -5,7 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>FinPath – Leaderboard</title>
   <link rel="stylesheet" href="styles.css" />
-  <link rel="stylesheet" href="theme.css" />
+  <style>
+    .page-layout-full { position:relative; z-index:10; }
+  </style>
 </head>
 <body>
 
@@ -22,9 +24,9 @@
   </div>
 
   <!-- Your rank banner -->
-  <div id="my-rank-banner" style="display:none;background:linear-gradient(135deg,var(--green),var(--navy));
+  <div id="my-rank-banner" style="display:none;background:linear-gradient(135deg,#2ecc8e,#0f2d1f);
     border-radius:14px;padding:1.25rem 1.5rem;margin-bottom:1.5rem;
-    display:flex;align-items:center;justify-content:space-between;">
+    align-items:center;justify-content:space-between;">
     <div style="color:#fff;">
       <div style="font-size:.78rem;opacity:.7;font-weight:600;text-transform:uppercase;letter-spacing:.06em;">Your ranking</div>
       <div style="font-size:1.6rem;font-weight:800;margin-top:.15rem;" id="my-rank-num">#—</div>
@@ -40,9 +42,8 @@
     <div style="color:var(--muted);font-size:.85rem;padding:1rem 0;">Loading leaderboard…</div>
   </div>
 
-  <!-- Note about leaderboard -->
-  <div style="margin-top:1.5rem;padding:1rem;background:var(--bg);border-radius:10px;
-    border:1px solid var(--border);font-size:.8rem;color:var(--muted);">
+  <div style="margin-top:1.5rem;padding:1rem;background:rgba(255,255,255,0.05);border-radius:10px;
+    border:1px solid rgba(255,255,255,0.1);font-size:.8rem;color:var(--muted);">
     💡 Leaderboard XP is calculated from lessons completed (20 XP each) + quiz scores.
     Complete more lessons to climb the ranks!
   </div>
@@ -54,67 +55,65 @@
 <script>
   requireAuth();
 
-  // Placeholder friends/community data mixed with real user
-  // In a full build this would come from a /leaderboard API endpoint
- 
-  const RANK_MEDALS = ['🥇', '🥈', '🥉'];
-  const RANK_CLASSES = ['gold', 'silver', 'bronze'];
+  const RANK_MEDALS = ['🥇','🥈','🥉'];
+  const RANK_CLASSES = ['gold','silver','bronze'];
 
   async function loadLeaderboard() {
-    const [me, progress] = await Promise.all([getMe(), getProgress()]);
+    try {
+      const leaderboard = await apiFetch('/progress/leaderboard');
 
-    const myXP = progress.completed_lessons * 20;
-    const myUsername = me.username;
+      if (!leaderboard || leaderboard.length === 0) {
+        document.getElementById('leaderboard-list').innerHTML =
+          '<div style="color:var(--muted);font-size:.85rem;padding:1rem 0;">No users yet. Be the first to complete a lesson!</div>';
+        return;
+      }
 
-    // Insert real user into the dummy list and sort
-    const allUsers = [...DUMMY_USERS, { username: myUsername, xp: myXP, isMe: true }]
-      .sort((a, b) => b.xp - a.xp);
+      const topXP = leaderboard[0].xp || 1;
+      const me = leaderboard.find(function(u) { return u.is_me; });
 
-    const myRank = allUsers.findIndex(u => u.isMe) + 1;
-    const topXP = allUsers[0].xp || 1;
+      // Show rank banner
+      if (me) {
+        const banner = document.getElementById('my-rank-banner');
+        banner.style.display = 'flex';
+        document.getElementById('my-rank-num').textContent = '#' + me.rank;
+        document.getElementById('my-xp-num').textContent = me.xp + ' XP';
+      }
 
-    // Show your rank banner
-    const banner = document.getElementById('my-rank-banner');
-    banner.style.display = 'flex';
-    document.getElementById('my-rank-num').textContent = `#${myRank}`;
-    document.getElementById('my-xp-num').textContent = `${myXP} XP`;
+      // Week tag
+      const now = new Date();
+      document.getElementById('week-tag').textContent =
+        'Week of ' + now.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
 
-    // Week tag
-    const now = new Date();
-    document.getElementById('week-tag').textContent =
-      `Week of ${now.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}`;
+      // Render rows
+      const list = document.getElementById('leaderboard-list');
+      list.innerHTML = leaderboard.map(function(user) {
+        const rank = user.rank;
+        const rankDisplay = rank <= 3
+          ? '<div class="lb-rank ' + RANK_CLASSES[rank-1] + '">' + RANK_MEDALS[rank-1] + '</div>'
+          : '<div class="lb-rank">#' + rank + '</div>';
 
-    // Render rows
-    const list = document.getElementById('leaderboard-list');
-    list.innerHTML = allUsers.map((user, i) => {
-      const rank = i + 1;
-      const rankDisplay = rank <= 3
-        ? `<div class="lb-rank ${RANK_CLASSES[rank - 1]}">${RANK_MEDALS[rank - 1]}</div>`
-        : `<div class="lb-rank">#${rank}</div>`;
+        const initial = user.username[0].toUpperCase();
+        const barWidth = topXP > 0 ? Math.round((user.xp / topXP) * 100) : 0;
+        const avatarStyle = user.is_me
+          ? 'background:linear-gradient(135deg,#2ecc8e,#0f2d1f);'
+          : 'background:linear-gradient(135deg,#2c3e60,#0f1f3d);';
 
-      const initial = user.username[0].toUpperCase();
-      const barWidth = Math.round((user.xp / topXP) * 100);
+        return '<div class="lb-row' + (user.is_me ? ' me' : '') + '">' +
+          rankDisplay +
+          '<div class="avatar" style="width:36px;height:36px;font-size:.8rem;' + avatarStyle + '">' + initial + '</div>' +
+          '<div class="lb-name">' + user.username +
+            (user.is_me ? ' <span style="font-size:.72rem;color:#2ecc8e;font-weight:700;">(you)</span>' : '') +
+            '<div style="font-size:.72rem;color:var(--muted);margin-top:.1rem;">' + user.lessons_done + ' lessons completed</div>' +
+          '</div>' +
+          '<div class="lb-bar-wrap"><div class="lb-bar" style="width:' + barWidth + '%"></div></div>' +
+          '<div class="lb-xp">' + user.xp + ' XP</div>' +
+          '</div>';
+      }).join('');
 
-      const avatarStyle = user.isMe
-        ? 'background:linear-gradient(135deg,var(--green),var(--navy));'
-        : '';
-
-      return `
-        <div class="lb-row${user.isMe ? ' me' : ''}">
-          ${rankDisplay}
-          <div class="avatar" style="width:36px;height:36px;font-size:.8rem;${avatarStyle}">
-            ${initial}
-          </div>
-          <div class="lb-name">
-            ${user.username}
-            ${user.isMe ? '<span style="font-size:.72rem;color:var(--green-d);font-weight:700;margin-left:.4rem;">(you)</span>' : ''}
-          </div>
-          <div class="lb-bar-wrap">
-            <div class="lb-bar" style="width:${barWidth}%"></div>
-          </div>
-          <div class="lb-xp">${user.xp} XP</div>
-        </div>`;
-    }).join('');
+    } catch(e) {
+      document.getElementById('leaderboard-list').innerHTML =
+        '<div style="color:var(--muted);font-size:.85rem;padding:1rem 0;">Could not load leaderboard. Please try again.</div>';
+    }
   }
 
   loadLeaderboard();

@@ -33,7 +33,7 @@ async function login(email, password) {
   saveToken(data.access_token);
   return data;
 }
-
+async function getLeaderboard() { return apiFetch('/progress/leaderboard'); }
 async function getMe()            { return apiFetch('/auth/me'); }
 async function getProgress()      { return apiFetch('/progress/overview'); }
 async function getModules()       { return apiFetch('/modules'); }

@@ -5,7 +5,96 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>FinPath – Lesson</title>
   <link rel="stylesheet" href="styles.css" />
-  <link rel="stylesheet" href="theme.css" />
+  <style>
+    /* Quiz modal overlay */
+    .quiz-overlay {
+      position: fixed; inset: 0; z-index: 9999;
+      background: rgba(0,0,0,0.75);
+      display: flex; align-items: center; justify-content: center;
+      padding: 1.5rem;
+      animation: fadeIn .3s ease;
+    }
+    @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+
+    .quiz-modal {
+      background: #fff;
+      border-radius: 20px;
+      padding: 2.5rem;
+      max-width: 620px;
+      width: 100%;
+      max-height: 85vh;
+      overflow-y: auto;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+      animation: popIn .4s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    @keyframes popIn {
+      from { transform: scale(0.8); opacity: 0; }
+      to   { transform: scale(1);   opacity: 1; }
+    }
+
+    .quiz-modal-header {
+      text-align: center;
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid #dde4ef;
+    }
+    .quiz-modal-header .trophy { font-size: 3rem; margin-bottom: .75rem; }
+    .quiz-modal-header h2 { font-size: 1.4rem; font-weight: 800; color: #0f1f3d; margin-bottom: .4rem; }
+    .quiz-modal-header p { font-size: .9rem; color: #5b6a85; }
+
+    .quiz-question-block { margin-bottom: 1.5rem; }
+    .quiz-question-block .q-text {
+      font-size: .95rem; font-weight: 700; color: #0f1f3d; margin-bottom: .75rem;
+    }
+    .quiz-option {
+      display: flex; align-items: center; gap: .75rem;
+      padding: .65rem 1rem; border-radius: 10px;
+      border: 1.5px solid #dde4ef; margin-bottom: .5rem;
+      cursor: pointer; transition: .15s; font-size: .88rem; color: #2c3e60;
+    }
+    .quiz-option:hover { border-color: #2ecc8e; background: #f0fdf8; }
+    .quiz-option.selected { border-color: #2ecc8e; background: #f0fdf8; }
+    .quiz-option.correct { border-color: #2ecc8e; background: #e6f9f1; color: #1fa870; font-weight: 600; }
+    .quiz-option.incorrect { border-color: #e74c3c; background: #fff0f0; color: #c0392b; }
+    .quiz-option input[type=radio] { accent-color: #2ecc8e; flex-shrink: 0; }
+    .quiz-explanation {
+      margin-top: .5rem; padding: .6rem .9rem;
+      background: #f4f7fb; border-radius: 8px;
+      font-size: .82rem; color: #5b6a85; line-height: 1.5;
+      display: none;
+    }
+    .quiz-explanation.show { display: block; }
+
+    .quiz-submit-btn {
+      width: 100%; padding: .9rem; background: #2ecc8e; color: #fff;
+      border: none; border-radius: 12px; font-size: 1rem; font-weight: 700;
+      cursor: pointer; transition: .18s; margin-top: 1rem; font-family: inherit;
+    }
+    .quiz-submit-btn:hover { background: #1fa870; transform: translateY(-1px); }
+    .quiz-submit-btn:disabled { opacity: .6; cursor: not-allowed; transform: none; }
+
+    .quiz-result-banner {
+      text-align: center; padding: 1.5rem;
+      border-radius: 12px; margin-bottom: 1.5rem; display: none;
+    }
+    .quiz-result-banner.pass { background: #e6f9f1; border: 1px solid #a8f0d0; }
+    .quiz-result-banner.fail { background: #fff8e6; border: 1px solid #fde58a; }
+    .quiz-result-banner .score-big { font-size: 2.5rem; font-weight: 900; }
+    .quiz-result-banner.pass .score-big { color: #2ecc8e; }
+    .quiz-result-banner.fail .score-big { color: #f5a623; }
+    .quiz-result-banner p { font-size: .9rem; color: #5b6a85; margin-top: .3rem; }
+
+    .quiz-modal-actions { display: flex; gap: 1rem; margin-top: 1.5rem; }
+    .quiz-modal-actions button {
+      flex: 1; padding: .8rem; border-radius: 10px;
+      font-size: .9rem; font-weight: 700; cursor: pointer;
+      transition: .15s; font-family: inherit; border: none;
+    }
+    .btn-retake { background: #f4f7fb; color: #0f1f3d; border: 1.5px solid #dde4ef !important; }
+    .btn-retake:hover { border-color: #2ecc8e !important; color: #1fa870; }
+    .btn-next-module { background: #2ecc8e; color: #fff; }
+    .btn-next-module:hover { background: #1fa870; }
+  </style>
 </head>
 <body>
 
@@ -22,10 +111,6 @@
         <div class="progress-bar-fill" id="sidebar-progress" style="width:0%"></div>
       </div>
     </div>
-
-    <!-- Daily goal widget -->
-    <div id="daily-goal-widget"></div>
-
     <div style="font-size:.75rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);padding:0 .25rem;margin-top:.5rem;">Lessons</div>
     <div id="lessons-list"></div>
   </div>
@@ -41,15 +126,6 @@
         <p style="color:var(--muted);">Loading lesson content...</p>
       </div>
       <div id="key-takeaways"></div>
-
-      <!-- Quiz section -->
-      <div id="quiz-section" style="display:none;margin-top:1rem;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem;">
-        <div class="card-title">Module Quiz</div>
-        <div id="quiz-container"></div>
-        <button class="btn btn-primary btn-sm" id="quiz-submit-btn" onclick="submitModuleQuiz()" style="margin-top:1rem;">Submit Quiz</button>
-        <div id="quiz-result" style="margin-top:.75rem;font-weight:700;font-size:.95rem;"></div>
-      </div>
-
       <div class="lesson-footer">
         <div class="progress-track">
           <span class="progress-label" id="progress-label">Lesson 1 / 1</span>
@@ -73,9 +149,6 @@
 
   <!-- Right panel -->
   <div class="lesson-right">
-    <!-- Level widget -->
-    <div id="level-widget"></div>
-
     <div class="progress-ring-wrap">
       <div class="ring-title">Lesson Progress</div>
       <div class="ring-svg-wrap">
@@ -100,7 +173,31 @@
       <div style="color:var(--muted);font-size:.85rem;">Loading...</div>
     </div>
   </div>
+</div>
 
+<!-- Quiz Modal (shown after all lessons complete) -->
+<div class="quiz-overlay" id="quiz-overlay" style="display:none;">
+  <div class="quiz-modal">
+    <div class="quiz-modal-header">
+      <div class="trophy">🎓</div>
+      <h2 id="quiz-modal-title">Module Quiz</h2>
+      <p id="quiz-modal-subtitle">You've completed all lessons! Test your knowledge before moving on.</p>
+    </div>
+
+    <div class="quiz-result-banner" id="quiz-result-banner">
+      <div class="score-big" id="quiz-score-big"></div>
+      <p id="quiz-score-msg"></p>
+    </div>
+
+    <div id="quiz-questions-container"></div>
+
+    <button class="quiz-submit-btn" id="quiz-submit-btn" onclick="submitQuiz()">Submit Quiz</button>
+
+    <div class="quiz-modal-actions" id="quiz-modal-actions" style="display:none;">
+      <button class="btn-retake" onclick="retakeQuiz()">Retake Quiz</button>
+      <button class="btn-next-module" onclick="goToLearn()">Next Module →</button>
+    </div>
+  </div>
 </div>
 
 <script src="api.js"></script>
@@ -127,7 +224,6 @@
 
     [moduleData, lessons] = await Promise.all([getModule(moduleId), getLessons(moduleId)]);
 
-    // Get current XP
     try {
       const progress = await getProgress();
       totalXP = progress.completed_lessons * 20;
@@ -148,13 +244,13 @@
 
     try { quizQuestions = await getQuiz(moduleId); } catch(e) { quizQuestions = []; }
 
-    // Render widgets
-    FinPathGamification.renderDailyGoalWidget('daily-goal-widget');
-    FinPathGamification.renderLevelWidget(totalXP, 'level-widget');
+    if (typeof FinPathGamification !== 'undefined') {
+      FinPathGamification.renderDailyGoalWidget && FinPathGamification.renderDailyGoalWidget('daily-goal-widget');
+      FinPathGamification.renderLevelWidget && FinPathGamification.renderLevelWidget(totalXP, 'level-widget');
+    }
 
     renderSidebar();
     renderLesson(currentIndex);
-    renderQuiz();
   }
 
   function renderSidebar() {
@@ -194,86 +290,25 @@
     document.getElementById('ring-circle').setAttribute('stroke-dashoffset', (circ * (1 - completed / lessons.length)).toFixed(1));
     document.getElementById('ring-num').textContent = completed;
 
+    const isLast = index >= lessons.length - 1;
     const next = lessons[index + 1];
     const upNext = document.getElementById('up-next-card');
-    upNext.innerHTML = next
-      ? '<div class="card-title">Up Next</div><div style="font-size:.85rem;font-weight:700;margin-bottom:.3rem;">' + next.title + '</div><div style="font-size:.78rem;color:var(--muted);">' + next.estimated_minutes + ' min read</div><div style="margin-top:.75rem;display:flex;gap:.5rem;"><span class="pill">' + next.estimated_minutes + ' min</span><span class="pill green">+20 XP</span></div>'
-      : '<div class="card-title">Module Complete!</div><div style="font-size:.85rem;font-weight:700;margin-bottom:.5rem;">All lessons done!</div><a href="learn.html" class="btn btn-primary btn-sm">Browse Modules</a>';
 
-    document.getElementById('next-btn').textContent = index >= lessons.length - 1 ? 'Finish' : 'Next';
+    if (isLast) {
+      upNext.innerHTML = '<div class="card-title">Up Next</div>' +
+        '<div style="font-size:.85rem;font-weight:700;margin-bottom:.5rem;">📝 Module Quiz</div>' +
+        '<div style="font-size:.78rem;color:var(--muted);">Complete this lesson to unlock the quiz and test your knowledge.</div>' +
+        '<div style="margin-top:.75rem;display:flex;gap:.5rem;"><span class="pill green">+Bonus XP</span></div>';
+    } else if (next) {
+      upNext.innerHTML = '<div class="card-title">Up Next</div>' +
+        '<div style="font-size:.85rem;font-weight:700;margin-bottom:.3rem;">' + next.title + '</div>' +
+        '<div style="font-size:.78rem;color:var(--muted);">' + next.estimated_minutes + ' min read</div>' +
+        '<div style="margin-top:.75rem;display:flex;gap:.5rem;"><span class="pill">' + next.estimated_minutes + ' min</span><span class="pill green">+20 XP</span></div>';
+    }
+
+    document.getElementById('next-btn').textContent = isLast ? 'Finish & Take Quiz' : 'Next →';
     renderSidebar();
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-
-  function renderQuiz() {
-    if (!quizQuestions || quizQuestions.length === 0) return;
-    document.getElementById('quiz-section').style.display = 'block';
-    document.getElementById('quiz-container').innerHTML = quizQuestions.map(function(q, i) {
-      return '<div style="margin-bottom:1.25rem;"><div style="font-weight:700;margin-bottom:.5rem;font-size:.92rem;">' + (i + 1) + '. ' + q.question_text + '</div>' +
-        ['a','b','c','d'].map(function(opt) {
-          return '<label style="display:flex;align-items:center;gap:.6rem;padding:.35rem 0;cursor:pointer;font-size:.88rem;"><input type="radio" name="q' + q.id + '" value="' + opt + '"> ' + q['option_' + opt] + '</label>';
-        }).join('') +
-        '<div id="result-' + q.id + '" style="margin-top:.4rem;font-size:.82rem;"></div></div>';
-    }).join('');
-  }
-
-  async function submitModuleQuiz() {
-    const answers = [];
-    let allAnswered = true;
-    quizQuestions.forEach(function(q) {
-      const selected = document.querySelector('input[name="q' + q.id + '"]:checked');
-      if (selected) answers.push({ question_id: q.id, selected_option: selected.value });
-      else allAnswered = false;
-    });
-
-    if (!allAnswered) {
-      document.getElementById('quiz-result').textContent = 'Please answer all questions before submitting.';
-      document.getElementById('quiz-result').style.color = 'var(--muted)';
-      return;
-    }
-
-    try {
-      const result = await apiFetch('/quiz/' + moduleId + '/submit', {
-        method: 'POST',
-        body: JSON.stringify({ answers: answers }),
-      });
-
-      const scoreEl = document.getElementById('quiz-result');
-      scoreEl.textContent = 'Score: ' + result.correct_answers + '/' + result.total_questions + ' (' + Math.round(result.score) + '%)';
-      scoreEl.style.color = result.score >= 70 ? 'var(--green-d)' : '#e74c3c';
-
-      result.results.forEach(function(r) {
-        const el = document.getElementById('result-' + r.question_id);
-        if (el) {
-          el.textContent = r.is_correct ? 'Correct!' : 'Incorrect — ' + r.explanation;
-          el.style.color = r.is_correct ? 'var(--green-d)' : '#e74c3c';
-        }
-      });
-
-      // Show badge unlocks
-      if (result.new_badges && result.new_badges.length > 0) {
-        result.new_badges.forEach(function(b, i) {
-          setTimeout(function() {
-            FinPathGamification.showBadgeUnlock(b);
-          }, i * 1500);
-        });
-      }
-
-      // XP animation for quiz
-      FinPathGamification.showXPAnimation(Math.round(result.score / 10) * 5);
-      FinPathGamification.addDailyXP(20);
-
-      document.getElementById('quiz-submit-btn').textContent = 'Retake Quiz';
-      document.getElementById('quiz-submit-btn').onclick = function() {
-        document.getElementById('quiz-result').textContent = '';
-        document.querySelectorAll('input[type=radio]').forEach(function(r) { r.checked = false; });
-        document.querySelectorAll('[id^="result-"]').forEach(function(el) { el.textContent = ''; });
-        document.getElementById('quiz-submit-btn').textContent = 'Submit Quiz';
-        document.getElementById('quiz-submit-btn').onclick = submitModuleQuiz;
-      };
-    } catch(e) {
-      document.getElementById('quiz-result').textContent = 'Error submitting quiz. Please try again.';
-    }
   }
 
   function goToLesson(index) { renderLesson(index); }
@@ -289,31 +324,19 @@
       lessons[currentIndex].is_completed = true;
       totalXP += 20;
 
-      // XP animation
-      FinPathGamification.showXPAnimation(20);
-      FinPathGamification.addDailyXP(20);
+      if (typeof FinPathGamification !== 'undefined') {
+        FinPathGamification.showXPAnimation && FinPathGamification.showXPAnimation(20);
+        FinPathGamification.addDailyXP && FinPathGamification.addDailyXP(20);
+        FinPathGamification.renderLevelWidget && FinPathGamification.renderLevelWidget(totalXP, 'level-widget');
 
-      // Update level widget
-      FinPathGamification.renderLevelWidget(totalXP, 'level-widget');
-      FinPathGamification.renderDailyGoalWidget('daily-goal-widget');
-
-      // Badge unlocks
-      if (result.new_badges && result.new_badges.length > 0) {
-        result.new_badges.forEach(function(b, i) {
-          setTimeout(function() {
-            FinPathGamification.showBadgeUnlock(b);
-          }, i * 1500);
-        });
+        if (result.new_badges && result.new_badges.length > 0) {
+          result.new_badges.forEach(function(b, i) {
+            setTimeout(function() {
+              FinPathGamification.showBadgeUnlock && FinPathGamification.showBadgeUnlock(b);
+            }, i * 1500);
+          });
+        }
       }
-
-      // Module complete celebration
-      if (result.module_completed) {
-        setTimeout(function() {
-          FinPathGamification.showModuleComplete(moduleData ? moduleData.title : 'Module');
-        }, 500);
-        return;
-      }
-
     } catch(e) {
       console.log('Complete lesson error:', e);
     }
@@ -323,8 +346,148 @@
     if (currentIndex < lessons.length - 1) {
       renderLesson(currentIndex + 1);
     } else {
-      window.location.href = 'learn.html';
+      // All lessons done — show quiz modal
+      showQuizModal();
     }
+  }
+
+  function showQuizModal() {
+    if (!quizQuestions || quizQuestions.length === 0) {
+      // No quiz — show module complete
+      if (typeof FinPathGamification !== 'undefined') {
+        FinPathGamification.showModuleComplete && FinPathGamification.showModuleComplete(moduleData ? moduleData.title : 'Module');
+      }
+      return;
+    }
+
+    document.getElementById('quiz-modal-title').textContent = (moduleData ? moduleData.title : 'Module') + ' Quiz';
+    document.getElementById('quiz-overlay').style.display = 'flex';
+    renderQuizQuestions();
+
+    if (typeof FinPathGamification !== 'undefined') {
+      FinPathGamification.showConfetti && FinPathGamification.showConfetti();
+    }
+  }
+
+  function renderQuizQuestions() {
+    const container = document.getElementById('quiz-questions-container');
+    container.innerHTML = quizQuestions.map(function(q, i) {
+      return '<div class="quiz-question-block" id="qblock-' + q.id + '">' +
+        '<div class="q-text">' + (i + 1) + '. ' + q.question_text + '</div>' +
+        ['a','b','c','d'].map(function(opt) {
+          return '<div class="quiz-option" id="opt-' + q.id + '-' + opt + '" onclick="selectOption(' + q.id + ', \'' + opt + '\')">' +
+            '<input type="radio" name="q' + q.id + '" value="' + opt + '" id="radio-' + q.id + '-' + opt + '"> ' +
+            q['option_' + opt] + '</div>';
+        }).join('') +
+        '<div class="quiz-explanation" id="exp-' + q.id + '"></div>' +
+        '</div>';
+    }).join('');
+  }
+
+  function selectOption(questionId, option) {
+    // Deselect all options for this question
+    ['a','b','c','d'].forEach(function(opt) {
+      const el = document.getElementById('opt-' + questionId + '-' + opt);
+      if (el) el.classList.remove('selected');
+    });
+    // Select chosen option
+    const chosen = document.getElementById('opt-' + questionId + '-' + option);
+    if (chosen) chosen.classList.add('selected');
+    // Check radio
+    const radio = document.getElementById('radio-' + questionId + '-' + option);
+    if (radio) radio.checked = true;
+  }
+
+  async function submitQuiz() {
+    const answers = [];
+    let allAnswered = true;
+
+    quizQuestions.forEach(function(q) {
+      const selected = document.querySelector('input[name="q' + q.id + '"]:checked');
+      if (selected) {
+        answers.push({ question_id: q.id, selected_option: selected.value });
+      } else {
+        allAnswered = false;
+      }
+    });
+
+    if (!allAnswered) {
+      alert('Please answer all questions before submitting.');
+      return;
+    }
+
+    const btn = document.getElementById('quiz-submit-btn');
+    btn.textContent = 'Checking answers...';
+    btn.disabled = true;
+
+    try {
+      const result = await apiFetch('/quiz/' + moduleId + '/submit', {
+        method: 'POST',
+        body: JSON.stringify({ answers: answers }),
+      });
+
+      // Show result banner
+      const banner = document.getElementById('quiz-result-banner');
+      const scoreBig = document.getElementById('quiz-score-big');
+      const scoreMsg = document.getElementById('quiz-score-msg');
+      const score = Math.round(result.score);
+      const passed = score >= 60;
+
+      banner.className = 'quiz-result-banner ' + (passed ? 'pass' : 'fail');
+      banner.style.display = 'block';
+      scoreBig.textContent = score + '%';
+      scoreMsg.textContent = passed
+        ? 'Well done! You passed the module quiz.'
+        : 'Not quite — review the explanations below and try again.';
+
+      // Show answer feedback
+      result.results.forEach(function(r) {
+        ['a','b','c','d'].forEach(function(opt) {
+          const el = document.getElementById('opt-' + r.question_id + '-' + opt);
+          if (!el) return;
+          if (opt === r.correct_option) { el.classList.add('correct'); }
+          else if (opt === r.selected_option && !r.is_correct) { el.classList.add('incorrect'); }
+        });
+        const exp = document.getElementById('exp-' + r.question_id);
+        if (exp) {
+          exp.textContent = (r.is_correct ? '✓ Correct! ' : '✗ Incorrect. ') + r.explanation;
+          exp.className = 'quiz-explanation show';
+          exp.style.color = r.is_correct ? '#1fa870' : '#c0392b';
+        }
+      });
+
+      // Show actions
+      document.getElementById('quiz-submit-btn').style.display = 'none';
+      document.getElementById('quiz-modal-actions').style.display = 'flex';
+
+      // Badge unlocks
+      if (result.new_badges && result.new_badges.length > 0 && typeof FinPathGamification !== 'undefined') {
+        result.new_badges.forEach(function(b, i) {
+          setTimeout(function() {
+            FinPathGamification.showBadgeUnlock && FinPathGamification.showBadgeUnlock(b);
+          }, i * 1500);
+        });
+      }
+
+    } catch(e) {
+      btn.textContent = 'Submit Quiz';
+      btn.disabled = false;
+      alert('Error submitting quiz. Please try again.');
+    }
+  }
+
+  function retakeQuiz() {
+    // Reset quiz UI
+    document.getElementById('quiz-result-banner').style.display = 'none';
+    document.getElementById('quiz-submit-btn').style.display = 'block';
+    document.getElementById('quiz-submit-btn').textContent = 'Submit Quiz';
+    document.getElementById('quiz-submit-btn').disabled = false;
+    document.getElementById('quiz-modal-actions').style.display = 'none';
+    renderQuizQuestions();
+  }
+
+  function goToLearn() {
+    window.location.href = 'learn.html';
   }
 
   function simpleMarkdown(text) {
