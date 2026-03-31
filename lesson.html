@@ -491,15 +491,29 @@
   }
 
   function simpleMarkdown(text) {
-    if (!text) return '';
-    return text
-      .replace(/^### (.+)$/gm, '<h3>$1</h3>')
-      .replace(/^## (.+)$/gm, '<h2>$1</h2>')
-      .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-      .replace(/^- (.+)$/gm, '<li>$1</li>')
-      .replace(/\n\n/g, '</p><p>');
+  if (!text) return '';
+  const sections = text.split(/(?=^### )/gm);
+  return sections.map(function(section) {
+    if (!section.trim()) return '';
+    const lines = section.trim().split('\n');
+    const firstLine = lines[0];
+    if (firstLine.startsWith('### ')) {
+      const heading = firstLine.replace(/^### /, '');
+      const body = lines.slice(1).join('\n')
+        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+        .replace(/^- (.+)$/gm, '<li>$1</li>')
+        .replace(/\n\n/g, '</p><p>')
+        .trim();
+      return '<div class="lesson-bubble"><h3>' + heading + '</h3><p>' + body + '</p></div>';
+    }
+    return '<div class="lesson-bubble"><p>' + section
+  .replace(/^## (.+)$/gm, '<span class="bubble-heading">$1</span>')
+  .replace(/^# (.+)$/gm, '<span class="bubble-heading">$1</span>')
+  .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+  .replace(/^- (.+)$/gm, '<li>$1</li>')
+  .replace(/\n\n/g, '</p><p>') + '</p></div>';
+  }).join('');
   }
-
   init();
 </script>
 

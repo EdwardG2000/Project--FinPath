@@ -1,0 +1,1469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FinPath – Learn Financial Literacy</title>
+  <style>
+    /* ─── Reset & Base ─────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --green:   #2ecc8e;
+      --green-d: #1fa870;
+      --navy:    #0f1f3d;
+      --slate:   #2c3e60;
+      --mid:     #5b6a85;
+      --muted:   #8898aa;
+      --border:  #dde4ef;
+      --bg:      #f4f7fb;
+      --card:    #ffffff;
+      --radius:  14px;
+      --shadow:  0 2px 16px rgba(15,31,61,.09);
+    }
+    html { font-size: 16px; }
+    body {
+      font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--navy);
+      min-height: 100vh;
+    }
+    a { text-decoration: none; color: inherit; }
+    button { cursor: pointer; font-family: inherit; }
+
+    /* ─── Utility ───────────────────────────────────────────────────── */
+    .hidden { display: none !important; }
+    .flex   { display: flex; }
+    .items-center { align-items: center; }
+    .justify-between { justify-content: space-between; }
+    .gap-2  { gap: .5rem; }
+    .gap-3  { gap: .75rem; }
+    .gap-4  { gap: 1rem; }
+    .gap-6  { gap: 1.5rem; }
+    .tag {
+      display: inline-flex; align-items: center; gap: .3rem;
+      font-size: .7rem; font-weight: 600; letter-spacing: .06em;
+      text-transform: uppercase; color: var(--green-d);
+      background: #e6f9f1; border-radius: 100px; padding: .25rem .65rem;
+    }
+
+    /* ─── Buttons ───────────────────────────────────────────────────── */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      gap: .45rem; padding: .7rem 1.5rem; border-radius: 10px;
+      font-size: .93rem; font-weight: 600; border: none; transition: .18s;
+    }
+    .btn-primary {
+      background: var(--green); color: #fff;
+    }
+    .btn-primary:hover { background: var(--green-d); transform: translateY(-1px); box-shadow: 0 4px 14px rgba(46,204,142,.35); }
+    .btn-outline {
+      background: transparent; color: var(--navy);
+      border: 1.5px solid var(--border);
+    }
+    .btn-outline:hover { border-color: var(--green); color: var(--green); }
+    .btn-ghost {
+      background: transparent; color: var(--mid); border: none; padding: .5rem .9rem;
+    }
+    .btn-ghost:hover { background: var(--bg); color: var(--navy); }
+    .btn-sm { padding: .45rem 1rem; font-size: .82rem; border-radius: 8px; }
+    .btn-lg { padding: .9rem 2rem; font-size: 1rem; border-radius: 12px; }
+
+    /* ─── Navbar ────────────────────────────────────────────────────── */
+    .navbar {
+      position: sticky; top: 0; z-index: 100;
+      background: var(--card);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem; height: 62px;
+      display: flex; align-items: center; justify-content: space-between;
+      box-shadow: 0 1px 8px rgba(15,31,61,.06);
+    }
+    .navbar-brand {
+      font-size: 1.35rem; font-weight: 800; color: var(--navy);
+      display: flex; align-items: center; gap: .5rem;
+    }
+    .navbar-brand .dot { color: var(--green); }
+    .navbar-nav {
+      display: flex; align-items: center; gap: .25rem;
+      list-style: none;
+    }
+    .navbar-nav a {
+      display: flex; align-items: center; gap: .4rem;
+      padding: .45rem .85rem; border-radius: 8px;
+      font-size: .88rem; font-weight: 500; color: var(--mid);
+      transition: .15s;
+    }
+    .navbar-nav a:hover, .navbar-nav a.active {
+      background: #eef7ff; color: var(--navy);
+    }
+    .navbar-nav a.active { font-weight: 700; color: var(--navy); }
+    .navbar-right { display: flex; align-items: center; gap: .75rem; }
+    .avatar {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--green), var(--navy));
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; font-weight: 700; font-size: .85rem; cursor: pointer;
+    }
+    .lang-btn {
+      display: flex; align-items: center; gap: .35rem;
+      padding: .35rem .75rem; border-radius: 8px; border: 1px solid var(--border);
+      background: var(--card); font-size: .8rem; font-weight: 500;
+      color: var(--mid); cursor: pointer; transition: .15s;
+    }
+    .lang-btn:hover { border-color: var(--green); color: var(--navy); }
+
+    /* ─── XP Badge in nav ───────────────────────────────────────────── */
+    .xp-badge {
+      display: flex; align-items: center; gap: .3rem;
+      background: #fff8e6; color: #c07a00;
+      padding: .3rem .7rem; border-radius: 100px;
+      font-size: .8rem; font-weight: 700; border: 1px solid #fde58a;
+    }
+
+    /* ─────────────────────────────────────────────────────────────────
+       SCREEN 1 – LANDING
+    ───────────────────────────────────────────────────────────────── */
+    #screen-landing {
+      min-height: 100vh;
+      background: linear-gradient(160deg, #f0f7ff 0%, #f4f7fb 60%, #e8f8f1 100%);
+    }
+    .landing-nav {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.2rem 2.5rem;
+    }
+    .landing-nav-brand {
+      font-size: 1.5rem; font-weight: 800; color: var(--navy);
+    }
+    .landing-nav-brand .dot { color: var(--green); }
+    .landing-nav-actions { display: flex; gap: .75rem; }
+
+    .hero {
+      max-width: 1100px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 1fr;
+      align-items: center; gap: 3rem;
+      padding: 5rem 2.5rem 4rem;
+    }
+    .hero-text h1 {
+      font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; line-height: 1.18;
+      color: var(--navy); margin-bottom: 1.1rem;
+    }
+    .hero-text h1 .accent { color: var(--green); }
+    .hero-text p {
+      font-size: 1.05rem; color: var(--mid); line-height: 1.7;
+      margin-bottom: 2rem; max-width: 420px;
+    }
+    .hero-ctas { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+    .hero-illustration {
+      display: flex; justify-content: center;
+    }
+    .illustration-box {
+      width: 340px; height: 320px; border-radius: 24px;
+      background: linear-gradient(135deg, #e2f0ff 0%, #d6f5ea 100%);
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; position: relative; overflow: hidden;
+    }
+    .illustration-box svg { width: 180px; height: 180px; opacity: .85; }
+    .illustration-float {
+      position: absolute; background: white; border-radius: 12px;
+      padding: .6rem 1rem; box-shadow: var(--shadow);
+      font-size: .8rem; font-weight: 600;
+    }
+    .illustration-float.top-right { top: 20px; right: 20px; color: var(--green-d); }
+    .illustration-float.bottom-left { bottom: 20px; left: 20px; color: var(--navy); }
+    .illustration-float .small { font-size: .68rem; font-weight: 400; color: var(--muted); }
+
+    .stats-strip {
+      max-width: 1100px; margin: 0 auto 3rem;
+      display: flex; gap: 2rem; padding: 0 2.5rem; flex-wrap: wrap;
+    }
+    .stat-item { text-align: center; }
+    .stat-item .num { font-size: 1.6rem; font-weight: 800; color: var(--navy); }
+    .stat-item .label { font-size: .8rem; color: var(--muted); margin-top: .15rem; }
+
+    .features-strip {
+      background: var(--card); border-top: 1px solid var(--border);
+      padding: 2.5rem 2.5rem;
+    }
+    .features-inner {
+      max-width: 1100px; margin: 0 auto;
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem;
+    }
+    .feature-card {
+      padding: 1.5rem; border-radius: var(--radius);
+      border: 1px solid var(--border); background: var(--bg);
+      transition: .2s;
+    }
+    .feature-card:hover { border-color: var(--green); box-shadow: var(--shadow); transform: translateY(-2px); }
+    .feature-icon {
+      width: 44px; height: 44px; border-radius: 11px;
+      background: #e6f9f1; display: flex; align-items: center;
+      justify-content: center; margin-bottom: 1rem; font-size: 1.3rem;
+    }
+    .feature-card h3 { font-size: .97rem; font-weight: 700; margin-bottom: .4rem; }
+    .feature-card p  { font-size: .83rem; color: var(--muted); line-height: 1.6; }
+
+    /* ─────────────────────────────────────────────────────────────────
+       SCREEN 2 – SKILL TREE (Learn)
+    ───────────────────────────────────────────────────────────────── */
+    .page-layout {
+      max-width: 1200px; margin: 0 auto;
+      padding: 2rem 1.5rem;
+      display: grid; grid-template-columns: 1fr 340px; gap: 1.5rem;
+    }
+    .page-layout-full {
+      max-width: 1200px; margin: 0 auto;
+      padding: 2rem 1.5rem;
+    }
+
+    /* Continue Lesson Card */
+    .card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1.5rem;
+      box-shadow: var(--shadow);
+    }
+    .card-title {
+      font-size: .78rem; font-weight: 700; letter-spacing: .07em;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 1rem;
+    }
+    .lesson-row {
+      display: flex; align-items: center; justify-content: space-between;
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 10px; padding: .85rem 1rem; margin-bottom: 1rem;
+      gap: 1rem;
+    }
+    .lesson-row-info .lesson-num { font-size: .73rem; color: var(--muted); font-weight: 500; }
+    .lesson-row-info .lesson-name { font-size: .92rem; font-weight: 700; color: var(--navy); margin-top: .1rem; }
+
+    /* Module Cards */
+    .modules-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin: 1.75rem 0 1rem;
+    }
+    .modules-header h2 { font-size: 1.15rem; font-weight: 800; }
+    .modules-grid {
+      display: grid; grid-template-columns: repeat(5, 1fr); gap: 1rem;
+    }
+    .module-card {
+      background: var(--card); border: 1.5px solid var(--border);
+      border-radius: var(--radius); padding: 1.2rem .9rem;
+      display: flex; flex-direction: column; align-items: center;
+      gap: .65rem; cursor: pointer; transition: .18s;
+      position: relative;
+    }
+    .module-card:hover { border-color: var(--green); box-shadow: var(--shadow); transform: translateY(-3px); }
+    .module-card.active { border-color: var(--green); background: #f0fdf8; }
+    .module-icon {
+      width: 52px; height: 52px; border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem;
+    }
+    .module-icon.green  { background: #e6f9f1; }
+    .module-icon.blue   { background: #e8f0ff; }
+    .module-icon.amber  { background: #fff8e6; }
+    .module-icon.rose   { background: #fff0f3; }
+    .module-icon.purple { background: #f3eeff; }
+    .module-name { font-size: .8rem; font-weight: 700; text-align: center; color: var(--navy); }
+    .module-dots { display: flex; gap: 3px; }
+    .module-dots span {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--green);
+    }
+    .module-dots span.empty { background: var(--border); }
+    .module-lock {
+      position: absolute; top: 8px; right: 8px;
+      width: 20px; height: 20px; border-radius: 50%;
+      background: var(--border); display: flex; align-items: center;
+      justify-content: center; font-size: .65rem; color: var(--muted);
+    }
+
+    /* Credit Utilisation Widget */
+    .widget-right { display: flex; flex-direction: column; gap: 1rem; }
+    .xp-ring {
+      position: relative; width: 90px; height: 90px; flex-shrink: 0;
+    }
+    .xp-ring svg { width: 90px; height: 90px; transform: rotate(-90deg); }
+    .xp-ring-text {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; font-size: 1.3rem; font-weight: 800; color: var(--navy);
+    }
+    .xp-ring-text small { font-size: .62rem; font-weight: 500; color: var(--muted); }
+    .widget-meta { flex: 1; }
+    .widget-meta .label { font-size: .78rem; color: var(--muted); margin-bottom: .35rem; }
+    .widget-meta .badge-row {
+      display: flex; gap: .5rem; flex-wrap: wrap; margin-bottom: .5rem;
+    }
+    .pill {
+      display: inline-flex; align-items: center; gap: .3rem;
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 100px; padding: .25rem .7rem;
+      font-size: .76rem; font-weight: 600; color: var(--mid);
+    }
+    .pill.green { background: #e6f9f1; border-color: #a8f0d0; color: var(--green-d); }
+    .pill.amber { background: #fff8e6; border-color: #fde58a; color: #c07a00; }
+
+    /* Streak / daily */
+    .streak-card {
+      background: linear-gradient(135deg, var(--navy), var(--slate));
+      color: #fff; border-radius: var(--radius); padding: 1.2rem 1.5rem;
+    }
+    .streak-card .top { font-size: .75rem; opacity: .7; margin-bottom: .3rem; }
+    .streak-card .num { font-size: 2rem; font-weight: 800; }
+    .streak-card .sub { font-size: .78rem; opacity: .6; margin-top: .15rem; }
+    .streak-days { display: flex; gap: .4rem; margin-top: .9rem; }
+    .streak-day {
+      width: 30px; height: 30px; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: .7rem; font-weight: 700; background: rgba(255,255,255,.12);
+      color: rgba(255,255,255,.6);
+    }
+    .streak-day.done { background: var(--green); color: #fff; }
+    .streak-day.today { border: 2px solid var(--green); color: #fff; }
+
+    /* ─────────────────────────────────────────────────────────────────
+       SCREEN 3 – LESSON
+    ───────────────────────────────────────────────────────────────── */
+    .lesson-layout {
+      max-width: 1200px; margin: 0 auto; padding: 2rem 1.5rem;
+      display: grid; grid-template-columns: 260px 1fr 280px; gap: 1.5rem;
+    }
+    .lesson-sidebar { display: flex; flex-direction: column; gap: 1rem; }
+    .lesson-content-area { }
+    .lesson-right { display: flex; flex-direction: column; gap: 1rem; }
+
+    .lesson-main-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow);
+    }
+    .lesson-top-bar {
+      background: var(--navy); color: #fff;
+      padding: 1.25rem 1.5rem;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .lesson-top-bar h2 { font-size: 1.1rem; font-weight: 700; }
+    .lesson-body { padding: 1.5rem; }
+    .lesson-body p {
+      font-size: .92rem; color: var(--mid); line-height: 1.8;
+      margin-bottom: 1rem;
+    }
+    .lesson-body h3 { font-size: 1rem; font-weight: 700; margin-bottom: .5rem; }
+    .callout {
+      background: #f0fdf8; border-left: 4px solid var(--green);
+      border-radius: 0 10px 10px 0; padding: 1rem 1.25rem;
+      margin: 1rem 0; font-size: .88rem; color: var(--slate);
+    }
+    .lesson-footer {
+      border-top: 1px solid var(--border);
+      padding: 1rem 1.5rem;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .progress-track {
+      display: flex; align-items: center; gap: .75rem; flex: 1;
+    }
+    .progress-bar-wrap {
+      flex: 1; height: 8px; background: var(--border); border-radius: 100px; overflow: hidden;
+    }
+    .progress-bar-fill {
+      height: 100%; background: var(--green); border-radius: 100px;
+      transition: width .4s ease;
+    }
+    .progress-label { font-size: .78rem; color: var(--muted); white-space: nowrap; }
+    .discuss-btn {
+      display: flex; align-items: center; gap: .4rem;
+      font-size: .82rem; color: var(--mid); background: none; border: none;
+      cursor: pointer; padding: .4rem .75rem; border-radius: 8px; transition: .15s;
+    }
+    .discuss-btn:hover { background: var(--bg); color: var(--navy); }
+
+    /* Mini modules in lesson sidebar */
+    .mini-module {
+      background: var(--card); border: 1.5px solid var(--border);
+      border-radius: 12px; padding: .9rem;
+      display: flex; align-items: center; gap: .75rem;
+      cursor: pointer; transition: .15s;
+    }
+    .mini-module:hover, .mini-module.active {
+      border-color: var(--green); background: #f0fdf8;
+    }
+    .mini-module .icon { font-size: 1.3rem; }
+    .mini-module .text .name { font-size: .82rem; font-weight: 700; }
+    .mini-module .text .sub  { font-size: .72rem; color: var(--muted); margin-top: .1rem; }
+    .mini-module .check { margin-left: auto; font-size: .9rem; }
+
+    /* Progress ring */
+    .progress-ring-wrap {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1.2rem; text-align: center;
+      box-shadow: var(--shadow);
+    }
+    .progress-ring-wrap .ring-title { font-size: .75rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin-bottom: .75rem; }
+    .ring-svg-wrap { position: relative; display: inline-block; }
+    .ring-svg-wrap svg { width: 80px; height: 80px; transform: rotate(-90deg); }
+    .ring-center {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+    }
+    .ring-center .big { font-size: 1.3rem; font-weight: 800; color: var(--navy); }
+    .ring-center .sm  { font-size: .65rem; color: var(--muted); }
+    .reward-row { margin-top: .75rem; display: flex; justify-content: center; gap: .5rem; }
+
+    /* ─────────────────────────────────────────────────────────────────
+       SCREEN 4 – DASHBOARD
+    ───────────────────────────────────────────────────────────────── */
+    .dashboard-layout {
+      max-width: 1200px; margin: 0 auto; padding: 2rem 1.5rem;
+      display: grid; grid-template-columns: 1fr 320px; gap: 1.5rem;
+    }
+    .welcome-banner {
+      background: linear-gradient(135deg, var(--navy) 0%, #1a3a6e 100%);
+      border-radius: var(--radius); padding: 1.75rem 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 1.25rem; color: #fff;
+    }
+    .welcome-banner h2 { font-size: 1.3rem; font-weight: 800; margin-bottom: .3rem; }
+    .welcome-banner p  { font-size: .85rem; opacity: .7; }
+    .welcome-banner .xp-big { font-size: 2.5rem; font-weight: 900; color: var(--green); }
+
+    .recent-lesson-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow);
+    }
+    .rlc-header {
+      padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .rlc-header h3 { font-size: 1.05rem; font-weight: 800; }
+    .rlc-body { padding: 1.5rem; }
+    .rlc-placeholder {
+      background: var(--bg); border: 1.5px dashed var(--border);
+      border-radius: 10px; height: 160px;
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; gap: .5rem; color: var(--muted);
+      font-size: .9rem; margin-bottom: 1rem;
+    }
+    .rlc-placeholder span { font-size: 2rem; }
+    .rlc-footer {
+      padding: 1rem 1.5rem; border-top: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+
+    .stats-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+    }
+    .stat-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1.2rem 1.4rem;
+      box-shadow: var(--shadow);
+    }
+    .stat-card .s-label { font-size: .75rem; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; margin-bottom: .5rem; }
+    .stat-card .s-val   { font-size: 1.8rem; font-weight: 800; color: var(--navy); }
+    .stat-card .s-sub   { font-size: .76rem; color: var(--mid); margin-top: .25rem; }
+    .stat-card .trend   { font-size: .75rem; font-weight: 600; color: var(--green); }
+
+    /* ─────────────────────────────────────────────────────────────────
+       SCREEN 5 – AI MONEY COACH
+    ───────────────────────────────────────────────────────────────── */
+    .coach-layout {
+      max-width: 1200px; margin: 0 auto; padding: 2rem 1.5rem;
+      display: grid; grid-template-columns: 260px 1fr; gap: 1.5rem;
+      height: calc(100vh - 62px - 4rem);
+    }
+    .coach-sidebar {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1.25rem; overflow-y: auto;
+      display: flex; flex-direction: column; gap: 1rem;
+    }
+    .coach-sidebar h3 { font-size: .85rem; font-weight: 800; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); }
+    .topic-item {
+      display: flex; align-items: center; gap: .7rem;
+      padding: .7rem .9rem; border-radius: 10px; cursor: pointer;
+      transition: .15s; border: 1px solid transparent;
+    }
+    .topic-item:hover  { background: var(--bg); border-color: var(--border); }
+    .topic-item.active { background: #f0fdf8; border-color: var(--green); }
+    .topic-item input[type=checkbox] {
+      accent-color: var(--green); width: 15px; height: 15px; flex-shrink: 0;
+    }
+    .topic-item label { font-size: .88rem; font-weight: 500; cursor: pointer; }
+    .topic-item.active label { font-weight: 700; color: var(--navy); }
+
+    .coach-main {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: var(--radius); display: flex; flex-direction: column;
+      overflow: hidden; box-shadow: var(--shadow);
+    }
+    .coach-header {
+      padding: 1.1rem 1.5rem; border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: .85rem;
+    }
+    .coach-avatar {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--green), var(--navy));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem;
+    }
+    .coach-header .info .name { font-size: .95rem; font-weight: 800; }
+    .coach-header .info .status {
+      font-size: .74rem; color: var(--green); display: flex; align-items: center; gap: .3rem;
+    }
+    .dot-online { width: 7px; height: 7px; border-radius: 50%; background: var(--green); }
+
+    .chat-body {
+      flex: 1; overflow-y: auto; padding: 1.5rem;
+      display: flex; flex-direction: column; gap: 1.25rem;
+    }
+    .chat-msg { display: flex; gap: .85rem; max-width: 78%; }
+    .chat-msg.user { align-self: flex-end; flex-direction: row-reverse; }
+    .chat-bubble {
+      padding: .85rem 1.1rem; border-radius: 14px;
+      font-size: .88rem; line-height: 1.65;
+    }
+    .chat-msg.bot  .chat-bubble { background: var(--bg); border: 1px solid var(--border); color: var(--navy); border-radius: 4px 14px 14px 14px; }
+    .chat-msg.user .chat-bubble { background: var(--green); color: #fff; border-radius: 14px 4px 14px 14px; }
+    .chat-msg-avatar {
+      width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: .8rem; font-weight: 700;
+    }
+    .chat-msg.bot  .chat-msg-avatar { background: linear-gradient(135deg, var(--green), var(--navy)); color: #fff; }
+    .chat-msg.user .chat-msg-avatar { background: var(--navy); color: #fff; }
+    .chat-time { font-size: .68rem; color: var(--muted); margin-top: .35rem; text-align: right; }
+    .chat-msg.bot .chat-time { text-align: left; }
+
+    .chat-input-bar {
+      border-top: 1px solid var(--border); padding: 1rem 1.25rem;
+      display: flex; align-items: center; gap: .75rem;
+    }
+    .file-chip {
+      display: flex; align-items: center; gap: .4rem;
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 8px; padding: .4rem .75rem;
+      font-size: .76rem; font-weight: 600; color: var(--mid);
+      cursor: pointer; transition: .15s; white-space: nowrap;
+    }
+    .file-chip:hover { border-color: var(--green); color: var(--green-d); }
+    .chat-input {
+      flex: 1; border: 1px solid var(--border); border-radius: 10px;
+      padding: .7rem 1rem; font-size: .88rem; font-family: inherit;
+      background: var(--bg); color: var(--navy); outline: none; resize: none;
+      transition: border-color .15s;
+    }
+    .chat-input:focus { border-color: var(--green); background: #fff; }
+    .chat-input::placeholder { color: var(--muted); }
+    .send-btn {
+      width: 42px; height: 42px; border-radius: 10px;
+      background: var(--green); border: none; color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; cursor: pointer; transition: .15s; flex-shrink: 0;
+    }
+    .send-btn:hover { background: var(--green-d); transform: scale(1.05); }
+
+    /* ─── Page switcher ─────────────────────────────────────────────── */
+    .screen { display: none; }
+    .screen.active { display: block; }
+    #screen-landing.active { display: flex; flex-direction: column; }
+    #screen-coach.active   { display: flex; flex-direction: column; }
+
+    /* ─── Scrollbar ─────────────────────────────────────────────────── */
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 100px; }
+
+    /* ─── Leaderboard ───────────────────────────────────────────────── */
+    .lb-row {
+      display: flex; align-items: center; gap: 1rem;
+      padding: .9rem 1.1rem; border-radius: 12px;
+      border: 1px solid var(--border); background: var(--card);
+      margin-bottom: .6rem; transition: .15s;
+    }
+    .lb-row:hover { border-color: var(--green); }
+    .lb-row.me { background: #f0fdf8; border-color: var(--green); }
+    .lb-rank { width: 28px; font-size: 1rem; font-weight: 800; color: var(--mid); text-align: center; }
+    .lb-rank.gold   { color: #f5a623; }
+    .lb-rank.silver { color: #8d9db5; }
+    .lb-rank.bronze { color: #c07a4f; }
+    .lb-name { flex: 1; font-size: .9rem; font-weight: 600; }
+    .lb-xp   { font-size: .85rem; font-weight: 700; color: var(--green-d); }
+    .lb-bar-wrap { width: 100px; height: 6px; background: var(--border); border-radius: 100px; overflow: hidden; }
+    .lb-bar { height: 100%; background: var(--green); border-radius: 100px; }
+
+    /* ─── Responsive tweaks ─────────────────────────────────────────── */
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; }
+      .hero-illustration { display: none; }
+      .modules-grid { grid-template-columns: repeat(3, 1fr); }
+      .features-inner { grid-template-columns: 1fr; }
+      .lesson-layout { grid-template-columns: 1fr; }
+      .dashboard-layout { grid-template-columns: 1fr; }
+      .coach-layout { grid-template-columns: 1fr; height: auto; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════════════════
+     NAVIGATION BAR (shown on all screens except landing)
+══════════════════════════════════════════════════════════════════ -->
+<nav class="navbar" id="main-nav">
+  <div class="navbar-brand" onclick="showScreen('learn')">
+    Fin<span class="dot">Path</span>
+  </div>
+  <ul class="navbar-nav">
+    <li><a href="#" onclick="showScreen('dashboard')" id="nav-home">
+      <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      Home
+    </a></li>
+    <li><a href="#" onclick="showScreen('learn')" id="nav-learn">
+      <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      Learn
+    </a></li>
+    <li><a href="#" onclick="showScreen('coach')" id="nav-coach">
+      <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      Coach
+    </a></li>
+    <li><a href="#" onclick="showScreen('leaderboard')" id="nav-lb">
+      <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
+      Leaderboard
+    </a></li>
+    <li><a href="#" onclick="showScreen('profile')" id="nav-profile">
+      <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      Profile
+    </a></li>
+  </ul>
+  <div class="navbar-right">
+    <div class="xp-badge">⚡ 340 XP</div>
+    <button class="lang-btn">🌐 EN ▾</button>
+    <div class="avatar" title="Eddie">E</div>
+  </div>
+</nav>
+
+<!-- ══════════════════════════════════════════════════════════════════
+     SCREEN 1 – LANDING
+══════════════════════════════════════════════════════════════════ -->
+<div id="screen-landing" class="screen active">
+  <!-- Landing nav -->
+  <nav class="landing-nav">
+    <div class="landing-nav-brand">Fin<span class="dot">Path</span></div>
+    <div class="landing-nav-actions">
+      <button class="btn btn-outline" onclick="showScreen('dashboard')">Log in</button>
+      <button class="btn btn-primary" onclick="showScreen('dashboard')">Get Started</button>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-text">
+      <div class="tag" style="margin-bottom:1rem;">🎓 Financial Literacy Platform</div>
+      <h1>Learn financial literacy<br>the <span class="accent">fun way!</span></h1>
+      <p>Bite-sized lessons, real-world skills, and an AI coach that helps you master budgeting, credit, investing, and more — at your own pace.</p>
+      <div class="hero-ctas">
+        <button class="btn btn-primary btn-lg" onclick="showScreen('dashboard')">
+          Get Started
+          <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+        <button class="btn btn-outline btn-lg" onclick="showScreen('dashboard')">Log in</button>
+      </div>
+    </div>
+    <div class="hero-illustration">
+      <div class="illustration-box">
+        <!-- Piggy bank SVG illustration -->
+        <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="95" cy="130" rx="55" ry="42" fill="#b8dff7" stroke="#6ab5e8" stroke-width="2"/>
+          <ellipse cx="95" cy="125" rx="52" ry="40" fill="#cde9fa"/>
+          <rect x="80" y="100" width="30" height="8" rx="4" fill="#6ab5e8"/>
+          <circle cx="75" cy="112" r="5" fill="#fff" stroke="#6ab5e8" stroke-width="1.5"/>
+          <circle cx="77" cy="111" r="2" fill="#3a7bbf"/>
+          <ellipse cx="130" cy="128" rx="10" ry="8" fill="#b8dff7" stroke="#6ab5e8" stroke-width="1.5"/>
+          <path d="M60 148 Q60 168 55 170 Q50 172 52 165 Q54 158 55 148" fill="#b8dff7" stroke="#6ab5e8" stroke-width="1.5"/>
+          <path d="M80 158 Q80 172 78 174 Q75 176 76 169 Q77 162 78 158" fill="#b8dff7" stroke="#6ab5e8" stroke-width="1.5"/>
+          <path d="M105 158 Q105 172 103 174 Q100 176 101 169 Q102 162 103 158" fill="#b8dff7" stroke="#6ab5e8" stroke-width="1.5"/>
+          <path d="M125 148 Q126 160 125 165 Q123 172 121 165 Q119 158 120 148" fill="#b8dff7" stroke="#6ab5e8" stroke-width="1.5"/>
+          <path d="M90 96 Q90 82 105 78 Q118 74 120 85" stroke="#6ab5e8" stroke-width="2" fill="none"/>
+          <circle cx="120" cy="82" r="8" fill="#a8f0d0" stroke="#2ecc8e" stroke-width="1.5"/>
+          <text x="116" y="86" font-size="9" fill="#1fa870" font-weight="bold">$</text>
+          <!-- coin slot -->
+          <rect x="88" y="100" width="14" height="3" rx="1.5" fill="#6ab5e8"/>
+          <!-- decorative coins -->
+          <circle cx="50" cy="90" r="12" fill="#fde58a" stroke="#f5a623" stroke-width="1.5" opacity=".9"/>
+          <text x="44" y="95" font-size="11" fill="#c07a00" font-weight="bold">$</text>
+          <circle cx="148" cy="80" r="9" fill="#fde58a" stroke="#f5a623" stroke-width="1.5" opacity=".8"/>
+          <text x="143" y="85" font-size="9" fill="#c07a00" font-weight="bold">$</text>
+        </svg>
+        <div class="illustration-float top-right">✅ +20 XP earned!</div>
+        <div class="illustration-float bottom-left">
+          Lesson 3 complete 🎉
+          <div class="small">Interest Rates</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats strip -->
+  <div class="stats-strip">
+    <div class="stat-item"><div class="num">50K+</div><div class="label">Active Learners</div></div>
+    <div class="stat-item"><div class="num">120+</div><div class="label">Bite-sized Lessons</div></div>
+    <div class="stat-item"><div class="num">5</div><div class="label">Learning Modules</div></div>
+    <div class="stat-item"><div class="num">AI</div><div class="label">Money Coach</div></div>
+  </div>
+
+  <!-- Feature strip -->
+  <div class="features-strip">
+    <div class="features-inner">
+      <div class="feature-card">
+        <div class="feature-icon">📚</div>
+        <h3>Structured Learning Paths</h3>
+        <p>Progress through curated modules on credit, budgeting, debt, saving, and investing — all in bite-sized steps.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🤖</div>
+        <h3>AI Money Coach</h3>
+        <p>Ask anything about your finances. Your personal coach explains concepts and builds custom plans just for you.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🏆</div>
+        <h3>Earn XP & Compete</h3>
+        <p>Gain experience points, climb the leaderboard, and stay motivated with daily streaks and rewards.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════
+     SCREEN 2 – LEARN / SKILL TREE
+══════════════════════════════════════════════════════════════════ -->
+<div id="screen-learn" class="screen">
+  <div class="page-layout">
+    <!-- Left: Continue + Modules -->
+    <div>
+      <!-- Continue Lesson -->
+      <div class="card">
+        <div class="card-title">Continue where you left off</div>
+        <div class="lesson-row">
+          <div class="lesson-row-info">
+            <div class="lesson-num">Lesson 3 of 10</div>
+            <div class="lesson-name">Interest Rates</div>
+          </div>
+          <button class="btn btn-outline btn-sm">
+            Start
+            <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+        <button class="btn btn-primary" style="width:100%" onclick="showScreen('lesson')">
+          Start →
+        </button>
+      </div>
+
+      <!-- Modules -->
+      <div class="modules-header">
+        <h2>Modules</h2>
+        <span class="tag">5 Topics</span>
+      </div>
+      <div class="modules-grid">
+        <div class="module-card active" onclick="showScreen('lesson')">
+          <div class="module-icon green">🐷</div>
+          <div class="module-name">Credit Score Basics</div>
+          <div class="module-dots">
+            <span></span><span></span><span></span><span class="empty"></span><span class="empty"></span>
+          </div>
+        </div>
+        <div class="module-card" onclick="showScreen('lesson')">
+          <div class="module-icon blue">🏦</div>
+          <div class="module-name">Budgeting</div>
+          <div class="module-dots">
+            <span></span><span></span><span class="empty"></span><span class="empty"></span><span class="empty"></span>
+          </div>
+        </div>
+        <div class="module-card">
+          <div class="module-lock">🔒</div>
+          <div class="module-icon amber">⚖️</div>
+          <div class="module-name">Debt &amp; Interest</div>
+          <div class="module-dots">
+            <span class="empty"></span><span class="empty"></span><span class="empty"></span><span class="empty"></span><span class="empty"></span>
+          </div>
+        </div>
+        <div class="module-card">
+          <div class="module-lock">🔒</div>
+          <div class="module-icon rose">📈</div>
+          <div class="module-name">Saving</div>
+          <div class="module-dots">
+            <span class="empty"></span><span class="empty"></span><span class="empty"></span><span class="empty"></span><span class="empty"></span>
+          </div>
+        </div>
+        <div class="module-card">
+          <div class="module-lock">🔒</div>
+          <div class="module-icon purple">💼</div>
+          <div class="module-name">Investing</div>
+          <div class="module-dots">
+            <span class="empty"></span><span class="empty"></span><span class="empty"></span><span class="empty"></span><span class="empty"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: Widgets -->
+    <div class="widget-right">
+      <!-- Credit Utilisation -->
+      <div class="card">
+        <div class="card-title">Credit Utilisation</div>
+        <div style="display:flex; align-items:center; gap:1.2rem;">
+          <div class="xp-ring">
+            <svg viewBox="0 0 90 90">
+              <circle cx="45" cy="45" r="38" stroke="#dde4ef" stroke-width="8" fill="none"/>
+              <circle cx="45" cy="45" r="38" stroke="#2ecc8e" stroke-width="8" fill="none"
+                stroke-dasharray="238.76" stroke-dashoffset="71.6" stroke-linecap="round"/>
+            </svg>
+            <div class="xp-ring-text">+20<small>Today</small></div>
+          </div>
+          <div class="widget-meta">
+            <div class="label">Difficulty</div>
+            <div class="badge-row">
+              <span class="pill amber">⚡ Moderate</span>
+            </div>
+            <div class="badge-row">
+              <span class="pill green">+20 XP</span>
+              <span class="pill">⏱ 5 min</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Streak -->
+      <div class="streak-card">
+        <div class="top">🔥 DAILY STREAK</div>
+        <div class="num">7</div>
+        <div class="sub">days in a row — keep it up!</div>
+        <div class="streak-days">
+          <div class="streak-day done">M</div>
+          <div class="streak-day done">T</div>
+          <div class="streak-day done">W</div>
+          <div class="streak-day done">T</div>
+          <div class="streak-day done">F</div>
+          <div class="streak-day done">S</div>
+          <div class="streak-day today">S</div>
+        </div>
+      </div>
+
+      <!-- Quick stats -->
+      <div class="card">
+        <div class="card-title">Your Progress</div>
+        <div style="margin-bottom:.75rem;">
+          <div style="display:flex;justify-content:space-between;font-size:.8rem;margin-bottom:.4rem;">
+            <span style="font-weight:600">Credit Score Basics</span>
+            <span style="color:var(--green-d);font-weight:700">60%</span>
+          </div>
+          <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:60%"></div></div>
+        </div>
+        <div style="margin-bottom:.75rem;">
+          <div style="display:flex;justify-content:space-between;font-size:.8rem;margin-bottom:.4rem;">
+            <span style="font-weight:600">Budgeting</span>
+            <span style="color:var(--green-d);font-weight:700">40%</span>
+          </div>
+          <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:40%"></div></div>
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;font-size:.8rem;margin-bottom:.4rem;">
+            <span style="font-weight:600">Overall</span>
+            <span style="color:var(--green-d);font-weight:700">20%</span>
+          </div>
+          <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:20%"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════
+     SCREEN 3 – LESSON
+══════════════════════════════════════════════════════════════════ -->
+<div id="screen-lesson" class="screen">
+  <div class="lesson-layout">
+    <!-- Left sidebar: modules -->
+    <div class="lesson-sidebar">
+      <div class="card" style="padding:1rem;">
+        <div class="card-title">Continue Lesson</div>
+        <div style="font-size:.82rem;color:var(--muted);margin-bottom:.75rem;">Lesson 3: Interest Rates</div>
+        <button class="btn btn-primary" style="width:100%;margin-bottom:.5rem" onclick="showScreen('lesson')">Start</button>
+        <div class="progress-bar-wrap" style="margin-top:.5rem">
+          <div class="progress-bar-fill" style="width:30%"></div>
+        </div>
+      </div>
+      <div style="font-size:.75rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);padding:0 .25rem;margin-top:.5rem;">Modules</div>
+      <div class="mini-module active">
+        <div class="icon">🐷</div>
+        <div class="text">
+          <div class="name">Credit Score Basics</div>
+          <div class="sub">●●●○○</div>
+        </div>
+        <div class="check">✓</div>
+      </div>
+      <div class="mini-module">
+        <div class="icon">🏦</div>
+        <div class="text">
+          <div class="name">Budgeting</div>
+          <div class="sub">●●○○○</div>
+        </div>
+      </div>
+      <div class="mini-module">
+        <div class="icon">⚖️</div>
+        <div class="text">
+          <div class="name">Debt</div>
+          <div class="sub">○○○○○</div>
+        </div>
+      </div>
+      <div class="mini-module">
+        <div class="icon">📈</div>
+        <div class="text">
+          <div class="name">Saving</div>
+          <div class="sub">○○○○○</div>
+        </div>
+      </div>
+      <div class="mini-module">
+        <div class="icon">💼</div>
+        <div class="text">
+          <div class="name">Investing</div>
+          <div class="sub">○○○○○</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main: lesson content -->
+    <div class="lesson-content-area">
+      <div class="lesson-main-card">
+        <div class="lesson-top-bar">
+          <h2>Lesson 4: APR &amp; Interest</h2>
+          <span class="pill" style="background:rgba(255,255,255,.15);color:#fff;border-color:rgba(255,255,255,.2)">Credit Score Basics</span>
+        </div>
+        <div class="lesson-body">
+          <h3>What is APR?</h3>
+          <p>APR stands for <strong>Annual Percentage Rate</strong>. It's the yearly cost of borrowing money, expressed as a percentage. Unlike a simple interest rate, APR includes fees and other costs associated with a loan or credit card.</p>
+          <div class="callout">
+            💡 <strong>Quick tip:</strong> A lower APR means you pay less in interest over time. Always compare APRs when choosing between financial products.
+          </div>
+          <h3>How is interest calculated?</h3>
+          <p>Interest is calculated as a percentage of your outstanding balance. With <strong>simple interest</strong>, you only pay interest on the principal. With <strong>compound interest</strong>, interest is charged on both the principal and accumulated interest — this can cost you more over time.</p>
+          <p>For example, a £1,000 loan at 5% APR over one year would cost you £50 in interest — that's £1,050 total repaid.</p>
+        </div>
+        <div class="lesson-footer">
+          <div class="progress-track">
+            <span class="progress-label">Lesson 4 / 10</span>
+            <div class="progress-bar-wrap">
+              <div class="progress-bar-fill" style="width:40%"></div>
+            </div>
+            <span class="progress-label" style="color:var(--green-d);font-weight:700">40%</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:.75rem;margin-left:1.5rem;">
+            <button class="discuss-btn" onclick="showScreen('coach')">
+              <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              Discuss
+            </button>
+            <button class="btn btn-primary btn-sm">Next →</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: progress ring + reward -->
+    <div class="lesson-right">
+      <div class="progress-ring-wrap">
+        <div class="ring-title">Lesson Progress</div>
+        <div class="ring-svg-wrap">
+          <svg viewBox="0 0 80 80">
+            <circle cx="40" cy="40" r="32" stroke="#dde4ef" stroke-width="7" fill="none"/>
+            <circle cx="40" cy="40" r="32" stroke="#2ecc8e" stroke-width="7" fill="none"
+              stroke-dasharray="201.06" stroke-dashoffset="120.6" stroke-linecap="round"/>
+          </svg>
+          <div class="ring-center">
+            <div class="big">3</div>
+            <div class="sm">Completed</div>
+          </div>
+        </div>
+        <div class="reward-row">
+          <span class="pill green">🏅 Reward</span>
+          <span class="pill">⏱ 0 min</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">XP This Session</div>
+        <div style="font-size:2rem;font-weight:900;color:var(--green);margin:.25rem 0;">+60 XP</div>
+        <div style="font-size:.8rem;color:var(--muted);">Complete this lesson to earn 20 more XP</div>
+        <div class="progress-bar-wrap" style="margin-top:.75rem">
+          <div class="progress-bar-fill" style="width:75%"></div>
+        </div>
+        <div style="font-size:.75rem;color:var(--muted);margin-top:.4rem;">75 / 100 XP to next level</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Up Next</div>
+        <div style="font-size:.85rem;font-weight:700;margin-bottom:.3rem;">Lesson 5: Credit Cards</div>
+        <div style="font-size:.78rem;color:var(--muted);">Learn how credit card interest works and how to avoid paying it.</div>
+        <div style="margin-top:.75rem;display:flex;gap:.5rem;">
+          <span class="pill">⏱ 6 min</span>
+          <span class="pill green">+20 XP</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════
+     SCREEN 4 – DASHBOARD
+══════════════════════════════════════════════════════════════════ -->
+<div id="screen-dashboard" class="screen">
+  <div class="dashboard-layout">
+    <div>
+      <!-- Welcome banner -->
+      <div class="welcome-banner">
+        <div>
+          <h2>Welcome back, Eddie! 👋</h2>
+          <p>You're on a 7-day streak. Keep learning to stay on top!</p>
+        </div>
+        <div style="text-align:right;">
+          <div class="xp-big">340</div>
+          <div style="font-size:.8rem;opacity:.6;">Total XP earned</div>
+        </div>
+      </div>
+
+      <!-- Recent lesson -->
+      <div class="recent-lesson-card">
+        <div class="rlc-header">
+          <h3>Lesson 4: APR &amp; Interest</h3>
+          <span class="tag">Credit Score Basics</span>
+        </div>
+        <div class="rlc-body">
+          <div class="rlc-placeholder">
+            <span>📖</span>
+            <span>Lesson content will appear here</span>
+          </div>
+        </div>
+        <div class="rlc-footer">
+          <div class="progress-track" style="flex:1;margin-right:1rem;">
+            <span class="progress-label">Lesson 4 / 10</span>
+            <div class="progress-bar-wrap">
+              <div class="progress-bar-fill" style="width:40%"></div>
+            </div>
+          </div>
+          <button class="discuss-btn" onclick="showScreen('coach')">
+            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2z"/></svg>
+            Discuss
+          </button>
+          <button class="btn btn-primary btn-sm" onclick="showScreen('lesson')" style="margin-left:.5rem;">Next →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: stats -->
+    <div style="display:flex;flex-direction:column;gap:1rem;">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="s-label">Total XP</div>
+          <div class="s-val">340</div>
+          <div class="trend">↑ +20 today</div>
+        </div>
+        <div class="stat-card">
+          <div class="s-label">Streak</div>
+          <div class="s-val">7🔥</div>
+          <div class="s-sub">days in a row</div>
+        </div>
+        <div class="stat-card">
+          <div class="s-label">Lessons Done</div>
+          <div class="s-val">12</div>
+          <div class="s-sub">of 50 total</div>
+        </div>
+        <div class="stat-card">
+          <div class="s-label">Rank</div>
+          <div class="s-val">#4</div>
+          <div class="s-sub">leaderboard</div>
+        </div>
+      </div>
+
+      <!-- Next lesson nudge -->
+      <div class="card">
+        <div class="card-title">Ready to continue?</div>
+        <div style="font-size:.92rem;font-weight:700;margin-bottom:.4rem;">Lesson 5: Credit Cards</div>
+        <div style="font-size:.8rem;color:var(--muted);margin-bottom:1rem;">How interest is charged on credit card balances.</div>
+        <button class="btn btn-primary" style="width:100%" onclick="showScreen('lesson')">Continue Learning →</button>
+      </div>
+
+      <!-- Module progress -->
+      <div class="card">
+        <div class="card-title">Module Overview</div>
+        <div style="margin-bottom:.75rem;">
+          <div style="display:flex;justify-content:space-between;font-size:.8rem;margin-bottom:.4rem;">
+            <span style="font-weight:600">🐷 Credit Score</span>
+            <span style="color:var(--green-d);font-weight:700">60%</span>
+          </div>
+          <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:60%"></div></div>
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;font-size:.8rem;margin-bottom:.4rem;">
+            <span style="font-weight:600">🏦 Budgeting</span>
+            <span style="color:var(--green-d);font-weight:700">40%</span>
+          </div>
+          <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:40%"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════
+     SCREEN 5 – AI MONEY COACH
+══════════════════════════════════════════════════════════════════ -->
+<div id="screen-coach" class="screen">
+  <div class="coach-layout">
+    <!-- Sidebar: topics -->
+    <div class="coach-sidebar">
+      <h3>Coach Topics</h3>
+      <div class="topic-item active">
+        <input type="checkbox" id="t1" checked>
+        <label for="t1">Build my budget</label>
+      </div>
+      <div class="topic-item">
+        <input type="checkbox" id="t2">
+        <label for="t2">Improve my credit score</label>
+      </div>
+      <div class="topic-item">
+        <input type="checkbox" id="t3">
+        <label for="t3">Explain APR</label>
+      </div>
+      <div class="topic-item">
+        <input type="checkbox" id="t4">
+        <label for="t4">Debt payoff plan</label>
+      </div>
+      <div class="topic-item">
+        <input type="checkbox" id="t5">
+        <label for="t5">Emergency fund</label>
+      </div>
+      <div class="topic-item">
+        <input type="checkbox" id="t6">
+        <label for="t6">Start investing</label>
+      </div>
+      <hr style="border:none;border-top:1px solid var(--border);margin:.5rem 0">
+      <h3 style="margin-top:.25rem">Recent Chats</h3>
+      <div class="topic-item">
+        <span style="font-size:1rem">💬</span>
+        <label style="cursor:pointer;font-size:.85rem;color:var(--mid)">What is compound interest?</label>
+      </div>
+      <div class="topic-item">
+        <span style="font-size:1rem">💬</span>
+        <label style="cursor:pointer;font-size:.85rem;color:var(--mid)">How to build an emergency fund</label>
+      </div>
+    </div>
+
+    <!-- Main: chat -->
+    <div class="coach-main">
+      <div class="coach-header">
+        <div class="coach-avatar">🤖</div>
+        <div class="info">
+          <div class="name">FinPath AI Coach</div>
+          <div class="status"><span class="dot-online"></span> Online now</div>
+        </div>
+      </div>
+
+      <div class="chat-body" id="chat-body">
+        <!-- Bot welcome -->
+        <div class="chat-msg bot">
+          <div class="chat-msg-avatar">FP</div>
+          <div>
+            <div class="chat-bubble">
+              Hey Eddie! 👋 I'm your FinPath AI Money Coach. I can help you build a budget, understand credit, plan to pay off debt, or answer any finance questions you have. What would you like to work on today?
+            </div>
+            <div class="chat-time">Today, 9:00 AM</div>
+          </div>
+        </div>
+
+        <!-- User message -->
+        <div class="chat-msg user">
+          <div class="chat-msg-avatar">E</div>
+          <div>
+            <div class="chat-bubble">
+              Can you help me build a simple monthly budget?
+            </div>
+            <div class="chat-time">9:02 AM</div>
+          </div>
+        </div>
+
+        <!-- Bot reply -->
+        <div class="chat-msg bot">
+          <div class="chat-msg-avatar">FP</div>
+          <div>
+            <div class="chat-bubble">
+              Absolutely! The simplest budgeting framework is the <strong>50/30/20 rule</strong>:<br><br>
+              📌 <strong>50%</strong> of income → Needs (rent, food, utilities)<br>
+              📌 <strong>30%</strong> of income → Wants (dining out, entertainment)<br>
+              📌 <strong>20%</strong> of income → Savings &amp; debt repayment<br><br>
+              Would you like to upload your income details or a CSV so I can create a personalised plan for you?
+            </div>
+            <div class="chat-time">9:03 AM</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Input bar -->
+      <div class="chat-input-bar">
+        <button class="file-chip" title="Attach a budget CSV">
+          <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"/></svg>
+          BUDGET CSV
+        </button>
+        <textarea class="chat-input" id="chat-input" rows="1" placeholder="Ask your money coach anything…"></textarea>
+        <button class="send-btn" onclick="sendMessage()">
+          <svg width="17" height="17" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M22 2L11 13M22 2L15 22l-4-9-9-4 20-7z"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════
+     SCREEN 6 – LEADERBOARD
+══════════════════════════════════════════════════════════════════ -->
+<div id="screen-leaderboard" class="screen">
+  <div class="page-layout-full" style="max-width:700px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;">
+      <div>
+        <h1 style="font-size:1.5rem;font-weight:800">🏆 Leaderboard</h1>
+        <p style="font-size:.85rem;color:var(--muted);margin-top:.25rem">Top learners this week</p>
+      </div>
+      <span class="tag">Week of Mar 23</span>
+    </div>
+
+    <div class="lb-row">
+      <div class="lb-rank gold">🥇</div>
+      <div class="avatar" style="width:36px;height:36px;font-size:.8rem;">S</div>
+      <div class="lb-name">Sarah K.</div>
+      <div class="lb-bar-wrap"><div class="lb-bar" style="width:100%"></div></div>
+      <div class="lb-xp">580 XP</div>
+    </div>
+    <div class="lb-row">
+      <div class="lb-rank silver">🥈</div>
+      <div class="avatar" style="width:36px;height:36px;font-size:.8rem;background:linear-gradient(135deg,#8898aa,#2c3e60)">J</div>
+      <div class="lb-name">James T.</div>
+      <div class="lb-bar-wrap"><div class="lb-bar" style="width:82%"></div></div>
+      <div class="lb-xp">475 XP</div>
+    </div>
+    <div class="lb-row">
+      <div class="lb-rank bronze">🥉</div>
+      <div class="avatar" style="width:36px;height:36px;font-size:.8rem;background:linear-gradient(135deg,#e8a87c,#c07a4f)">A</div>
+      <div class="lb-name">Amira D.</div>
+      <div class="lb-bar-wrap"><div class="lb-bar" style="width:70%"></div></div>
+      <div class="lb-xp">406 XP</div>
+    </div>
+    <div class="lb-row me">
+      <div class="lb-rank" style="color:var(--green-d);font-weight:800">#4</div>
+      <div class="avatar" style="width:36px;height:36px;font-size:.8rem;">E</div>
+      <div class="lb-name">Eddie <span style="font-size:.74rem;color:var(--green);font-weight:600">(You)</span></div>
+      <div class="lb-bar-wrap"><div class="lb-bar" style="width:59%"></div></div>
+      <div class="lb-xp">340 XP</div>
+    </div>
+    <div class="lb-row">
+      <div class="lb-rank">#5</div>
+      <div class="avatar" style="width:36px;height:36px;font-size:.8rem;background:linear-gradient(135deg,#a78bfa,#6d28d9)">M</div>
+      <div class="lb-name">Marcus R.</div>
+      <div class="lb-bar-wrap"><div class="lb-bar" style="width:48%"></div></div>
+      <div class="lb-xp">278 XP</div>
+    </div>
+    <div class="lb-row">
+      <div class="lb-rank">#6</div>
+      <div class="avatar" style="width:36px;height:36px;font-size:.8rem;background:linear-gradient(135deg,#f9a8d4,#db2777)">P</div>
+      <div class="lb-name">Priya N.</div>
+      <div class="lb-bar-wrap"><div class="lb-bar" style="width:36%"></div></div>
+      <div class="lb-xp">210 XP</div>
+    </div>
+    <div class="lb-row">
+      <div class="lb-rank">#7</div>
+      <div class="avatar" style="width:36px;height:36px;font-size:.8rem;background:linear-gradient(135deg,#6ee7b7,#059669)">L</div>
+      <div class="lb-name">Liam B.</div>
+      <div class="lb-bar-wrap"><div class="lb-bar" style="width:27%"></div></div>
+      <div class="lb-xp">158 XP</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════
+     SCREEN 7 – PROFILE
+══════════════════════════════════════════════════════════════════ -->
+<div id="screen-profile" class="screen">
+  <div class="page-layout-full" style="max-width:680px;">
+    <div class="card" style="margin-bottom:1.25rem;display:flex;align-items:center;gap:1.5rem;padding:2rem;">
+      <div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--green),var(--navy));display:flex;align-items:center;justify-content:center;color:#fff;font-size:2rem;font-weight:800;flex-shrink:0;">E</div>
+      <div>
+        <div style="font-size:1.4rem;font-weight:800;">Eddie</div>
+        <div style="font-size:.85rem;color:var(--muted);margin-top:.2rem;">edward_gereis@icloud.com</div>
+        <div style="margin-top:.75rem;display:flex;gap:.5rem;flex-wrap:wrap;">
+          <span class="pill green">⚡ 340 XP</span>
+          <span class="pill">🔥 7-day streak</span>
+          <span class="pill amber">🏆 Rank #4</span>
+        </div>
+      </div>
+      <button class="btn btn-outline btn-sm" style="margin-left:auto">Edit Profile</button>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.25rem;">
+      <div class="stat-card">
+        <div class="s-label">Lessons Completed</div>
+        <div class="s-val">12</div>
+        <div class="s-sub">of 50 available</div>
+      </div>
+      <div class="stat-card">
+        <div class="s-label">Time Learning</div>
+        <div class="s-val">3.4h</div>
+        <div class="s-sub">this month</div>
+      </div>
+      <div class="stat-card">
+        <div class="s-label">Modules Started</div>
+        <div class="s-val">2</div>
+        <div class="s-sub">of 5 modules</div>
+      </div>
+      <div class="stat-card">
+        <div class="s-label">Longest Streak</div>
+        <div class="s-val">14🔥</div>
+        <div class="s-sub">personal best</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title" style="margin-bottom:1rem;">Badges Earned</div>
+      <div style="display:flex;gap:.75rem;flex-wrap:wrap;">
+        <div style="text-align:center;width:70px;">
+          <div style="font-size:2rem;">🎓</div>
+          <div style="font-size:.7rem;font-weight:600;color:var(--mid);margin-top:.3rem;">First Lesson</div>
+        </div>
+        <div style="text-align:center;width:70px;">
+          <div style="font-size:2rem;">🔥</div>
+          <div style="font-size:.7rem;font-weight:600;color:var(--mid);margin-top:.3rem;">7-Day Streak</div>
+        </div>
+        <div style="text-align:center;width:70px;">
+          <div style="font-size:2rem;">⚡</div>
+          <div style="font-size:.7rem;font-weight:600;color:var(--mid);margin-top:.3rem;">300+ XP</div>
+        </div>
+        <div style="text-align:center;width:70px;opacity:.35;">
+          <div style="font-size:2rem;">🏆</div>
+          <div style="font-size:.7rem;font-weight:600;color:var(--mid);margin-top:.3rem;">Top 3</div>
+        </div>
+        <div style="text-align:center;width:70px;opacity:.35;">
+          <div style="font-size:2rem;">💎</div>
+          <div style="font-size:.7rem;font-weight:600;color:var(--mid);margin-top:.3rem;">All Modules</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:1rem;display:flex;justify-content:flex-end;">
+      <button class="btn btn-outline btn-sm" onclick="showScreen('landing')" style="color:var(--muted);">
+        <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+        Sign out
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════
+     JS
+══════════════════════════════════════════════════════════════════ -->
+<script>
+  const screens = {
+    landing:     document.getElementById('screen-landing'),
+    learn:       document.getElementById('screen-learn'),
+    lesson:      document.getElementById('screen-lesson'),
+    dashboard:   document.getElementById('screen-dashboard'),
+    coach:       document.getElementById('screen-coach'),
+    leaderboard: document.getElementById('screen-leaderboard'),
+    profile:     document.getElementById('screen-profile'),
+  };
+
+  const navLinks = {
+    dashboard:   document.getElementById('nav-home'),
+    learn:       document.getElementById('nav-learn'),
+    coach:       document.getElementById('nav-coach'),
+    leaderboard: document.getElementById('nav-lb'),
+    profile:     document.getElementById('nav-profile'),
+  };
+
+  const mainNav = document.getElementById('main-nav');
+
+  function showScreen(name) {
+    Object.values(screens).forEach(s => s.classList.remove('active'));
+    screens[name].classList.add('active');
+
+    // Hide main nav on landing
+    mainNav.style.display = (name === 'landing') ? 'none' : 'flex';
+
+    // Update nav active state
+    Object.values(navLinks).forEach(l => l && l.classList.remove('active'));
+    if (navLinks[name]) navLinks[name].classList.add('active');
+
+    window.scrollTo(0, 0);
+    return false;
+  }
+
+  // Chat
+  const BOT_REPLIES = [
+    "Great question! Let me break that down for you in simple terms.",
+    "Based on what you've shared, here's what I'd recommend as a first step.",
+    "That's a really important concept in financial literacy. The key thing to understand is...",
+    "You're making great progress! Let's tackle this together step by step.",
+    "I'd suggest starting small — even £50/month in savings makes a big difference over time.",
+  ];
+  let botIdx = 0;
+
+  function sendMessage() {
+    const input = document.getElementById('chat-input');
+    const body  = document.getElementById('chat-body');
+    const text  = input.value.trim();
+    if (!text) return;
+
+    const now = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+    // User bubble
+    body.innerHTML += `
+      <div class="chat-msg user">
+        <div class="chat-msg-avatar">E</div>
+        <div>
+          <div class="chat-bubble">${escHtml(text)}</div>
+          <div class="chat-time">${now}</div>
+        </div>
+      </div>`;
+
+    input.value = '';
+    body.scrollTop = body.scrollHeight;
+
+    // Bot typing delay
+    setTimeout(() => {
+      const reply = BOT_REPLIES[botIdx % BOT_REPLIES.length];
+      botIdx++;
+      body.innerHTML += `
+        <div class="chat-msg bot">
+          <div class="chat-msg-avatar">FP</div>
+          <div>
+            <div class="chat-bubble">${reply}</div>
+            <div class="chat-time">${now}</div>
+          </div>
+        </div>`;
+      body.scrollTop = body.scrollHeight;
+    }, 900);
+  }
+
+  function escHtml(s) {
+    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  // Enter key to send
+  document.getElementById('chat-input').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage();
+    }
+  });
+
+  // Auto-resize textarea
+  document.getElementById('chat-input').addEventListener('input', function() {
+    this.style.height = 'auto';
+    this.style.height = Math.min(this.scrollHeight, 100) + 'px';
+  });
+
+  // Init: show landing, hide nav
+  showScreen('landing');
+</script>
+  <div class="disclaimer-bar">Disclaimer: FinPath is for educational purposes only. Nothing on this platform constitutes financial advice. Always consult a qualified financial adviser before making investment decisions.</div>
+</body>
+</html>
