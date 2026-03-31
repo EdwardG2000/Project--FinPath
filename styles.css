@@ -236,7 +236,7 @@ button { cursor: pointer; font-family: inherit; }
   box-shadow: var(--shadow);
 }
 .progress-ring-wrap .ring-title {
-  font-size: .75rem; font-weight: 700; text-transform: uppercase;
+  font-size: .50rem; font-weight: 700; text-transform: uppercase;
   letter-spacing: .06em; color: var(--muted); margin-bottom: .75rem;
 }
 .ring-svg-wrap { position: relative; display: inline-block; }
