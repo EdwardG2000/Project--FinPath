@@ -1,6 +1,5 @@
-/* FinPath Dark Theme - shared across all pages */
+/* FinPath Dark Theme */
 
-/* ── Animated background ── */
 body {
   background: #0a1628 !important;
   color: #e2e8f0;
@@ -11,57 +10,19 @@ body {
   position: fixed;
   inset: 0;
   z-index: 0;
-  background: linear-gradient(135deg, #0a1628 0%, #0f2d1f 50%, #0a1628 100%);
-  background-size: 400% 400%;
-  animation: gradientShift 12s ease infinite;
+  background: #0a1628;
 }
 
-@keyframes gradientShift {
-  0%   { background-position: 0% 50%; }
-  50%  { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
+.particles, .particle, .fp-p { display: none !important; }
 
-/* Glowing orbs */
-.orb {
-  position: fixed;
-  border-radius: 50%;
-  filter: blur(80px);
-  opacity: 0.12;
-  z-index: 1;
-  animation: orbPulse ease-in-out infinite;
-  pointer-events: none;
-}
-.orb-1 { width: 500px; height: 500px; background: #2ecc8e; top: -200px; left: -100px; animation-duration: 8s; }
-.orb-2 { width: 400px; height: 400px; background: #3b82f6; bottom: -150px; right: -100px; animation-duration: 10s; animation-delay: -4s; }
-.orb-3 { width: 300px; height: 300px; background: #a78bfa; top: 50%; left: 40%; animation-duration: 12s; animation-delay: -2s; }
-
-@keyframes orbPulse {
-  0%, 100% { transform: scale(1); opacity: 0.12; }
-  50%       { transform: scale(1.2); opacity: 0.18; }
-}
-
-/* Floating particles */
-.particles { position: fixed; inset: 0; z-index: 1; pointer-events: none; overflow: hidden; }
-.particle {
-  position: absolute; font-size: 1.2rem; opacity: 0;
-  animation: floatUp linear infinite; user-select: none;
-}
-@keyframes floatUp {
-  0%   { transform: translateY(100vh) rotate(0deg); opacity: 0; }
-  10%  { opacity: 0.1; }
-  90%  { opacity: 0.1; }
-  100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
-}
-
-/* ── Page content sits above background ── */
+/* Page content */
 #nav-root, .page-layout, .dashboard-layout, .lesson-layout,
 .page-layout-full, .coach-layout, .page-content {
   position: relative;
   z-index: 10;
 }
 
-/* ── Navbar dark theme ── */
+/* Navbar */
 .navbar {
   position: sticky !important;
   top: 0;
@@ -69,260 +30,118 @@ body {
   background: rgba(10, 22, 40, 0.85) !important;
   backdrop-filter: blur(12px);
   border-bottom: 1px solid rgba(255,255,255,0.08) !important;
-  box-shadow: none !important;
 }
-
 .navbar-brand { color: #fff !important; }
 .navbar-brand .dot { color: #2ecc8e !important; }
-
-.navbar-nav a {
-  color: rgba(255,255,255,0.6) !important;
-}
-.navbar-nav a:hover, .navbar-nav a.active {
-  background: rgba(255,255,255,0.08) !important;
-  color: #fff !important;
-}
+.navbar-nav a { color: rgba(255,255,255,0.6) !important; }
+.navbar-nav a:hover, .navbar-nav a.active { background: rgba(255,255,255,0.08) !important; color: #fff !important; }
 .navbar-nav a.active { font-weight: 700; }
+.xp-badge { background: rgba(245,166,35,0.15) !important; border-color: rgba(245,166,35,0.3) !important; color: #f5c06a !important; }
+.avatar { background: linear-gradient(135deg, #2ecc8e, #0f2d1f) !important; }
 
-.xp-badge {
-  background: rgba(245,166,35,0.15) !important;
-  border-color: rgba(245,166,35,0.3) !important;
-  color: #f5c06a !important;
-}
-
-.avatar {
-  background: linear-gradient(135deg, #2ecc8e, #0f2d1f) !important;
-}
-
-/* ── Cards dark theme ── */
+/* Cards */
 .card {
   background: rgba(255,255,255,0.05) !important;
   border: 1px solid rgba(255,255,255,0.1) !important;
   color: #e2e8f0 !important;
-  backdrop-filter: blur(10px);
 }
+.card-title { color: rgba(255,255,255,0.4) !important; }
 
-.card-title {
-  color: rgba(255,255,255,0.4) !important;
-}
-
-/* ── Stat cards ── */
-.stat-card {
-  background: rgba(255,255,255,0.05) !important;
-  border: 1px solid rgba(255,255,255,0.08) !important;
-  color: #e2e8f0 !important;
-}
+/* Stat cards */
+.stat-card { background: rgba(255,255,255,0.05) !important; border: 1px solid rgba(255,255,255,0.08) !important; color: #e2e8f0 !important; }
 .s-label { color: rgba(255,255,255,0.4) !important; }
 .s-val   { color: #fff !important; }
 .s-sub   { color: rgba(255,255,255,0.35) !important; }
 .trend   { color: #2ecc8e !important; }
 
-/* ── Welcome banner ── */
+/* Welcome banner */
 .welcome-banner {
-  background: linear-gradient(135deg, rgba(46,204,142,0.2), rgba(15,45,31,0.4)) !important;
+  background: rgba(46,204,142,0.1) !important;
   border: 1px solid rgba(46,204,142,0.2) !important;
   color: #fff !important;
 }
 .welcome-banner p { color: rgba(255,255,255,0.7) !important; }
 .xp-big { color: #2ecc8e !important; }
 
-/* ── Module cards ── */
-.module-card {
-  background: rgba(255,255,255,0.05) !important;
-  border: 1.5px solid rgba(255,255,255,0.1) !important;
-  color: #e2e8f0 !important;
-}
-.module-card:hover {
-  border-color: rgba(46,204,142,0.5) !important;
-  background: rgba(46,204,142,0.08) !important;
-}
-.module-card.active {
-  border-color: #2ecc8e !important;
-  background: rgba(46,204,142,0.1) !important;
-}
+/* Module cards */
+.module-card { background: rgba(255,255,255,0.05) !important; border: 1.5px solid rgba(255,255,255,0.1) !important; color: #e2e8f0 !important; }
+.module-card:hover { border-color: rgba(46,204,142,0.5) !important; background: rgba(46,204,142,0.08) !important; }
+.module-card.active { border-color: #2ecc8e !important; background: rgba(46,204,142,0.1) !important; }
 .module-name { color: #e2e8f0 !important; }
-
-/* ── Recent lesson card ── */
-.recent-lesson-card {
-  background: rgba(255,255,255,0.05) !important;
-  border: 1px solid rgba(255,255,255,0.1) !important;
-}
-.rlc-header { border-bottom-color: rgba(255,255,255,0.08) !important; }
-.rlc-header h3 { color: #fff !important; }
-.rlc-placeholder {
-  background: rgba(255,255,255,0.03) !important;
-  border-color: rgba(255,255,255,0.1) !important;
-  color: rgba(255,255,255,0.4) !important;
-}
-.rlc-footer { border-top-color: rgba(255,255,255,0.08) !important; }
-.progress-label { color: rgba(255,255,255,0.5) !important; }
-
-/* ── Progress bars ── */
-.progress-bar-wrap { background: rgba(255,255,255,0.1) !important; }
-
-/* ── Streak card ── */
-.streak-card {
-  background: linear-gradient(135deg, #1a2f4a, #0f2d1f) !important;
-  border: 1px solid rgba(46,204,142,0.2) !important;
-}
-.streak-day { background: rgba(255,255,255,0.1) !important; color: rgba(255,255,255,0.4) !important; }
-.streak-day.done { background: #2ecc8e !important; color: #fff !important; }
-.streak-day.today { border-color: #2ecc8e !important; color: #2ecc8e !important; }
-
-/* ── Lesson sidebar ── */
-.lesson-sidebar .card { background: rgba(255,255,255,0.05) !important; }
-.mini-module {
-  background: rgba(255,255,255,0.03) !important;
-  border-color: rgba(255,255,255,0.08) !important;
-}
-.mini-module.active {
-  background: rgba(46,204,142,0.1) !important;
-  border-color: rgba(46,204,142,0.3) !important;
-}
-.mini-module .name { color: #e2e8f0 !important; }
-
-/* ── Lesson main card ── */
-.lesson-main-card {
-  background: rgba(255,255,255,0.05) !important;
-  border: 1px solid rgba(255,255,255,0.1) !important;
-}
-.lesson-top-bar {
-  background: linear-gradient(135deg, #0f2d1f, #1a2f4a) !important;
-  border-bottom-color: rgba(255,255,255,0.08) !important;
-}
-.lesson-top-bar h2 { color: #fff !important; }
-.lesson-body { color: #e2e8f0 !important; }
-.lesson-body h2, .lesson-body h3 { color: #fff !important; }
-.lesson-body strong { color: #fff !important; }
-.lesson-body p { color: rgba(255,255,255,0.75) !important; }
-.lesson-body li { color: rgba(255,255,255,0.75) !important; }
-.callout {
-  background: rgba(46,204,142,0.1) !important;
-  border-left-color: #2ecc8e !important;
-  color: rgba(255,255,255,0.8) !important;
-}
-.lesson-footer { border-top-color: rgba(255,255,255,0.08) !important; }
-
-/* ── Coach ── */
-.coach-sidebar {
-  background: rgba(255,255,255,0.05) !important;
-  border-color: rgba(255,255,255,0.1) !important;
-}
-.coach-sidebar h3 { color: rgba(255,255,255,0.4) !important; }
-.topic-item { border-color: transparent !important; }
-.topic-item:hover { background: rgba(255,255,255,0.08) !important; }
-.topic-item.active { background: rgba(46,204,142,0.1) !important; border-color: rgba(46,204,142,0.3) !important; }
-.topic-item label { color: rgba(255,255,255,0.7) !important; }
-.topic-item.active label { color: #fff !important; }
-
-.coach-main {
-  background: rgba(255,255,255,0.05) !important;
-  border-color: rgba(255,255,255,0.1) !important;
-}
-.coach-header { border-bottom-color: rgba(255,255,255,0.08) !important; }
-.coach-header .name { color: #fff !important; }
-
-.chat-msg.bot .chat-bubble {
-  background: rgba(255,255,255,0.08) !important;
-  border-color: rgba(255,255,255,0.1) !important;
-  color: #e2e8f0 !important;
-}
-.chat-time { color: rgba(255,255,255,0.3) !important; }
-.chat-input-bar { border-top-color: rgba(255,255,255,0.08) !important; }
-.chat-input {
-  background: rgba(255,255,255,0.05) !important;
-  border-color: rgba(255,255,255,0.1) !important;
-  color: #e2e8f0 !important;
-}
-.chat-input:focus { border-color: #2ecc8e !important; background: rgba(255,255,255,0.08) !important; }
-.chat-input::placeholder { color: rgba(255,255,255,0.3) !important; }
-.file-chip {
-  background: rgba(255,255,255,0.05) !important;
-  border-color: rgba(255,255,255,0.1) !important;
-  color: rgba(255,255,255,0.5) !important;
-}
-
-/* ── Leaderboard ── */
-.lb-row {
-  background: rgba(255,255,255,0.05) !important;
-  border-color: rgba(255,255,255,0.1) !important;
-}
-.lb-row:hover { border-color: rgba(46,204,142,0.3) !important; }
-.lb-row.me { background: rgba(46,204,142,0.1) !important; border-color: rgba(46,204,142,0.3) !important; }
-.lb-name { color: #e2e8f0 !important; }
-.lb-bar-wrap { background: rgba(255,255,255,0.1) !important; }
-
-/* ── Profile ── */
-.pill {
-  background: rgba(255,255,255,0.08) !important;
-  border-color: rgba(255,255,255,0.12) !important;
-  color: rgba(255,255,255,0.7) !important;
-}
-.pill.green {
-  background: rgba(46,204,142,0.15) !important;
-  border-color: rgba(46,204,142,0.3) !important;
-  color: #2ecc8e !important;
-}
-.pill.amber {
-  background: rgba(245,166,35,0.15) !important;
-  border-color: rgba(245,166,35,0.3) !important;
-  color: #f5c06a !important;
-}
-
-/* ── Tags ── */
-.tag {
-  background: rgba(46,204,142,0.15) !important;
-  color: #2ecc8e !important;
-}
-
-/* ── Inputs ── */
-input, select, textarea {
-  background: rgba(255,255,255,0.05) !important;
-  border-color: rgba(255,255,255,0.1) !important;
-  color: #e2e8f0 !important;
-}
-input:focus, select:focus, textarea:focus {
-  border-color: #2ecc8e !important;
-  background: rgba(255,255,255,0.08) !important;
-}
-input::placeholder { color: rgba(255,255,255,0.3) !important; }
-
-/* ── Disclaimer bar ── */
-.disclaimer-bar {
-  position: relative;
-  z-index: 10;
-  background: rgba(10,22,40,0.8) !important;
-  border-top-color: rgba(255,255,255,0.08) !important;
-  color: rgba(255,255,255,0.3) !important;
-  backdrop-filter: blur(10px);
-}
-
-/* ── Progress ring wrap ── */
-.progress-ring-wrap {
-  background: rgba(255,255,255,0.05) !important;
-  border: 1px solid rgba(255,255,255,0.1) !important;
-}
-.ring-title { color: rgba(255,255,255,0.4) !important; }
-.ring-center .big { color: #fff !important; }
-.ring-center .sm  { color: rgba(255,255,255,0.4) !important; }
-
-/* ── XP ring ── */
-.xp-ring-text { color: #fff !important; }
-
-/* ── Module icons ── */
 .module-icon.green  { background: rgba(46,204,142,0.15) !important; }
 .module-icon.blue   { background: rgba(59,130,246,0.15) !important; }
 .module-icon.amber  { background: rgba(245,166,35,0.15) !important; }
 .module-icon.rose   { background: rgba(244,63,94,0.15) !important; }
 .module-icon.purple { background: rgba(167,139,250,0.15) !important; }
 
-/* ── Discuss btn ── */
-.discuss-btn {
-  color: rgba(255,255,255,0.6) !important;
-  border-color: rgba(255,255,255,0.15) !important;
-}
-.discuss-btn:hover { color: #fff !important; border-color: rgba(255,255,255,0.3) !important; }
+/* Dashboard */
+.recent-lesson-card { background: rgba(255,255,255,0.05) !important; border: 1px solid rgba(255,255,255,0.1) !important; }
+.rlc-header { border-bottom-color: rgba(255,255,255,0.08) !important; }
+.rlc-header h3 { color: #fff !important; }
+.rlc-placeholder { background: rgba(255,255,255,0.03) !important; border-color: rgba(255,255,255,0.1) !important; color: rgba(255,255,255,0.4) !important; }
+.rlc-footer { border-top-color: rgba(255,255,255,0.08) !important; }
+.progress-label { color: rgba(255,255,255,0.5) !important; }
+.progress-bar-wrap { background: rgba(255,255,255,0.1) !important; }
 
-/* ── Scrollbar ── */
+/* Streak card */
+.streak-card { background: rgba(255,255,255,0.05) !important; border: 1px solid rgba(255,255,255,0.1) !important; }
+.streak-day { background: rgba(255,255,255,0.1) !important; color: rgba(255,255,255,0.4) !important; }
+.streak-day.done { background: #2ecc8e !important; color: #fff !important; }
+.streak-day.today { border-color: #2ecc8e !important; color: #2ecc8e !important; }
+
+/* Lessons */
+.lesson-sidebar .card { background: rgba(255,255,255,0.05) !important; }
+.lesson-main-card { background: rgba(255,255,255,0.05) !important; border: 1px solid rgba(255,255,255,0.1) !important; }
+.lesson-top-bar { background: #0f2d1f !important; border-bottom-color: rgba(255,255,255,0.08) !important; }
+.lesson-top-bar h2 { color: #fff !important; }
+.lesson-body { color: #e2e8f0 !important; }
+.lesson-body h2, .lesson-body h3 { color: #fff !important; }
+.lesson-body strong { color: #fff !important; }
+.lesson-body p { color: rgba(255,255,255,0.75) !important; }
+.lesson-body li { color: rgba(255,255,255,0.75) !important; }
+.callout { background: rgba(46,204,142,0.1) !important; border-left-color: #2ecc8e !important; color: rgba(255,255,255,0.8) !important; }
+.lesson-footer { border-top-color: rgba(255,255,255,0.08) !important; }
+.discuss-btn { color: rgba(255,255,255,0.6) !important; }
+.discuss-btn:hover { color: #fff !important; }
+
+/* Progress ring */
+.progress-ring-wrap { background: rgba(255,255,255,0.05) !important; border: 1px solid rgba(255,255,255,0.1) !important; }
+.ring-title { color: rgba(255,255,255,0.4) !important; }
+.ring-center .big { color: #fff !important; }
+.ring-center .sm  { color: rgba(255,255,255,0.4) !important; }
+
+/* Coach */
+.coach-sidebar { background: rgba(255,255,255,0.05) !important; border-color: rgba(255,255,255,0.1) !important; }
+.coach-sidebar h3 { color: rgba(255,255,255,0.4) !important; }
+.topic-item:hover { background: rgba(255,255,255,0.08) !important; }
+.topic-item.active { background: rgba(46,204,142,0.1) !important; border-color: rgba(46,204,142,0.3) !important; }
+.topic-item label { color: rgba(255,255,255,0.7) !important; }
+.topic-item.active label { color: #fff !important; }
+.coach-main { background: rgba(255,255,255,0.05) !important; border-color: rgba(255,255,255,0.1) !important; }
+.coach-header { border-bottom-color: rgba(255,255,255,0.08) !important; }
+.coach-header .name { color: #fff !important; }
+.chat-msg.bot .chat-bubble { background: rgba(255,255,255,0.08) !important; color: #e2e8f0 !important; }
+.chat-time { color: rgba(255,255,255,0.3) !important; }
+.chat-input { background: rgba(255,255,255,0.05) !important; border-color: rgba(255,255,255,0.1) !important; color: #e2e8f0 !important; }
+.chat-input:focus { border-color: #2ecc8e !important; }
+.chat-input::placeholder { color: rgba(255,255,255,0.3) !important; }
+
+/* Leaderboard */
+.lb-row { background: rgba(255,255,255,0.05) !important; border-color: rgba(255,255,255,0.1) !important; }
+.lb-row:hover { border-color: rgba(46,204,142,0.3) !important; }
+.lb-row.me { background: rgba(46,204,142,0.1) !important; border-color: rgba(46,204,142,0.3) !important; }
+.lb-name { color: #e2e8f0 !important; }
+.lb-bar-wrap { background: rgba(255,255,255,0.1) !important; }
+
+/* Pills and tags */
+.pill { background: rgba(255,255,255,0.08) !important; border-color: rgba(255,255,255,0.12) !important; color: rgba(255,255,255,0.7) !important; }
+.pill.green { background: rgba(46,204,142,0.15) !important; border-color: rgba(46,204,142,0.3) !important; color: #2ecc8e !important; }
+.pill.amber { background: rgba(245,166,35,0.15) !important; border-color: rgba(245,166,35,0.3) !important; color: #f5c06a !important; }
+.tag { background: rgba(46,204,142,0.15) !important; color: #2ecc8e !important; }
+
+/* Disclaimer */
+.disclaimer-bar { position: relative; z-index: 10; color: rgba(255,255,255,0.3) !important; }
+
+/* Scrollbar */
 ::-webkit-scrollbar-track { background: rgba(255,255,255,0.03) !important; }
 ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1) !important; }
