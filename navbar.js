@@ -244,10 +244,10 @@
     if (!token) return;
 
     Promise.all([
-      fetch('http://localhost:8000/auth/me', {
+      fetch('https://project-finpath-production.up.railway.app/auth/me', {
         headers: { 'Authorization': 'Bearer ' + token }
       }).then(r => r.ok ? r.json() : null),
-      fetch('http://localhost:8000/progress/overview', {
+      fetch('https://project-finpath-production.up.railway.app/progress/overview', {
         headers: { 'Authorization': 'Bearer ' + token }
       }).then(r => r.ok ? r.json() : null),
     ]).then(([me, progress]) => {
