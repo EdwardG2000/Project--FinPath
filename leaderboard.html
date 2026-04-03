@@ -5,9 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>FinPath – Leaderboard</title>
   <link rel="stylesheet" href="styles.css" />
-  <style>
-    .page-layout-full { position:relative; z-index:10; }
-  </style>
+  <link rel="stylesheet" href="theme.css" />
 </head>
 <body>
 
@@ -17,13 +15,12 @@
 
   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;">
     <div>
-      <h1 style="font-size:1.5rem;font-weight:800;">🏆 Leaderboard</h1>
+      <h1 style="font-size:1.5rem;font-weight:800;">Leaderboard</h1>
       <p style="font-size:.85rem;color:var(--muted);margin-top:.25rem;">Top learners this week</p>
     </div>
     <span class="tag" id="week-tag">This week</span>
   </div>
 
-  <!-- Rank banner -->
   <div id="my-rank-banner" style="display:none;background:linear-gradient(135deg,#2ecc8e,#0f2d1f);
     border-radius:14px;padding:1.25rem 1.5rem;margin-bottom:1.5rem;
     align-items:center;justify-content:space-between;">
@@ -37,15 +34,13 @@
     </div>
   </div>
 
-  <!-- Leaderboard rows -->
   <div id="leaderboard-list">
-    <div style="color:var(--muted);font-size:.85rem;padding:1rem 0;">Loading leaderboard…</div>
+    <div style="color:var(--muted);font-size:.85rem;padding:1rem 0;">Loading leaderboard...</div>
   </div>
 
   <div style="margin-top:1.5rem;padding:1rem;background:rgba(255,255,255,0.05);border-radius:10px;
     border:1px solid rgba(255,255,255,0.1);font-size:.8rem;color:var(--muted);">
-    💡 Leaderboard XP is calculated from lessons completed (20 XP each) + quiz scores.
-    Complete more lessons to climb the ranks!
+    Leaderboard XP is calculated from lessons completed (20 XP each) plus quiz scores.
   </div>
 
 </div>
@@ -55,8 +50,8 @@
 <script>
   requireAuth();
 
-  const RANK_MEDALS = ['🥇','🥈','🥉'];
-  const RANK_CLASSES = ['gold','silver','bronze'];
+  const RANK_MEDALS = ['1st', '2nd', '3rd'];
+  const RANK_CLASSES = ['gold', 'silver', 'bronze'];
 
   async function loadLeaderboard() {
     try {
@@ -71,7 +66,6 @@
       const topXP = leaderboard[0].xp || 1;
       const me = leaderboard.find(function(u) { return u.is_me; });
 
-      // Show rank banner
       if (me) {
         const banner = document.getElementById('my-rank-banner');
         banner.style.display = 'flex';
@@ -79,12 +73,10 @@
         document.getElementById('my-xp-num').textContent = me.xp + ' XP';
       }
 
-      // Week tag
       const now = new Date();
       document.getElementById('week-tag').textContent =
         'Week of ' + now.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
 
-      // Render rows
       const list = document.getElementById('leaderboard-list');
       list.innerHTML = leaderboard.map(function(user) {
         const rank = user.rank;
