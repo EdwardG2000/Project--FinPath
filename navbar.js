@@ -52,7 +52,7 @@
       </li>
     </ul>
     <div class="navbar-right">
-      <div class="xp-badge" id="nav-xp">⚡ 0 XP</div>
+      <div class="xp-badge" id="nav-xp">0 XP</div>
       <a href="profile.html" style="text-decoration:none;">
         <div class="avatar" id="nav-avatar" title="Profile">?</div>
       </a>
@@ -64,11 +64,11 @@
   </nav>
   <!-- Mobile menu -->
   <div class="nav-mobile-menu" id="nav-mobile-menu">
-    <a href="dashboard.html">🏠 Home</a>
-    <a href="learn.html">📚 Learn</a>
-    <a href="coach.html">💬 Coach</a>
-    <a href="leaderboard.html">🏆 Leaderboard</a>
-    <a href="profile.html">👤 Profile</a>
+    <a href="dashboard.html">Home</a>
+    <a href="learn.html">Learn</a>
+    <a href="coach.html">Coach</a>
+    <a href="leaderboard.html">Leaderboard</a>
+    <a href="profile.html">Profile</a>
   </div>
   <style>
     .navbar {
@@ -258,7 +258,7 @@
       }
       if (progress) {
         const xp = progress.completed_lessons * 20;
-        document.getElementById('nav-xp').textContent = '⚡ ' + xp + ' XP';
+        document.getElementById('nav-xp').textContent = xp + ' XP';
       }
     }).catch(() => {});
   });
