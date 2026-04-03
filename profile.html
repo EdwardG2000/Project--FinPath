@@ -6,7 +6,6 @@
   <title>FinPath – Profile</title>
   <link rel="stylesheet" href="styles.css" />
   <link rel="stylesheet" href="theme.css" />
-  
 </head>
 <body>
 
@@ -14,30 +13,23 @@
 
 <div class="page-layout-full" style="max-width:680px;">
 
-  <!-- Profile header -->
   <div class="card" style="margin-bottom:1.25rem;display:flex;align-items:center;gap:1.5rem;padding:2rem;">
     <div id="profile-avatar" style="width:80px;height:80px;border-radius:50%;
       background:linear-gradient(135deg,var(--green),var(--navy));
       display:flex;align-items:center;justify-content:center;
       color:#fff;font-size:2rem;font-weight:800;flex-shrink:0;">?</div>
     <div>
-      <div id="profile-name" style="font-size:1.4rem;font-weight:800;">Loading…</div>
+      <div id="profile-name" style="font-size:1.4rem;font-weight:800;">Loading...</div>
       <div id="profile-email" style="font-size:.85rem;color:var(--muted);margin-top:.2rem;"></div>
       <div style="margin-top:.75rem;display:flex;gap:.5rem;flex-wrap:wrap;">
-        <span class="pill green" id="profile-xp">⚡ 0 XP</span>
+        <span class="pill green" id="profile-xp">0 XP</span>
         <span class="pill" id="profile-streak">0-day streak</span>
         <span class="pill amber" id="profile-badges">0 badges</span>
       </div>
     </div>
-    <button class="btn btn-outline btn-sm" style="margin-left:auto;" onclick="signOut()">
-      <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-        <path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
-      </svg>
-      Sign out
-    </button>
+    <button class="btn btn-outline btn-sm" style="margin-left:auto;" onclick="signOut()">Sign out</button>
   </div>
 
-  <!-- Stats grid -->
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.25rem;">
     <div class="stat-card">
       <div class="s-label">Lessons Completed</div>
@@ -61,19 +53,17 @@
     </div>
   </div>
 
-  <!-- Badges -->
   <div class="card" style="margin-bottom:1rem;">
     <div class="card-title">Badges Earned</div>
     <div id="badges-grid" style="display:flex;gap:.75rem;flex-wrap:wrap;">
-      <div style="color:var(--muted);font-size:.85rem;">Loading…</div>
+      <div style="color:var(--muted);font-size:.85rem;">Loading...</div>
     </div>
   </div>
 
-  <!-- Module progress -->
   <div class="card" style="margin-bottom:1.25rem;">
     <div class="card-title">Module Progress</div>
     <div id="module-progress-list">
-      <div style="color:var(--muted);font-size:.85rem;">Loading…</div>
+      <div style="color:var(--muted);font-size:.85rem;">Loading...</div>
     </div>
   </div>
 
@@ -84,67 +74,50 @@
 <script>
   requireAuth();
 
-  // All 6 possible badges with display info
   const ALL_BADGES = [
-    { type: 'FIRST_LESSON',          icon: '🎯', label: 'First Steps' },
-    { type: 'FIRST_QUIZ',            icon: '📝', label: 'Quiz Taker' },
-    { type: 'STREAK_3',              icon: '🔥', label: '3-Day Streak' },
-    { type: 'STREAK_7',              icon: '⚡', label: '7-Day Streak' },
-    { type: 'SCORE_80',              icon: '🏆', label: 'High Scorer' },
-    { type: 'COMPLETE_FIRST_MODULE', icon: '🎓', label: 'Module Master' },
+    { type: 'FIRST_LESSON',          label: 'First Steps',    abbr: 'FS' },
+    { type: 'FIRST_QUIZ',            label: 'Quiz Taker',     abbr: 'QT' },
+    { type: 'STREAK_3',              label: '3-Day Streak',   abbr: '3' },
+    { type: 'STREAK_7',              label: '7-Day Streak',   abbr: '7' },
+    { type: 'SCORE_80',              label: 'High Scorer',    abbr: 'A+' },
+    { type: 'COMPLETE_FIRST_MODULE', label: 'Module Master',  abbr: 'M' },
   ];
 
   async function loadProfile() {
     const [me, progress] = await Promise.all([getMe(), getProgress()]);
 
-    // ── Header ────────────────────────────────────────────
     const initial = (me.username || 'U')[0].toUpperCase();
     document.getElementById('profile-avatar').textContent = initial;
     document.getElementById('profile-name').textContent = me.username;
     document.getElementById('profile-email').textContent = me.email;
 
     const xp = progress.completed_lessons * 20;
-    document.getElementById('profile-xp').textContent = `⚡ ${xp} XP`;
-    document.getElementById('profile-streak').textContent =
-      `🔥 ${progress.current_streak}-day streak`;
+    document.getElementById('profile-xp').textContent = xp + ' XP';
+    document.getElementById('profile-streak').textContent = progress.current_streak + '-day streak';
     document.getElementById('profile-badges').textContent =
-      `🏆 ${progress.badges.length} badge${progress.badges.length !== 1 ? 's' : ''}`;
+      progress.badges.length + ' badge' + (progress.badges.length !== 1 ? 's' : '');
 
-    // ── Stats ─────────────────────────────────────────────
     document.getElementById('stat-lessons').textContent = progress.completed_lessons;
-    document.getElementById('stat-lessons-sub').textContent =
-      `of ${progress.total_lessons} available`;
+    document.getElementById('stat-lessons-sub').textContent = 'of ' + progress.total_lessons + ' available';
     document.getElementById('stat-quiz').textContent =
-      progress.average_quiz_score !== null
-        ? Math.round(progress.average_quiz_score) + '%'
-        : '—';
-    document.getElementById('stat-streak').textContent =
-      progress.current_streak + '🔥';
-    document.getElementById('stat-longest').textContent =
-      progress.longest_streak + '🔥';
+      progress.average_quiz_score !== null ? Math.round(progress.average_quiz_score) + '%' : '—';
+    document.getElementById('stat-streak').textContent = progress.current_streak;
+    document.getElementById('stat-longest').textContent = progress.longest_streak;
 
-    // ── Badges ────────────────────────────────────────────
     const earnedTypes = new Set(progress.badges.map(b => b.badge_type));
     const badgesGrid = document.getElementById('badges-grid');
     badgesGrid.innerHTML = ALL_BADGES.map(b => {
       const earned = earnedTypes.has(b.type);
-      return `
-        <div style="text-align:center;width:70px;${earned ? '' : 'opacity:.25;'}">
-          <div style="font-size:2rem;">${b.icon}</div>
-          <div style="font-size:.7rem;font-weight:600;color:var(--mid);margin-top:.3rem;">
-            ${b.label}
-          </div>
-        </div>`;
+      return '<div style="text-align:center;width:70px;' + (earned ? '' : 'opacity:.25;') + '">' +
+        '<div style="width:40px;height:40px;border-radius:50%;background:rgba(46,204,142,0.2);border:1px solid rgba(46,204,142,0.3);display:flex;align-items:center;justify-content:center;font-size:.85rem;font-weight:700;color:#2ecc8e;margin:0 auto;">' + b.abbr + '</div>' +
+        '<div style="font-size:.7rem;font-weight:600;color:var(--mid);margin-top:.3rem;">' + b.label + '</div>' +
+        '</div>';
     }).join('');
 
     if (earnedTypes.size === 0) {
-      badgesGrid.innerHTML += `
-        <div style="font-size:.82rem;color:var(--muted);padding:.5rem 0;">
-          Complete lessons and quizzes to earn badges!
-        </div>`;
+      badgesGrid.innerHTML += '<div style="font-size:.82rem;color:var(--muted);padding:.5rem 0;">Complete lessons and quizzes to earn badges.</div>';
     }
 
-    // ── Module progress ───────────────────────────────────
     const list = document.getElementById('module-progress-list');
     if (!progress.modules.length) {
       list.innerHTML = '<div style="color:var(--muted);font-size:.85rem;">No modules yet.</div>';
@@ -153,25 +126,16 @@
     list.innerHTML = progress.modules.map(mod => {
       const pct = Math.round(mod.completion_pct);
       const label = pct >= 100
-        ? `<span style="color:var(--green-d);font-weight:700">Complete ✓</span>`
+        ? '<span style="color:var(--green-d);font-weight:700">Complete</span>'
         : pct === 0
-          ? `<span style="color:var(--muted);font-weight:700">Not started</span>`
-          : `<span style="color:var(--green-d);font-weight:700">${pct}%</span>`;
-      return `
-        <div style="margin-bottom:.75rem;">
-          <div style="display:flex;justify-content:space-between;font-size:.8rem;margin-bottom:.4rem;">
-            <span style="font-weight:600">${mod.title}</span>
-            ${label}
-          </div>
-          <div class="progress-bar-wrap">
-            <div class="progress-bar-fill" style="width:${pct}%"></div>
-          </div>
-          ${mod.best_quiz_score !== null
-            ? `<div style="font-size:.72rem;color:var(--muted);margin-top:.25rem;">
-                Best quiz score: ${Math.round(mod.best_quiz_score)}%
-               </div>`
-            : ''}
-        </div>`;
+          ? '<span style="color:var(--muted);font-weight:700">Not started</span>'
+          : '<span style="color:var(--green-d);font-weight:700">' + pct + '%</span>';
+      return '<div style="margin-bottom:.75rem;">' +
+        '<div style="display:flex;justify-content:space-between;font-size:.8rem;margin-bottom:.4rem;">' +
+        '<span style="font-weight:600">' + mod.title + '</span>' + label + '</div>' +
+        '<div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:' + pct + '%"></div></div>' +
+        (mod.best_quiz_score !== null ? '<div style="font-size:.72rem;color:var(--muted);margin-top:.25rem;">Best quiz score: ' + Math.round(mod.best_quiz_score) + '%</div>' : '') +
+        '</div>';
     }).join('');
   }
 
