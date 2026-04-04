@@ -148,7 +148,12 @@
       currentIndex = lessons.findIndex(function(l) { return !l.is_completed; });
       if (currentIndex === -1) currentIndex = 0;
     }
-    try { quizQuestions = await getQuiz(moduleId); } catch(e) { quizQuestions = []; }
+
+    try {
+      quizQuestions = await getQuiz(moduleId);
+    } catch(e) {
+      quizQuestions = [];
+    }
 
     renderSidebar();
     renderLesson(currentIndex);
@@ -237,9 +242,7 @@
           });
         }
       }
-    } catch(e) {
-      console.log('Complete lesson error:', e);
-    }
+    } catch(e) {}
 
     btn.disabled = false;
 
@@ -249,6 +252,7 @@
       showQuizModal();
     }
   }
+
   function showQuizModal() {
     if (!quizQuestions || quizQuestions.length === 0) return;
     document.getElementById('quiz-modal-title').textContent = (moduleData ? moduleData.title : 'Module') + ' Quiz';
@@ -348,9 +352,12 @@
       }
 
     } catch(e) {
-  console.log('Complete lesson error:', e);
-}
+      btn.textContent = 'Submit Quiz';
+      btn.disabled = false;
+      alert('Error submitting quiz. Please try again.');
+    }
   }
+
   function retakeQuiz() {
     document.getElementById('quiz-result-banner').style.display = 'none';
     document.getElementById('quiz-submit-btn').style.display = 'block';
