@@ -249,9 +249,11 @@
     if (currentIndex < lessons.length - 1) {
       renderLesson(currentIndex + 1);
     } else {
-      showQuizModal();
+  document.getElementById('quiz-overlay').style.display = 'flex';
+  renderQuizQuestions();
+}
     }
-  }
+
 
   function showQuizModal() {
     if (!quizQuestions || quizQuestions.length === 0) return;
