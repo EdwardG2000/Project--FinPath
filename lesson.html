@@ -149,13 +149,7 @@
       if (currentIndex === -1) currentIndex = 0;
     }
 
-    try { 
-  quizQuestions = await getQuiz(moduleId); 
-  console.log('Quiz questions loaded:', quizQuestions.length);
-} catch(e) { 
-  console.log('Quiz error:', e);
-  quizQuestions = []; 
-}
+    try { quizQuestions = await getQuiz(moduleId); } catch(e) { quizQuestions = []; }
 
     renderSidebar();
     renderLesson(currentIndex);
