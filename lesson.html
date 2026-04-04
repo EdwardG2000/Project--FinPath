@@ -251,10 +251,8 @@
   }
 
   function showQuizModal() {
+    alert('quiz questions: ' + quizQuestions.length);
     if (!quizQuestions || quizQuestions.length === 0) return;
-    document.getElementById('quiz-modal-title').textContent = (moduleData ? moduleData.title : 'Module') + ' Quiz';
-    document.getElementById('quiz-overlay').style.display = 'flex';
-    renderQuizQuestions();
   }
 
   function renderQuizQuestions() {
