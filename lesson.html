@@ -349,12 +349,9 @@
       }
 
     } catch(e) {
-      btn.textContent = 'Submit Quiz';
-      btn.disabled = false;
-      alert('Error submitting quiz. Please try again.');
-    }
+  console.log('Complete lesson error:', e);
+}
   }
-
   function retakeQuiz() {
     document.getElementById('quiz-result-banner').style.display = 'none';
     document.getElementById('quiz-submit-btn').style.display = 'block';
