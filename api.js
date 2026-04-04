@@ -19,7 +19,8 @@ async function apiFetch(path, options = {}) {
   });
   if (res.status === 401) { clearToken(); window.location.href = 'login.html'; return; }
   if (!res.ok) { const e = await res.json().catch(() => ({})); throw new Error(e.detail || 'Failed'); }
-  return res.json();
+  if (res.status === 204 || res.headers.get('content-length') === '0') return null;
+  return res.json().catch(() => null);
 }
 
 async function login(email, password) {
