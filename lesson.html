@@ -149,11 +149,13 @@
       if (currentIndex === -1) currentIndex = 0;
     }
 
-    try {
-      quizQuestions = await getQuiz(moduleId);
-    } catch(e) {
-      quizQuestions = [];
-    }
+    try { 
+  quizQuestions = await getQuiz(moduleId); 
+  console.log('Quiz questions loaded:', quizQuestions.length);
+} catch(e) { 
+  console.log('Quiz error:', e);
+  quizQuestions = []; 
+}
 
     renderSidebar();
     renderLesson(currentIndex);
@@ -229,10 +231,12 @@
       const result = await completeLesson(l.id);
       lessons[currentIndex].is_completed = true;
       totalXP += 20;
+
       if (typeof FinPathGamification !== 'undefined') {
         FinPathGamification.showXPAnimation && FinPathGamification.showXPAnimation(20);
         FinPathGamification.addDailyXP && FinPathGamification.addDailyXP(20);
-        if (result && result.new_badges && result.new_badges.length > 0) {
+
+        if (result.new_badges && result.new_badges.length > 0) {
           result.new_badges.forEach(function(b, i) {
             setTimeout(function() {
               FinPathGamification.showBadgeUnlock && FinPathGamification.showBadgeUnlock(b);
@@ -240,17 +244,24 @@
           });
         }
       }
-    } catch(e) {}
+    } catch(e) {
+      console.log('Complete lesson error:', e);
+    }
 
     btn.disabled = false;
 
     if (currentIndex < lessons.length - 1) {
       renderLesson(currentIndex + 1);
     } else {
-      document.getElementById('quiz-modal-title').textContent = (moduleData ? moduleData.title : 'Module') + ' Quiz';
-      document.getElementById('quiz-overlay').style.display = 'flex';
-      renderQuizQuestions();
+      showQuizModal();
     }
+  }
+
+  function showQuizModal() {
+    if (!quizQuestions || quizQuestions.length === 0) return;
+    document.getElementById('quiz-modal-title').textContent = (moduleData ? moduleData.title : 'Module') + ' Quiz';
+    document.getElementById('quiz-overlay').style.display = 'flex';
+    renderQuizQuestions();
   }
 
   function renderQuizQuestions() {
