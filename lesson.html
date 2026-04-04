@@ -39,7 +39,6 @@
       padding-bottom: 1.5rem;
       border-bottom: 1px solid #dde4ef;
     }
-    .quiz-modal-header .trophy { font-size: 3rem; margin-bottom: .75rem; }
     .quiz-modal-header h2 { font-size: 1.4rem; font-weight: 800; color: #0f1f3d; margin-bottom: .4rem; }
     .quiz-modal-header p { font-size: .9rem; color: #5b6a85; }
 
@@ -180,7 +179,7 @@
 <div class="quiz-overlay" id="quiz-overlay" style="display:none;">
   <div class="quiz-modal">
     <div class="quiz-modal-header">
-      <div class="trophy">🎓</div>
+      
       <h2 id="quiz-modal-title">Module Quiz</h2>
       <p id="quiz-modal-subtitle">You've completed all lessons! Test your knowledge before moving on.</p>
     </div>
@@ -297,7 +296,7 @@
 
     if (isLast) {
       upNext.innerHTML = '<div class="card-title">Up Next</div>' +
-        '<div style="font-size:.85rem;font-weight:700;margin-bottom:.5rem;">📝 Module Quiz</div>' +
+        '<div style="font-size:.85rem;font-weight:700;margin-bottom:.5rem;">Module Quiz</div>' +
         '<div style="font-size:.78rem;color:var(--muted);">Complete this lesson to unlock the quiz and test your knowledge.</div>' +
         '<div style="margin-top:.75rem;display:flex;gap:.5rem;"><span class="pill green">+Bonus XP</span></div>';
     } else if (next) {
@@ -366,7 +365,6 @@
     renderQuizQuestions();
 
     if (typeof FinPathGamification !== 'undefined') {
-      FinPathGamification.showConfetti && FinPathGamification.showConfetti();
     }
   }
 

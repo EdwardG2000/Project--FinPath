@@ -44,7 +44,6 @@
       <input type="checkbox" id="t6">
       <label for="t6">Start investing</label>
     </div>
-
     <hr style="border:none;border-top:1px solid var(--border);margin:.25rem 0;">
     <h3>Recent Chats</h3>
     <div id="recent-chats">
@@ -55,13 +54,13 @@
   <!-- Chat window -->
   <div class="coach-main">
     <div class="coach-header">
-      <div class="coach-avatar">🤖</div>
+      <div class="coach-avatar">AI</div>
       <div class="info">
         <div class="name">FinPath AI Coach</div>
         <div class="status"><span class="dot-online"></span> Online now</div>
       </div>
       <div style="margin-left:auto;font-size:.78rem;color:var(--muted);max-width:260px;text-align:right;line-height:1.4;">
-        ⚠️ Educational only — not financial advice
+        Educational only — not financial advice
       </div>
     </div>
 
@@ -148,7 +147,7 @@
         <div class="chat-msg-avatar">FP</div>
         <div>
           <div class="chat-bubble">
-            Hey ${escHtml(username)}! 👋 I'm your FinPath AI Money Coach.<br><br>
+            Hey ${escHtml(username)}! I'm your FinPath AI Money Coach.<br><br>
             I can help you understand credit scores, APR, budgeting, debt, and more —
             all based on your lesson content. What would you like to know?
           </div>
@@ -162,7 +161,7 @@
     if (!recentTopics.length) return;
     el.innerHTML = recentTopics.slice(0, 5).map(t => `
       <div class="topic-item" onclick="prefillInput('${escHtml(t)}')">
-        <span style="font-size:1rem;">💬</span>
+        
         <label style="cursor:pointer;font-size:.85rem;color:var(--mid);">${escHtml(t)}</label>
       </div>`).join('');
   }

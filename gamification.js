@@ -57,12 +57,12 @@ const LEVELS = [
   
   // ── Badge Unlock Popup ────────────────────────────────────
   const BADGE_META = {
-    FIRST_LESSON:          { icon: '🎯', label: 'First Steps',    desc: 'You completed your first lesson!' },
-    FIRST_QUIZ:            { icon: '📝', label: 'Quiz Taker',     desc: 'You completed your first quiz!' },
-    STREAK_3:              { icon: '🔥', label: 'On Fire!',       desc: 'You maintained a 3-day streak!' },
-    STREAK_7:              { icon: '⚡', label: 'Week Warrior',   desc: 'You maintained a 7-day streak!' },
-    SCORE_80:              { icon: '🏆', label: 'High Scorer',    desc: 'You scored 80%+ on a quiz!' },
-    COMPLETE_FIRST_MODULE: { icon: '🎓', label: 'Module Master',  desc: 'You completed your first module!' },
+    FIRST_LESSON:          { icon: '', label: 'First Steps',    desc: 'You completed your first lesson!' },
+    FIRST_QUIZ:            { icon: '', label: 'Quiz Taker',     desc: 'You completed your first quiz!' },
+    STREAK_3:              { icon: '', label: 'On Fire!',       desc: 'You maintained a 3-day streak!' },
+    STREAK_7:              { icon: '', label: 'Week Warrior',   desc: 'You maintained a 7-day streak!' },
+    SCORE_80:              { icon: '', label: 'High Scorer',    desc: 'You scored 80%+ on a quiz!' },
+    COMPLETE_FIRST_MODULE: { icon: '', label: 'Module Master',  desc: 'You completed your first module!' },
   };
   
   function showBadgeUnlock(badgeType) {
@@ -91,7 +91,7 @@ const LEVELS = [
         <button onclick="this.closest('[data-overlay]').remove()"
           style="background:var(--green);color:#fff;border:none;padding:.75rem 2rem;
             border-radius:12px;font-weight:700;font-size:.95rem;cursor:pointer;width:100%;">
-          Awesome! 🎉
+          Continue
         </button>
       </div>`;
   
@@ -162,12 +162,12 @@ const LEVELS = [
         <div style="background:#fff;border-radius:24px;padding:3rem 2.5rem;text-align:center;
           max-width:360px;width:90%;box-shadow:0 20px 60px rgba(0,0,0,.2);
           animation:popIn .4s cubic-bezier(0.34,1.56,0.64,1);">
-          <div style="font-size:4rem;margin-bottom:1rem;">🎓</div>
+          
           <div style="font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;
             color:var(--green);margin-bottom:.5rem;">Module Complete!</div>
           <div style="font-size:1.4rem;font-weight:800;color:var(--navy);margin-bottom:.5rem;">${moduleName}</div>
           <div style="font-size:.9rem;color:var(--muted);margin-bottom:.5rem;">You've finished all lessons!</div>
-          <div style="font-size:1.1rem;font-weight:700;color:var(--green);margin-bottom:2rem;">+100 Bonus XP 🎉</div>
+          <div style="font-size:1.1rem;font-weight:700;color:var(--green);margin-bottom:2rem;">+100 Bonus XP</div>
           <div style="display:flex;gap:.75rem;">
             <button onclick="window.location.href='learn.html'"
               style="flex:1;background:var(--bg);color:var(--navy);border:1px solid var(--border);
@@ -216,7 +216,7 @@ const LEVELS = [
   
   function showDailyGoalComplete() {
     const toast = document.createElement('div');
-    toast.innerHTML = '🎯 Daily goal reached! Amazing work!';
+    toast.innerHTML = 'Daily goal reached!';
     Object.assign(toast.style, {
       position: 'fixed',
       bottom: '5rem',
