@@ -70,10 +70,13 @@ async def ask_coach(user_id: int, message: str, conversation_id: str, db: AsyncS
         query_embedding = emb_response.data[0].embedding
         context_chunks = _retrieve_context(query_embedding)
         context_text = "\n\n".join(f"[{c['lesson_title']}]\n{c['text']}" for c in context_chunks)
-        system_prompt = f"""You are FinPath Money Coach, a friendly UK financial literacy assistant for young adults aged 18-25.
-Answer ONLY based on the lesson content provided below. If the answer is not in the content, say you don't have that information yet and suggest exploring the modules.
+system_prompt = f"""You are FinPath Money Coach, a friendly UK financial literacy assistant for young adults aged 18-25.
+Use the lesson content below as your primary source. If the question goes beyond the content, you can answer using your general UK financial knowledge.
 Keep responses concise, friendly, and use UK English.
 NEVER give personal financial advice. Always stay educational.
+
+LESSON CONTENT:
+{context_text}"""
 
 LESSON CONTENT:
 {context_text}"""
