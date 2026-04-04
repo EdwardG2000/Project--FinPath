@@ -3,12 +3,12 @@
 
 // ── Level System ──────────────────────────────────────────
 const LEVELS = [
-    { name: 'Beginner',  min: 0,    icon: '🥉', color: '#cd7f32' },
-    { name: 'Bronze',    min: 100,  icon: '🥉', color: '#cd7f32' },
-    { name: 'Silver',    min: 300,  icon: '🥈', color: '#8d9db5' },
-    { name: 'Gold',      min: 600,  icon: '🥇', color: '#f5a623' },
-    { name: 'Platinum',  min: 1000, icon: '💎', color: '#a78bfa' },
-    { name: 'Diamond',   min: 2000, icon: '👑', color: '#2ecc8e' },
+    { name: 'Beginner',  min: 0,    icon: 'B', color: '#cd7f32' },
+    { name: 'Bronze',    min: 100,  icon: 'B', color: '#cd7f32' },
+    { name: 'Silver',    min: 300,  icon: 'S', color: '#8d9db5' },
+    { name: 'Gold',      min: 600,  icon: 'G', color: '#f5a623' },
+    { name: 'Platinum',  min: 1000, icon: 'P', color: '#a78bfa' },
+    { name: 'Diamond',   min: 2000, icon: 'D', color: '#2ecc8e' },
   ];
   
   function getLevel(xp) {
@@ -292,7 +292,7 @@ const LEVELS = [
             <div style="font-size:.75rem;color:var(--muted);margin-top:.3rem;">
               ${level.next.min - xp} XP to ${level.next.name}
             </div>
-          </div>` : `<div style="font-size:.85rem;color:var(--green);font-weight:700;">Maximum level reached! 👑</div>`}
+          </div>` : `<div style="font-size:.85rem;color:var(--green);font-weight:700;">Maximum level reached!</div>`}
       </div>`;
   }
   
